@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ApplicationRecord } from "./application-record";
 import type { Application } from "./model";
 import { usePrototype } from "./store";
+import { WorkSampleEvidence } from "./work-sample-summary";
 
 export function CandidateApplication({ application }: { application: Application }) {
   const { state, run } = usePrototype();
@@ -84,7 +85,14 @@ export function CandidateApplication({ application }: { application: Application
             </div>
           )
         }
-      />
+      >
+        {application.workSample && (
+          <section className="work-sample-application" aria-label="Zadanie z momentu aplikowania">
+            <h2>Twoje zadanie z AI</h2>
+            <WorkSampleEvidence sample={application.workSample} />
+          </section>
+        )}
+      </ApplicationRecord>
       <p role="status" className="sr-only">
         {announcement}
       </p>

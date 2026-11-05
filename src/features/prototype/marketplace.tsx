@@ -417,7 +417,24 @@ export function JobPage() {
               ))}
             </dl>
             <div className="pp-offer-actions">
-              {person?.role === "candidate" ? (
+              {job.slug === "ai-operations-specialist" && !submitted ? (
+                <>
+                  <Link className={buttonVariants()} to={`/aplikuj/${job.slug}/przygotowanie`}>
+                    Aplikuj <ArrowRight />
+                  </Link>
+                  {person?.role === "candidate" && (
+                    <Button
+                      variant="outline"
+                      aria-label="Zapisz ofertę"
+                      aria-pressed={saved}
+                      onClick={() => run({ type: "toggle_saved", jobId: job.id })}
+                    >
+                      <Bookmark className={cn(saved && "fill-current")} />
+                      Zapisz ofertę
+                    </Button>
+                  )}
+                </>
+              ) : person?.role === "candidate" ? (
                 <>
                   <Link
                     className={buttonVariants()}

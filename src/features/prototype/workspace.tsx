@@ -16,6 +16,7 @@ import { CvAttachment } from "./cv-attachment";
 import { MatchScore } from "./match-score";
 import { RecruitingApplication } from "./recruiting-application";
 import { CandidateApplication } from "./candidate-application";
+import { WORK_SAMPLE_SLUG } from "./work-sample-model";
 
 export function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -257,6 +258,9 @@ export function ApplyPage() {
   const answerInvalid = attempted && answerLength < MIN_APPLICATION_ANSWER_LENGTH;
   const consentInvalid = attempted && !consent;
   if (!job) return <NotFound />;
+  const workSample = state.workSamples.find(
+    (sample) => sample.candidateId === person.id && sample.jobId === job.id,
+  );
   const existing = state.applications.find(
     (x) => x.jobId === job.id && x.candidateId === person.id,
   );
@@ -326,6 +330,26 @@ export function ApplyPage() {
             className="application-form-section application-answer"
             aria-label="Odpowiedź do aplikacji"
           >
+            {job.slug === WORK_SAMPLE_SLUG && (
+              <section
+                className="work-sample-application"
+                aria-labelledby="sample-application-heading"
+              >
+                <h3 id="sample-application-heading">Pokaż, jak pracujesz z AI</h3>
+                <p>
+                  {workSample?.completedAt
+                    ? "Twoje zadanie jest ukończone. Jego zapis dołączymy do tej aplikacji po zatwierdzeniu wysłania."
+                    : "Możesz pokazać sposób pracy w krótkim zadaniu na fikcyjnych wiadomościach."}
+                </p>
+                <Link
+                  className={buttonVariants({ variant: "outline" })}
+                  to={`/aplikuj/${job.slug}/${workSample?.completedAt ? "podsumowanie" : "przygotowanie"}`}
+                  onClick={() => run({ type: "draft", jobId: job.id, notes, generated, answer })}
+                >
+                  {workSample?.completedAt ? "Zobacz podsumowanie zadania" : "Poznaj zadanie"}
+                </Link>
+              </section>
+            )}
             <Field label="Dlaczego pasujesz do tej roli?">
               <Textarea
                 disabled={submitted}

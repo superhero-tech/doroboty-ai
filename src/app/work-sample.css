@@ -1,0 +1,205 @@
+/* Candidate-only extension of the existing full-offer composition. */
+.work-sample-grid {
+  grid-template-areas: "hero sidebar" "description sidebar";
+}
+.work-sample-progress {
+  padding: 24px 26px;
+}
+.work-sample-progress h2 {
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+.work-sample-progress ol {
+  display: grid;
+  gap: 16px;
+  padding: 0;
+  list-style: none;
+}
+.work-sample-progress li {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 13px;
+  color: var(--pp-muted);
+}
+.work-sample-progress li > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 28px;
+  height: 28px;
+  border: 1px solid var(--pp-ink);
+  border-radius: 50%;
+}
+.work-sample-progress li[aria-current] {
+  color: var(--pp-ink);
+  font-weight: 600;
+}
+.work-sample-progress li[aria-current] > span {
+  background: var(--pp-action);
+}
+.work-sample-eyebrow {
+  margin-bottom: 12px;
+}
+.work-sample-page .work-sample-disclosure {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--pp-line);
+  border-radius: var(--pp-radius-small);
+  background: var(--pp-paper);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 22px;
+}
+.work-sample-disclosure svg {
+  flex: 0 0 20px;
+}
+.work-sample-intro-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  margin-top: 26px;
+  border: 1px solid var(--pp-ink);
+  border-radius: var(--pp-radius);
+  background: var(--pp-paper);
+}
+.work-sample-intro-callout > svg {
+  flex: 0 0 24px;
+  margin-top: 4px;
+}
+.work-sample-page .work-sample-intro-callout h3 {
+  margin-top: 0;
+}
+.work-sample-instructions {
+  list-style: none;
+  display: grid;
+  gap: 22px;
+  padding: 0;
+}
+.work-sample-instructions li {
+  display: flex;
+  gap: 14px;
+}
+.work-sample-instructions svg {
+  flex: 0 0 22px;
+  margin-top: 3px;
+}
+.work-sample-instructions strong {
+  font-size: 15px;
+}
+.work-sample-form {
+  margin-top: 28px;
+}
+.work-sample-field {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+.work-sample-field label {
+  font-size: 15px;
+  font-weight: 600;
+}
+.work-sample-field textarea {
+  min-height: 120px;
+}
+.work-sample-field > button {
+  justify-self: start;
+  max-width: 100%;
+}
+.work-sample-page .work-sample-field > p,
+.work-sample-page .work-sample-save {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.work-sample-messages {
+  display: grid;
+  gap: 16px;
+}
+.work-sample-message {
+  padding: 20px;
+  border: 1px solid var(--pp-line);
+  border-radius: var(--pp-radius);
+  margin-top: 16px;
+  overflow-wrap: anywhere;
+}
+.work-sample-message h4 {
+  font-family: var(--pp-font-heading);
+  font-size: 20px;
+  margin: 0 0 12px;
+}
+.work-sample-page .work-sample-proposal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  margin-top: 16px;
+}
+.work-sample-proposal svg {
+  width: 18px;
+  flex-shrink: 0;
+}
+.work-sample-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 26px 0 16px;
+}
+.work-sample-actions > * {
+  white-space: normal;
+  height: auto;
+  min-height: 44px;
+  text-align: center;
+}
+.work-sample-quote {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  border-left: 3px solid var(--pp-action);
+  padding-left: 18px;
+}
+.work-sample-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+  font-size: 13px;
+}
+.work-sample-comparison dt {
+  color: var(--pp-muted);
+  margin-bottom: 5px;
+}
+.work-sample-comparison dd {
+  margin: 0;
+  font-weight: 600;
+}
+.work-sample-application {
+  padding-block: 24px;
+  border-top: 1px solid var(--pp-line);
+}
+.work-sample-application p {
+  margin-block: 12px;
+}
+@media (max-width: 700px) {
+  .work-sample-grid {
+    grid-template-areas: "hero" "sidebar" "description";
+  }
+  .work-sample-progress {
+    padding: 22px 23px;
+  }
+  .work-sample-intro-callout {
+    padding: 18px;
+  }
+  .work-sample-message {
+    padding: 16px;
+  }
+  .work-sample-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .work-sample-comparison {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}

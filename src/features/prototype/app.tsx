@@ -17,6 +17,7 @@ import {
 import { EmployerJobs, EmployerJobEditor, CompanyEditor } from "./employer";
 import { SettingsPage, PrivacyPage } from "./settings";
 import { CasePage } from "./case";
+import { WorkSamplePage } from "./work-sample";
 function AppRoutes() {
   return (
     <Routes>
@@ -28,6 +29,9 @@ function AppRoutes() {
         <Route path="metodologia" element={<MethodologyPage />} />
         <Route path="polityka-prywatnosci" element={<PrivacyPage />} />
         <Route path="auth/:mode" element={<PersonPicker />} />
+        <Route path="aplikuj/:slug/przygotowanie" element={<WorkSamplePage />} />
+        <Route path="aplikuj/:slug/zadanie" element={<WorkSamplePage view="task" />} />
+        <Route path="aplikuj/:slug/podsumowanie" element={<WorkSamplePage view="summary" />} />
         <Route
           path="aplikuj/:slug"
           element={
