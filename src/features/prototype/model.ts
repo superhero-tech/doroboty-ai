@@ -2,6 +2,13 @@ import { z } from "zod";
 import marketplace from "./data/marketplace.json" with { type: "json" };
 import people from "./data/people.json" with { type: "json" };
 import type { JobWithCompany } from "@/features/jobs/types";
+import {
+  WORK_SAMPLE_SLUG,
+  workSampleSchema,
+  workSampleInputSchema,
+  completedWorkSampleInputSchema,
+  type WorkSampleInput,
+} from "./work-sample-model";
 
 const id = z
   .string()
@@ -105,6 +112,7 @@ export const nextStages: Record<Stage, Stage[]> = {
   hired: [],
 };
 const applicationSchema = z.object({
+  workSample: workSampleSchema.optional(),
   id,
   candidateId: id,
   jobId: id,
@@ -140,6 +148,7 @@ export const stateSchema = z
     applications: z.array(applicationSchema).max(2000),
     saved: z.array(z.object({ candidateId: id, jobId: id })).max(5000),
     drafts: z.array(draftSchema).max(1000),
+    workSamples: z.array(workSampleSchema).max(1000).default([]),
   })
   .superRefine((s, ctx) => {
     const problem = (message: string) => ctx.addIssue({ code: "custom", message });
@@ -161,7 +170,25 @@ export const stateSchema = z
         problem("Unknown employer company");
     for (const j of s.jobs) if (!companyIds.has(j.companyId)) problem("Unknown job company");
     const keys = new Set<string>();
+    const sampleKeys = new Set<string>();
+    for (const sample of s.workSamples) {
+      const key = `${sample.candidateId}:${sample.jobId}`;
+      if (
+        !candidates.has(sample.candidateId) ||
+        jobs.get(sample.jobId)?.slug !== WORK_SAMPLE_SLUG ||
+        sampleKeys.has(key)
+      )
+        problem("Invalid work sample reference");
+      sampleKeys.add(key);
+    }
     for (const a of s.applications) {
+      if (
+        a.workSample &&
+        (a.workSample.candidateId !== a.candidateId ||
+          a.workSample.jobId !== a.jobId ||
+          !a.workSample.completedAt)
+      )
+        problem("Invalid submitted work sample");
       const key = `${a.candidateId}:${a.jobId}`;
       if (
         !candidates.has(a.candidateId) ||
@@ -198,6 +225,7 @@ export type State = z.infer<typeof stateSchema>;
 export type Person = State["people"][number];
 export type Application = State["applications"][number];
 export type Action =
+  | { type: "work_sample"; jobId: string; value: WorkSampleInput; complete: boolean }
   | { type: "select_person"; id: string | null }
   | { type: "profile"; value: z.infer<typeof profileSchema> }
   | { type: "toggle_saved"; jobId: string }
@@ -286,6 +314,35 @@ export function transition(
     const index = s.saved.findIndex((x) => x.candidateId === p.id && x.jobId === action.jobId);
     if (index >= 0) s.saved.splice(index, 1);
     else s.saved.push({ candidateId: p.id, jobId: action.jobId });
+  } else if (action.type === "work_sample") {
+    const p = candidate();
+    if (
+      !s.jobs.some(
+        (job) =>
+          job.id === action.jobId &&
+          job.slug === WORK_SAMPLE_SLUG &&
+          job.category === "apply" &&
+          job.publicationStatus === "published",
+      )
+    )
+      fail("Zadanie nie jest dostępne dla tej oferty.");
+    if (s.applications.some((a) => a.candidateId === p.id && a.jobId === action.jobId))
+      fail("Wysłanej aplikacji nie można zmienić.");
+    const value = (action.complete ? completedWorkSampleInputSchema : workSampleInputSchema).parse(
+      action.value,
+    );
+    s.workSamples = s.workSamples.filter(
+      (sample) => !(sample.candidateId === p.id && sample.jobId === action.jobId),
+    );
+    s.workSamples.push(
+      workSampleSchema.parse({
+        ...value,
+        candidateId: p.id,
+        jobId: action.jobId,
+        taskVersion: "operations-v1",
+        completedAt: action.complete ? now : undefined,
+      }),
+    );
   } else if (action.type === "draft") {
     const p = candidate();
     const draft = draftSchema.parse({ candidateId: p.id, ...action });
@@ -310,6 +367,9 @@ export function transition(
         answer: action.answer,
         sourceNotes: action.notes,
         generatedAnswer: action.generated,
+        workSample: s.workSamples.find(
+          (sample) => sample.candidateId === p.id && sample.jobId === job.id && sample.completedAt,
+        ),
         score: p.exampleScore,
         summary: p.exampleSummary,
         stage: "submitted",
