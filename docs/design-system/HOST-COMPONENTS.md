@@ -66,3 +66,13 @@ The application owns success semantics: run the existing submit operation first,
 | [marketplace.css](../../src/app/marketplace.css)     | React/Base UI source adaptations and offer action separation.                 |
 
 Keep common recipe styling separate from route geometry. Existing code remains subject to review; a component's presence in this catalog does not verify every caller or resolve the open company-page audit.
+
+## Candidate profile project
+
+Owners: `src/features/project-contribution/profile-project.tsx`, `form-fields.tsx`, `fields.ts`, `model.ts` and `profile-project.css`; entry: ProfilePage in `src/features/prototype/workspace.tsx`.
+
+`ProfileProjectSection({ preview?: boolean })` edits one project belonging to the current candidate. It follows the profile biography and precedes CV. The edit form reuses the standalone workshop's fields through `ProjectContributionFields`; profile mode omits job-specific relevance. `profile_project_draft` allows incomplete data; `profile_project_save` validates the complete description and clears its working draft. Both are candidate-only domain actions. Optional nested person fields keep old scenario saves compatible; scenario export/import/reset includes these fields. The independent workshop key is never automatically assigned to a person.
+
+`ProjectContributionSummary({ project: ProfileProjectDraft })` is read-only. It has a title/role/period, “Opis kandydata” disclosure button, three fact columns (personal work, result, others' scope), visible measurement/limitations, native keyboard disclosure of complete details, optional safe public link and a declaration caption. Excerpts are literal bounded text with an ellipsis, not AI-generated claims. They cannot replace the complete disclosure. The summary excludes incomplete drafts and has no scoring, verification mark or edit controls. It does not attach a project to submitted applications or grant employer access to profiles.
+
+**Corrected 2026-11-11 at the user’s request:** the previous pink/Geist/rounded profile treatment was the wrong design system. Current profile/workshop composition uses the [approved DoRoboty.ai override](DOROBOTY-PROFILE.md): Courier New Bold headings and actions, Arial body, cobalt project title, ink buttons, continuous chamfer contours and original robot in the empty state. Card title is 20px/700, without a serif/mobile variant. Data and component contracts above are preserved.

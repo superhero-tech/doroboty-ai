@@ -1,5 +1,9 @@
 # Working on DoRoboty.ai Case
 
+## User-confirmed profile design override — 2026-11-11
+
+For `/app/profil`, `/app/profil/podglad` and `/opis-projektu`, the user explicitly requires the approved Super Brain DoRoboty.ai system: **Courier New Bold + Arial, cobalt #2449ED, ink #191C25 and 45-degree chamfered corners**. Use [the correction guide](docs/design-system/DOROBOTY-PROFILE.md) and [approved rules](docs/design-system/doroboty-approved/design-rules.md). This scope overrides every conflicting Poster People instruction below. Do not reselect the pink/Geist/r24 theme for these routes. Preserve data, Base UI behaviour and the old immutable kit; unrelated marketplace routes retain their existing implementation until requested otherwise.
+
 This is an AIPH3 teaching prototype, separate from the public production portal.
 Read BRIEF.md, docs/case/CASE_PROTOCOL.md, TODO.md and relevant FEATURES.md entries before product work.
 

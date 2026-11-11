@@ -19,9 +19,12 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { currentPerson } from "./model";
 import { usePrototype } from "./store";
 import { cn } from "@/lib/utils";
+import profileRobot from "../project-contribution/assets/robot.svg";
+import "../project-contribution/doroboty-profile.css";
 const navigation = [
   { to: "/oferty", label: "Oferty" },
   { to: "/metodologia", label: "Metodologia" },
+  { to: "/opis-projektu", label: "Opisz projekt" },
   { to: "/auth/sign-in?audience=employer&next=/app/oferty", label: "Dla firm" },
 ];
 
@@ -70,6 +73,12 @@ export function Shell() {
   const { state, issue, error, clearError } = usePrototype();
   const person = currentPerson(state);
   const { pathname } = useLocation();
+  const cobaltProfile = pathname.startsWith("/app/profil") || pathname === "/opis-projektu";
+  const brandMark = cobaltProfile ? (
+    <img src={profileRobot} className="dr-profile-brand-mark" alt="" aria-hidden="true" />
+  ) : (
+    <BrandMark />
+  );
   const workspace = pathname.startsWith("/app") && person;
   const [menuAt, setMenuAt] = useState<string | null>(null);
   const main = useRef<HTMLElement>(null);
@@ -111,7 +120,9 @@ export function Shell() {
     </>
   );
   return (
-    <div className="min-h-dvh bg-background text-foreground">
+    <div
+      className={`min-h-dvh bg-background text-foreground${cobaltProfile ? " dr-profile-scope" : ""}`}
+    >
       <a
         href="#main"
         className="skip-link"
@@ -124,9 +135,9 @@ export function Shell() {
       </a>
       {workspace ? (
         <div className="app-frame">
-          <div className="mobile-header">
+          <nav className="mobile-header" aria-label="Nawigacja mobilna">
             <Link to="/" className="brand">
-              <BrandMark />
+              {brandMark}
               DoRoboty.ai
             </Link>
             <Button
@@ -139,7 +150,7 @@ export function Shell() {
             >
               {menuAt === pathname ? <X /> : <Menu />}
             </Button>
-          </div>
+          </nav>
           <aside
             className={`sidebar ${menuAt === pathname ? "sidebar-open" : ""}`}
             onKeyDown={(e) => {
@@ -147,7 +158,7 @@ export function Shell() {
             }}
           >
             <Link className="brand" to="/">
-              <BrandMark />
+              {brandMark}
               DoRoboty.ai
             </Link>
             <div className="workspace-label">
@@ -187,7 +198,7 @@ export function Shell() {
             </nav>
           </aside>
           <div className="workspace">
-            <div className="topbar">
+            <header className="topbar" aria-label="Konto użytkownika">
               <span>
                 {person.role === "candidate"
                   ? "Strefa kandydata"
@@ -196,7 +207,7 @@ export function Shell() {
                     : "Case study"}
               </span>
               <Link to="/auth/sign-in">{person.name}</Link>
-            </div>
+            </header>
             <main id="main" ref={main} tabIndex={-1} className="main-content outline-none">
               {content}
             </main>
@@ -211,14 +222,14 @@ export function Shell() {
                 to="/"
                 aria-label="DoRoboty.ai — strona główna"
               >
-                <BrandMark />
+                {brandMark}
                 <span>DoRoboty.ai</span>
               </Link>
               <nav aria-label="Główna nawigacja" className="flex items-center gap-2 sm:gap-5">
                 {navigation.map((item) => (
                   <Link
                     key={item.to}
-                    className="hidden text-sm font-medium text-muted-foreground transition-colors hover:text-foreground md:inline"
+                    className={`hidden text-sm font-medium text-muted-foreground transition-colors hover:text-foreground ${item.to === "/opis-projektu" ? "xl:inline" : "md:inline"}`}
                     to={item.to}
                   >
                     {item.label}
@@ -297,6 +308,7 @@ export function Shell() {
               >
                 <Link to="/oferty">Oferty</Link>
                 <Link to="/metodologia">Metodologia</Link>
+                <Link to="/opis-projektu">Opisz projekt</Link>
                 <Link to="/polityka-prywatnosci">Prywatność</Link>
                 <Link className="inline-flex items-center gap-1" to="/auth/sign-in">
                   Strefa case <ArrowUpRight className="size-4" />
