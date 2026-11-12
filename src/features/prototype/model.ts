@@ -2,6 +2,13 @@ import { z } from "zod";
 import marketplace from "./data/marketplace.json" with { type: "json" };
 import people from "./data/people.json" with { type: "json" };
 import type { JobWithCompany } from "@/features/jobs/types";
+import {
+  essentialKeys,
+  essentialState,
+  skipReasons,
+  textEssentialKeys,
+  type EssentialKey,
+} from "./essentials";
 
 const id = z
   .string()
@@ -11,6 +18,26 @@ const id = z
 const shortText = z.string().trim().min(1).max(200);
 const text = z.string().trim().max(12000);
 export const MIN_APPLICATION_ANSWER_LENGTH = 20;
+const essentialValuesSchema = z.object(
+  Object.fromEntries(textEssentialKeys.map((key) => [key, text.optional()])) as Record<
+    (typeof textEssentialKeys)[number],
+    z.ZodOptional<typeof text>
+  >,
+);
+// Saves from before 2026-11-07 stored "in brief" as its own state; read it as a skip reason.
+const essentialStatusSchema = z.preprocess(
+  (value) =>
+    value && typeof value === "object" && (value as { state?: unknown }).state === "in_brief"
+      ? { state: "skipped", reason: "in_brief" }
+      : value,
+  z.object({ state: z.literal("skipped"), reason: z.enum(skipReasons) }),
+);
+const essentialStatusesSchema = z.object(
+  Object.fromEntries(essentialKeys.map((key) => [key, essentialStatusSchema.optional()])) as Record<
+    EssentialKey,
+    z.ZodOptional<typeof essentialStatusSchema>
+  >,
+);
 const companySchema = z.object({
   id,
   slug: id,
@@ -31,8 +58,8 @@ export const jobSchema = z
     slug: id,
     companyId: id,
     title: shortText,
-    summary: text.min(10),
-    description: text.min(30),
+    summary: text,
+    description: text,
     category: z.enum(["build", "apply", "lead"]),
     function: z.enum(["product", "engineering", "data", "design", "marketing", "operations"]),
     remoteStatus: z.enum(["onsite", "hybrid", "remote"]),
@@ -53,12 +80,74 @@ export const jobSchema = z
     verificationStatus: z.enum(["unverified", "editorial", "employer_verified"]),
     sourceBrief: text.optional(),
     generatedDescription: text.optional(),
+    essentials: essentialValuesSchema.optional(),
+    essentialStatus: essentialStatusesSchema.optional(),
   })
   .refine(
     (job) =>
       job.salaryMin === undefined || job.salaryMax === undefined || job.salaryMin <= job.salaryMax,
     { path: ["salaryMax"], message: "Salary maximum must not be below minimum" },
-  );
+  )
+  // Drafts may be incomplete; anything visible to candidates keeps the original minimums.
+  .refine((job) => job.publicationStatus === "draft" || job.summary.length >= 10, {
+    path: ["summary"],
+    message: "Summary must have at least 10 characters",
+  })
+  .refine((job) => job.publicationStatus === "draft" || job.description.length >= 30, {
+    path: ["description"],
+    message: "Description must have at least 30 characters",
+  });
+export type JobRecord = z.infer<typeof jobSchema>;
+const helpAnswerSchema = z.object({
+  key: z.enum(essentialKeys),
+  mode: z.enum(["text", "voice"]),
+  text,
+  undecided: z.boolean(),
+  resolution: z.enum(["accepted", "edited", "rejected"]).optional(),
+});
+const helpCorrectionSchema = z.object({
+  key: z.enum(textEssentialKeys),
+  original: text,
+  text: text.min(1),
+  resolution: z.enum(["accepted", "kept", "merged"]).optional(),
+});
+export const helpRequestSchema = z.object({
+  id,
+  jobId: id,
+  companyId: id,
+  authorId: id,
+  expertEmail: z.union([z.literal(""), z.email().max(200)]),
+  expertName: shortText,
+  expertRole: z.string().trim().max(200),
+  message: text,
+  channel: z.enum(["email", "link"]),
+  questions: z.array(z.enum(essentialKeys)).min(1).max(essentialKeys.length),
+  known: z.array(z.object({ key: z.enum(textEssentialKeys), text: text.min(1) })).max(5),
+  // Brief snapshot shown to the expert as context; requests saved before it was added have "".
+  brief: text.default(""),
+  status: z.enum(["sent", "answered"]),
+  createdAt: z.iso.datetime(),
+  answeredAt: z.iso.datetime().optional(),
+  answers: z.array(helpAnswerSchema).max(essentialKeys.length),
+  corrections: z.array(helpCorrectionSchema).max(5),
+  note: z.object({ mode: z.enum(["text", "voice"]), text: text.min(1) }).optional(),
+  noteResolution: z.enum(["added", "dismissed"]).optional(),
+});
+export type HelpRequest = z.infer<typeof helpRequestSchema>;
+export const experimentEventSchema = z.object({
+  at: z.iso.datetime(),
+  jobId: id,
+  type: z.enum([
+    "draft_saved",
+    "help_requested",
+    "expert_answered",
+    "answer_resolved",
+    "correction_resolved",
+    "note_resolved",
+    "published",
+  ]),
+  detail: z.record(z.string(), z.unknown()),
+});
 export const profileSchema = z.object({
   name: shortText,
   headline: shortText,
@@ -140,6 +229,9 @@ export const stateSchema = z
     applications: z.array(applicationSchema).max(2000),
     saved: z.array(z.object({ candidateId: id, jobId: id })).max(5000),
     drafts: z.array(draftSchema).max(1000),
+    // Added for E03; older saves and exports without these lists stay valid.
+    helpRequests: z.array(helpRequestSchema).max(500).default([]),
+    experimentLog: z.array(experimentEventSchema).max(5000).default([]),
   })
   .superRefine((s, ctx) => {
     const problem = (message: string) => ctx.addIssue({ code: "custom", message });
@@ -184,6 +276,10 @@ export const stateSchema = z
         if (after.at < before.at) problem("Invalid event order");
       }
     }
+    if (new Set(s.helpRequests.map((x) => x.id)).size !== s.helpRequests.length)
+      problem("Duplicate identifiers");
+    for (const r of s.helpRequests)
+      if (jobs.get(r.jobId)?.companyId !== r.companyId) problem("Invalid help request reference");
     for (const list of [s.saved, s.drafts]) {
       const pairs = new Set<string>();
       for (const item of list) {
@@ -212,8 +308,54 @@ export type Action =
     }
   | { type: "stage"; applicationId: string; stage: Stage; note: string }
   | { type: "withdraw"; applicationId: string }
-  | { type: "publish"; job: z.infer<typeof jobSchema> }
+  | { type: "publish"; job: JobRecord }
+  | { type: "save_job_draft"; job: JobRecord }
+  | {
+      type: "request_help";
+      requestId: string;
+      job: JobRecord;
+      expertEmail: string;
+      expertName: string;
+      expertRole: string;
+      message: string;
+      channel: "email" | "link";
+      questions: EssentialKey[];
+    }
+  | {
+      type: "expert_answer";
+      requestId: string;
+      answers: HelpRequest["answers"];
+      corrections: HelpRequest["corrections"];
+      note?: HelpRequest["note"];
+    }
+  | {
+      type: "resolve_help";
+      requestId: string;
+      target:
+        | { kind: "answer"; key: EssentialKey; resolution: "accepted" | "edited" | "rejected" }
+        | {
+            kind: "correction";
+            key: (typeof textEssentialKeys)[number];
+            resolution: "accepted" | "kept" | "merged";
+          }
+        | { kind: "note"; resolution: "added" | "dismissed" };
+    }
   | { type: "company"; name: string; description: string };
+
+/** Missing, skipped and in-brief elements at a point in time, for the E03 session log. */
+export function essentialSnapshot(job: JobRecord) {
+  const values = job.essentials ?? {};
+  const statuses = job.essentialStatus ?? {};
+  const salary = { min: job.salaryMin, max: job.salaryMax };
+  const result: Record<string, string> = {};
+  for (const key of essentialKeys) {
+    const state = essentialState(key, values, statuses, salary);
+    const status = statuses[key];
+    result[key] =
+      state === "skipped" && status?.state === "skipped" ? `skipped:${status.reason}` : state;
+  }
+  return result;
+}
 
 export function initialState(): State {
   const state = stateSchema.parse({
@@ -335,15 +477,134 @@ export function transition(
     }
     application.stage = stage;
     application.events.push({ stage, at: now, note: action.type === "stage" ? action.note : "" });
-  } else if (action.type === "publish") {
+  } else if (action.type === "publish" || action.type === "save_job_draft") {
     const p = employer();
-    const job = jobSchema.parse(action.job);
+    const job = jobSchema.parse({
+      ...action.job,
+      publicationStatus: action.type === "publish" ? "published" : "draft",
+    });
     if (job.companyId !== p.companyId) fail("Wybierz ofertę własnej firmy.");
     const index = s.jobs.findIndex((x) => x.id === job.id);
     if (index >= 0) {
       if (s.jobs[index].companyId !== p.companyId) fail("Nie można zmienić tej oferty.");
+      if (action.type === "save_job_draft" && s.jobs[index].publicationStatus !== "draft")
+        fail("Opublikowanej oferty nie można cofnąć do szkicu.");
       s.jobs[index] = job;
     } else s.jobs.unshift(job);
+    s.experimentLog.push({
+      at: now,
+      jobId: job.id,
+      type: action.type === "publish" ? "published" : "draft_saved",
+      detail: { essentials: essentialSnapshot(job) },
+    });
+  } else if (action.type === "request_help") {
+    const p = employer();
+    const existing = s.jobs.find((x) => x.id === action.job.id);
+    if (existing && existing.companyId !== p.companyId) fail("Nie można zmienić tej oferty.");
+    // A new or draft job is saved so the request survives reloads; a published job is untouched.
+    if (!existing || existing.publicationStatus === "draft") {
+      const job = jobSchema.parse({ ...action.job, publicationStatus: "draft" });
+      if (job.companyId !== p.companyId) fail("Wybierz ofertę własnej firmy.");
+      if (existing) s.jobs[s.jobs.indexOf(existing)] = job;
+      else s.jobs.unshift(job);
+    }
+    const job = s.jobs.find((x) => x.id === action.job.id)!;
+    const asked = new Set(action.questions);
+    const known = textEssentialKeys
+      .filter((key) => !asked.has(key) && action.job.essentials?.[key]?.trim())
+      .map((key) => ({ key, text: action.job.essentials![key]!.trim() }));
+    if (action.channel === "email" && !action.expertEmail.trim())
+      fail("Podaj adres e-mail eksperta.");
+    s.helpRequests.push(
+      helpRequestSchema.parse({
+        id: action.requestId,
+        jobId: job.id,
+        companyId: job.companyId,
+        authorId: p.id,
+        expertEmail: action.expertEmail.trim(),
+        expertName: action.expertName,
+        expertRole: action.expertRole,
+        message: action.message,
+        channel: action.channel,
+        questions: [...asked],
+        known,
+        brief: action.job.sourceBrief?.trim() ?? "",
+        status: "sent",
+        createdAt: now,
+        answers: [],
+        corrections: [],
+      }),
+    );
+    s.experimentLog.push({
+      at: now,
+      jobId: job.id,
+      type: "help_requested",
+      detail: {
+        requestId: action.requestId,
+        channel: action.channel,
+        expertRole: action.expertRole.trim(),
+        questions: [...asked],
+        essentials: essentialSnapshot(action.job),
+      },
+    });
+  } else if (action.type === "expert_answer") {
+    // The expert link works without a selected person, as an unauthenticated link would.
+    const request = s.helpRequests.find((x) => x.id === action.requestId);
+    if (!request) return fail("Nie znaleziono prośby.");
+    if (request.status !== "sent") fail("Odpowiedzi zostały już wysłane.");
+    const asked = new Set(request.questions);
+    if (
+      action.answers.length !== asked.size ||
+      action.answers.some((a) => !asked.has(a.key) || (!a.undecided && !a.text.trim()))
+    )
+      fail("Odpowiedz na każde pytanie albo zaznacz, że to jeszcze nie jest ustalone.");
+    const knownKeys = new Set(request.known.map((x) => x.key));
+    if (action.corrections.some((c) => !knownKeys.has(c.key)))
+      fail("Poprawka dotyczy nieznanego elementu.");
+    request.answers = action.answers.map((a) => ({ ...a, resolution: undefined }));
+    request.corrections = action.corrections.map((c) => ({ ...c, resolution: undefined }));
+    request.note = action.note;
+    request.status = "answered";
+    request.answeredAt = now;
+    s.experimentLog.push({
+      at: now,
+      jobId: request.jobId,
+      type: "expert_answered",
+      detail: {
+        requestId: request.id,
+        minutesSinceRequest: Math.round((Date.parse(now) - Date.parse(request.createdAt)) / 60000),
+        answers: request.answers.map((a) => ({ key: a.key, mode: a.mode, undecided: a.undecided })),
+        corrections: request.corrections.map((c) => c.key),
+        note: request.note ? request.note.mode : null,
+      },
+    });
+  } else if (action.type === "resolve_help") {
+    const p = employer();
+    const request = s.helpRequests.find((x) => x.id === action.requestId);
+    if (!request || request.companyId !== p.companyId) return fail("Nie znaleziono prośby.");
+    const target = action.target;
+    if (target.kind === "answer") {
+      const answer = request.answers.find((x) => x.key === target.key);
+      if (!answer) return fail("Nie znaleziono odpowiedzi.");
+      answer.resolution = target.resolution;
+    } else if (target.kind === "correction") {
+      const correction = request.corrections.find((x) => x.key === target.key);
+      if (!correction) return fail("Nie znaleziono poprawki.");
+      correction.resolution = target.resolution;
+    } else {
+      if (!request.note) fail("Nie znaleziono uwagi.");
+      request.noteResolution = target.resolution;
+    }
+    s.experimentLog.push({
+      at: now,
+      jobId: request.jobId,
+      type: `${target.kind}_resolved`,
+      detail: {
+        requestId: request.id,
+        key: "key" in target ? target.key : null,
+        resolution: target.resolution,
+      },
+    });
   } else if (action.type === "company") {
     const p = employer();
     Object.assign(

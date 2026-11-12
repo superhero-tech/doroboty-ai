@@ -103,9 +103,9 @@ test("published job → saved offer/draft → submitted application → employer
     .getByLabel("Brief — kogo szukasz i do jakiego zadania?")
     .fill("Szukamy osoby do badań z klientami, prototypowania i wdrażania automatyzacji obsługi.");
   await page.getByRole("button", { name: "Przygotuj opis z AI" }).click();
-  await page.getByRole("button", { name: "Użyj propozycji" }).click();
   await page.getByRole("checkbox").check();
-  await page.getByRole("button", { name: "Opublikuj ofertę" }).click();
+  // No essentials were filled, so the action names how many the candidate will not learn.
+  await page.getByRole("button", { name: "Opublikuj bez 6 elementów" }).click();
   await expect(
     page.getByRole("link", { name: "Product Designer do automatyzacji", exact: true }),
   ).toBeVisible();
@@ -993,5 +993,74 @@ test("candidate snapshot supports custom CV and long content at desktop and mobi
   await page.getByRole("tab", { name: "Odpowiedź", exact: true }).click();
   await expect(page.getByRole("tabpanel", { name: "Odpowiedź", exact: true })).toContainText(
     record.answer,
+  );
+});
+
+test("E03: author asks an expert, the expert answers in another tab and the author publishes", async ({
+  page,
+  context,
+}) => {
+  await choose(page, "Karolina Wiśniewska");
+  await page.goto("/#/app/oferty/nowa");
+  await page.getByLabel("Nazwa stanowiska").fill("AI Engineer (RAG)");
+  await page.getByRole("radio", { name: /Build/ }).check();
+  await page
+    .getByLabel("Brief — kogo szukasz i do jakiego zadania?")
+    .fill("Szukamy osoby do rozwoju asystenta wyszukiwania w dokumentach klientów.");
+  await page.getByLabel("Pierwsze zadanie").fill("Przebudowa indeksowania PDF-ów.");
+  await page.getByLabel("Zespół").fill("2 osoby backend, data scientist, PM.");
+  await page.getByLabel("Przebieg rekrutacji").fill("Rozmowa, zadanie, spotkanie z zespołem.");
+  await expect(page.getByText("3 z 6 gotowe")).toBeVisible();
+  await page.getByRole("button", { name: "Poproś eksperta o pomoc" }).click();
+  const dialog = page.getByRole("dialog", { name: "Poproś o pomoc przy ogłoszeniu" });
+  await dialog.getByRole("button", { name: "Wyślij prośbę" }).click();
+  await expect(dialog.getByRole("alert")).toContainText("pełny adres e-mail");
+  await dialog.getByLabel("E-mail eksperta").fill("michal@brightlabs.example");
+  await dialog.getByLabel("Imię").fill("Michał");
+  await dialog.getByRole("button", { name: "Wyślij prośbę" }).click();
+  await expect(page).toHaveURL(/#\/app\/oferty\/[0-9a-f-]+$/);
+  await expect(page.getByText("Czekamy na odpowiedź (3 pytania)")).toBeVisible();
+
+  const requestId = await page.evaluate(
+    (key) => JSON.parse(localStorage.getItem(key)!).helpRequests[0].id as string,
+    STORAGE_KEY,
+  );
+  const expert = await context.newPage();
+  await expert.goto(`/#/pomoc/${requestId}`);
+  await expect(
+    expert.getByRole("heading", { name: "Karolina prosi o 3 odpowiedzi" }),
+  ).toBeVisible();
+  await expert.getByRole("button", { name: "Popraw" }).first().click();
+  await expert.getByLabel("Poprawka: Pierwsze zadanie").fill("Najpierw ewaluacja wyszukiwania.");
+  await expert.getByLabel("Odpowiedź na pytanie 1").fill("Pipeline indeksowania i ocena jakości.");
+  await expert.getByLabel("Odpowiedź na pytanie 2").fill("Wybór modelu embeddingów.");
+  await expert.getByText("To jeszcze nie jest ustalone").nth(2).click();
+  await expert.getByLabel("Dodatkowa uwaga").fill("Dokumenty klientów z branży finansowej.");
+  await expert.getByRole("button", { name: "Wyślij odpowiedzi" }).click();
+  await expect(expert.getByRole("heading", { name: "Dziękujemy" })).toBeVisible();
+
+  // The author tab picks up the answer without a reload.
+  await expect(page.getByText("Uwaga od Michał")).toBeVisible();
+  await page.getByRole("button", { name: "Przyjmij poprawkę" }).click();
+  await page.getByRole("button", { name: "Przyjmij", exact: true }).first().click();
+  await page.getByRole("button", { name: "Przyjmij", exact: true }).first().click();
+  await page.getByRole("button", { name: "Oznacz jako nieustalone" }).click();
+  await expect(page.getByText("5 z 6 gotowe")).toBeVisible();
+  await page.getByRole("button", { name: "Przygotuj opis z AI" }).click();
+  await page.getByRole("checkbox", { name: "Zatwierdzam treść oferty" }).check();
+  await page.getByRole("button", { name: "Opublikuj bez widełek" }).click();
+  await expect(page.getByRole("link", { name: "AI Engineer (RAG)", exact: true })).toBeVisible();
+  const log = await page.evaluate(
+    (key) =>
+      JSON.parse(localStorage.getItem(key)!).experimentLog.map((e: { type: string }) => e.type),
+    STORAGE_KEY,
+  );
+  expect(log).toEqual(
+    expect.arrayContaining([
+      "help_requested",
+      "expert_answered",
+      "correction_resolved",
+      "published",
+    ]),
   );
 });

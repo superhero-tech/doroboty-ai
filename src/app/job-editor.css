@@ -1,0 +1,359 @@
+/* E03 host extension: job editor essentials, gap panel, expert request and expert view.
+   Composes existing outlined surfaces (prototype-panel/form), Base UI buttons and source colors. */
+.job-editor-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 850px) minmax(260px, 320px);
+  gap: var(--gui-space-l);
+  align-items: start;
+}
+.job-editor-form {
+  max-width: none;
+}
+.job-editor-form h2,
+.essentials-panel h2,
+.expert-help-card h2 {
+  font-size: 26px;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+.essential-hint {
+  margin: 0;
+  color: var(--gui-text-muted-accessible);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.category-options {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.category-options legend,
+.skip-reasons legend,
+.help-request-questions legend {
+  margin-bottom: 4px;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+.category-option {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border: 1px solid var(--foreground);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 14px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+.category-option input {
+  margin-top: 4px;
+  accent-color: #181818;
+}
+.category-option > span {
+  display: grid;
+}
+.category-option strong {
+  font-weight: 600;
+}
+.category-option:hover {
+  background: #ffe0f7;
+}
+.category-option:has(input:checked) {
+  background: #181818;
+  color: #fff;
+}
+.category-option:has(input:focus-visible) {
+  outline: 3px solid var(--gui-focus);
+  outline-offset: 4px;
+}
+.essentials-section {
+  display: grid;
+  gap: 6px;
+  padding-top: var(--gui-space-m);
+  border-top: 1px solid #d8d5d1;
+}
+.essential-field {
+  display: grid;
+  gap: 8px;
+  padding-block: 16px;
+  border-top: 1px solid #d8d5d1;
+}
+.essential-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+.essential-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.essential-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin: 0;
+  font-size: 13px;
+}
+.skip-reasons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--foreground);
+  border-radius: 10px;
+  font-size: 13px;
+}
+.skip-reasons legend {
+  float: left;
+  width: 100%;
+}
+.skip-reasons label {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+.skip-reasons input {
+  accent-color: #181818;
+}
+.expert-suggestion {
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 1px solid var(--foreground);
+  border-radius: 10px;
+  background: #ffe0f7;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.expert-suggestion p {
+  margin: 0;
+}
+.expert-suggestion-title {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font-weight: 600;
+}
+.expert-tag {
+  display: inline-block;
+  padding: 1px 10px;
+  border: 1px solid var(--foreground);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 400;
+}
+.correction-original {
+  color: var(--gui-text-muted-accessible);
+  text-decoration: line-through;
+  white-space: pre-wrap;
+}
+.job-editor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.essentials-panel {
+  position: sticky;
+  top: 24px;
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--foreground);
+  box-shadow: none;
+}
+.essentials-panel h2 {
+  margin: 0;
+  font-size: 22px;
+}
+.essentials-panel ul {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.essentials-panel li button {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 10px;
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.essentials-panel li button svg {
+  margin-top: 2px;
+}
+.essentials-panel li[data-state="missing"] button,
+.essentials-panel li[data-state="pending_expert"] button {
+  font-weight: 600;
+}
+.expert-requests {
+  display: grid;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid #d8d5d1;
+}
+.expert-requests h3 {
+  margin: 0;
+  font-size: 18px;
+}
+.expert-request {
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+}
+.expert-request p {
+  margin: 0;
+}
+.expert-open-link {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.help-request-dialog {
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+}
+.help-request-body {
+  display: grid;
+  gap: 12px;
+}
+.help-request-questions {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 14px;
+}
+
+/* Expert view: public layout, single reading column. */
+.expert-help {
+  display: grid;
+  gap: var(--gui-space-m);
+  max-width: 760px;
+  margin-inline: auto;
+}
+.expert-help h1 {
+  margin: 0;
+}
+.expert-help-meta {
+  margin: 0;
+  color: var(--gui-text-muted-accessible);
+}
+.expert-help-message {
+  margin: 0;
+  padding: 12px 16px;
+  border-left: 3px solid #ff90e8;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.expert-help-card {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--foreground);
+  box-shadow: none;
+}
+.expert-help-card h2 {
+  margin: 0;
+}
+.expert-help-card h2.expert-question {
+  font-size: 20px;
+}
+.expert-known {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+  padding-top: 10px;
+  border-top: 1px solid #d8d5d1;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.expert-known p {
+  margin: 0;
+}
+.expert-known strong {
+  font-weight: 600;
+}
+.expert-brief {
+  white-space: pre-wrap;
+}
+.expert-known textarea {
+  width: 100%;
+}
+.mode-toggle {
+  display: flex;
+  gap: 6px;
+}
+.mode-toggle [aria-pressed="true"],
+.expert-recorder [aria-pressed="true"] {
+  --control-hover-bg: var(--gui-neutral-9);
+  --control-hover-text: white;
+  background: #181818;
+  color: #fff;
+}
+.expert-recorder {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.expert-help > [data-slot="button"] {
+  justify-self: start;
+}
+
+@media (max-width: 1100px) {
+  .job-editor-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* On narrow screens the gap summary comes first and scrolls with the page. */
+  .essentials-panel {
+    position: static;
+    order: -1;
+  }
+  .essentials-panel ul {
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  /* Compact gap summary: icons carry the state visually; the state text stays for screen readers. */
+  .essentials-panel {
+    gap: 8px;
+  }
+  .essentials-panel h2 {
+    font-size: 20px;
+  }
+  .essentials-panel ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .essentials-panel li button {
+    padding: 4px 6px;
+    font-size: 13px;
+  }
+  .essentials-panel li .essential-hint {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .expert-help-card h2.expert-question {
+    font-size: 18px;
+  }
+}

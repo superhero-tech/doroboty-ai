@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { initialState, transition, type Action, type State } from "./model";
-import { parseState, readState, saveState, type StoragePort } from "./storage";
+import { parseState, readState, saveState, STORAGE_KEY, type StoragePort } from "./storage";
 function browserStorage(): StoragePort | null {
   try {
     return window.localStorage;
@@ -54,6 +54,21 @@ function useStore() {
   useEffect(() => {
     document.documentElement.classList.remove("dark");
   }, []);
+  // Another tab of this browser (e.g. the expert link in an E03 session) saved new state.
+  useEffect(() => {
+    function sync(event: StorageEvent) {
+      if (event.key !== STORAGE_KEY || !event.newValue || blocked) return;
+      try {
+        const next = parseState(event.newValue);
+        latest.current = next;
+        setState(next);
+      } catch {
+        // Ignore unreadable writes from other tabs; this tab keeps its valid state.
+      }
+    }
+    window.addEventListener("storage", sync);
+    return () => window.removeEventListener("storage", sync);
+  }, [blocked]);
   return {
     state,
     issue,
