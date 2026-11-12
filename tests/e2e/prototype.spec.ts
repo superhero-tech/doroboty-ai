@@ -272,6 +272,43 @@ test("map, hash deep links and unknown records work without external requests", 
   await page.goto("/#/oferty/missing");
   await expect(page.getByRole("heading", { name: "Nie znaleziono strony" })).toBeVisible();
 });
+test("unexpected render error shows a recovery screen with retry and data settings", async ({
+  page,
+}) => {
+  // Simulate an unexpected runtime failure: the offer page formats its publication date while rendering.
+  await page.addInitScript(() => {
+    const original = Object.getOwnPropertyDescriptor(Intl.DateTimeFormat.prototype, "format")!;
+    Object.defineProperty(Intl.DateTimeFormat.prototype, "format", {
+      configurable: true,
+      get() {
+        if (Reflect.get(window, "__failRender")) throw new Error("Simulated render failure");
+        return original.get!.call(this);
+      },
+    });
+    Reflect.set(window, "__failRender", true);
+  });
+  for (const width of [1280, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/#/oferty/ai-product-manager");
+    await expect(page.getByRole("heading", { level: 1, name: "Coś poszło nie tak" })).toBeVisible();
+    await expect(page.getByRole("alert").filter({ hasText: "Twoje dane zostają" })).toBeVisible();
+    // The shell (header and navigation) survives a route failure.
+    await expect(page.getByRole("link", { name: "DoRoboty.ai — strona główna" })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
+      width,
+    );
+  }
+  await page.evaluate(() => Reflect.set(window, "__failRender", false));
+  await page.getByRole("button", { name: "Spróbuj ponownie", exact: true }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "AI Product Manager" })).toBeVisible();
+
+  await page.reload();
+  await expect(page.getByRole("heading", { level: 1, name: "Coś poszło nie tak" })).toBeVisible();
+  await page.getByRole("link", { name: "Ustawienia danych", exact: true }).focus();
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/#\/app\/settings$/);
+  await expect(page.getByRole("heading", { level: 1, name: "Ustawienia prototypu" })).toBeVisible();
+});
 test("mobile navigation, light-only appearance and keyboard person selection", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto("/#/auth/sign-in");
