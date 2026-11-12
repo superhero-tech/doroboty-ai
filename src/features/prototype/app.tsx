@@ -18,6 +18,7 @@ import { EmployerJobs, EmployerJobEditor, CompanyEditor } from "./employer";
 import { SettingsPage, PrivacyPage } from "./settings";
 import { CasePage } from "./case";
 import { ExpertHelpPage } from "./expert-help";
+import { RenderErrorBoundary } from "./error-boundary";
 function AppRoutes() {
   return (
     <Routes>
@@ -153,7 +154,10 @@ export function App() {
   return (
     <PrototypeProvider>
       <HashRouter>
-        <AppRoutes />
+        {/* Outer fallback for a failure in the shell itself; routes have their own boundary. */}
+        <RenderErrorBoundary>
+          <AppRoutes />
+        </RenderErrorBoundary>
       </HashRouter>
     </PrototypeProvider>
   );
