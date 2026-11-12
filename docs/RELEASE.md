@@ -1,16 +1,27 @@
 # Release, smoke check and recovery
 
-This prototype is a static build (`dist/`) for AIPH3 course participants. It has no server, database, accounts or environment variables; every participant's scenario lives in their own browser's localStorage. Hosting is **not chosen yet**, so provider-specific steps below are marked _TBD_. The production-readiness report is [production-readiness.html](production-readiness.html).
+This prototype is a static build (`dist/`) for AIPH3 course participants. It has no server, database, accounts or environment variables; every participant's scenario lives in their own browser's localStorage. The production-readiness report is [production-readiness.html](production-readiness.html); it was generated before hosting was chosen.
 
 Owner and first responder: **Tom** (`tommlyski`). Participants report problems through: _TBD — e.g. the course channel_.
 
+## Hosting
+
+- **Provider:** Netlify, project `doroboty-tom`, Tom's account.
+- **Address:** <https://doroboty-tom.netlify.app/> (public; anyone with the address can open it).
+- **Source:** GitHub `tommlyski/doroboty-ai`, branch `main`. Netlify builds and publishes every push to `main` automatically.
+- **Build settings:** build command `npm run build`, publish directory `dist`, Node version from `.nvmrc` (24). No environment variables.
+- **Netlify additions:** Netlify injects its own script (`/.netlify/scripts/hud`) that shows a “Powered by Netlify” badge. It is not part of this repository.
+- First deployment checked on 2026-11-12 with the smoke check below: all steps passed except step 4, which was not run.
+
 ## Release a known version
 
-1. Start from a reviewed commit on `main` with green CI (`.github/workflows/ci.yml` runs `./scripts/verify`).
-2. Locally with Node 24: `npm ci`, then `./scripts/verify`, then `npm run build`.
-3. Check that `dist/` holds only `assets/`, `case/baseline.csv`, `company-logos/`, `cv/` and `index.html`; no `docs/source` or instructor notes. A local macOS build may copy `public/.DS_Store` into `dist/`; delete it before publishing (CI builds from a clean checkout do not have it).
-4. Publish the `dist/` folder of that commit. _TBD per hosting._ Note the commit hash and the provider's deployment ID in the release note.
-5. Keep the previous deployment available for rollback (most static hosts keep earlier deployments).
+1. Merge a reviewed pull request into `main` with green CI (`.github/workflows/ci.yml` runs `./scripts/verify`). Merging is the release: Netlify starts a build right away.
+2. Before merging a change that affects the interface or stored data, run `./scripts/verify` locally with Node 24 (`npm ci` first).
+3. In Netlify, open **Deploys** and wait for the new deploy to show **Published**. If the build fails, the previous deploy stays live; read the deploy log.
+4. Note the commit hash and the Netlify deploy ID (from the deploy's address) in the release note.
+5. Run the smoke check below on <https://doroboty-tom.netlify.app/>.
+
+Netlify builds from a clean checkout, so a local `public/.DS_Store` never reaches the site. `dist/` should hold only `assets/`, `case/baseline.csv`, `company-logos/`, `cv/` and `index.html`; no `docs/source` or instructor notes.
 
 `vite.config.ts` uses `base: "./"`, so the build also works from a sub-path such as `https://<user>.github.io/<repo>/`.
 
@@ -38,7 +49,9 @@ Use a fresh private browser window so no earlier local state interferes.
 
 ### 2. Return to the previous version
 
-- Republish the last known-good deployment. _TBD per hosting_ (e.g. “Promote/Publish” on the previous deployment, or redeploy the previous commit).
+- In Netlify, open **Deploys**, choose the last deploy that passed the smoke check and click **Publish deploy**. The site switches back at once, without a new build.
+- Publishing an older deploy can lock auto publishing, so later pushes to `main` build but do not go live. Once the fix is merged and its deploy passes the smoke check, publish it and turn auto publishing back on in **Deploys**.
+- Alternative: revert the faulty pull request on GitHub; merging the revert into `main` triggers a normal release.
 - Repeat smoke checks 1–3.
 - Data compatibility: participants keep their localStorage. An older build must still read saves written by the newer one. If a release changed the stored data shape, check in a private window that a save exported from the newer build imports into the older one before relying on rollback.
 
