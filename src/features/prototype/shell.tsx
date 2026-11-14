@@ -285,7 +285,10 @@ export function Shell() {
           <footer className="bg-muted/40 text-foreground shadow-[var(--gui-divider-top-shadow)]">
             <div className="mx-auto grid max-w-[1360px] gap-10 px-5 py-12 sm:grid-cols-2 lg:px-8">
               <div>
-                <p className="text-base font-semibold">DoRoboty.ai</p>
+                <p className="text-base font-semibold text-[#8b0000]">
+                  DoRoboty.ai - wersja zaktualizowana przez SzkoleniowyStefan; pierwszy ficzer w
+                  branchu...
+                </p>
                 <p className="mt-3 max-w-lg text-sm leading-relaxed text-muted-foreground">
                   Praca dla ludzi, którzy potrafią z AI zbudować coś wartościowego — nie tylko
                   wpisać je do CV.
