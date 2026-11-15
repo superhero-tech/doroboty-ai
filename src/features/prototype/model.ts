@@ -2,6 +2,12 @@ import { z } from "zod";
 import marketplace from "./data/marketplace.json" with { type: "json" };
 import people from "./data/people.json" with { type: "json" };
 import type { JobWithCompany } from "@/features/jobs/types";
+import {
+  exampleDraft,
+  profileProjectDraftSchema,
+  profileProjectSchema,
+  type ProfileProjectDraft,
+} from "../project-contribution/model";
 
 const id = z
   .string()
@@ -72,6 +78,8 @@ const personSchema = profileSchema.extend({
   cv: text,
   exampleScore: z.number().int().min(0).max(100),
   exampleSummary: text,
+  projectDraft: profileProjectDraftSchema.optional(),
+  project: profileProjectSchema.optional(),
 });
 export const stages = [
   "submitted",
@@ -200,6 +208,8 @@ export type Application = State["applications"][number];
 export type Action =
   | { type: "select_person"; id: string | null }
   | { type: "profile"; value: z.infer<typeof profileSchema> }
+  | { type: "profile_project_draft"; value: ProfileProjectDraft }
+  | { type: "profile_project_save"; value: ProfileProjectDraft }
   | { type: "toggle_saved"; jobId: string }
   | { type: "draft"; jobId: string; notes: string; generated: string; answer: string }
   | {
@@ -227,6 +237,11 @@ export function initialState(): State {
   });
   const bob = state.people.find((x) => x.id === "candidate-marek")!;
   const job = state.jobs[0];
+  if (import.meta.env?.MODE === "publication") {
+    const anna = state.people.find((person) => person.id === "candidate-anna")!;
+    anna.project = profileProjectSchema.parse(exampleDraft);
+    state.activePersonId = anna.id;
+  }
   state.applications.push({
     id: "application-example",
     candidateId: bob.id,
@@ -278,6 +293,12 @@ export function transition(
     if (action.id !== null && !s.people.some((x) => x.id === action.id))
       fail("Nie znaleziono osoby.");
     s.activePersonId = action.id;
+  } else if (action.type === "profile_project_draft") {
+    candidate().projectDraft = profileProjectDraftSchema.parse(action.value);
+  } else if (action.type === "profile_project_save") {
+    const p = candidate();
+    p.project = profileProjectSchema.parse(action.value);
+    delete p.projectDraft;
   } else if (action.type === "profile")
     Object.assign(candidate(), profileSchema.parse(action.value));
   else if (action.type === "toggle_saved") {

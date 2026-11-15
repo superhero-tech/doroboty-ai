@@ -27,6 +27,7 @@ export function readState(storage: StoragePort | null) {
         "Zapis w przeglądarce jest niedostępny. Zmiany zachowasz przez eksport w ustawieniach.",
       blocked: false,
       original: null,
+      raw: null,
     };
   let raw: string | null = null;
   try {
@@ -36,6 +37,7 @@ export function readState(storage: StoragePort | null) {
       issue: "",
       blocked: false,
       original: null,
+      raw,
     };
   } catch {
     return {
@@ -44,6 +46,7 @@ export function readState(storage: StoragePort | null) {
         "Nie udało się odczytać zapisu. Dotychczasowe dane nie zostaną nadpisane. Pobierz je w ustawieniach, a następnie zaimportuj poprawny plik lub zresetuj scenariusz.",
       blocked: true,
       original: raw,
+      raw,
     };
   }
 }

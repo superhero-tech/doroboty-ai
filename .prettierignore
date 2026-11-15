@@ -1,9 +1,15 @@
 node_modules
 dist
+publish
+# Preserved approved page sources; integration files are checked normally.
+publication/landing/
+publication/portal/
 package-lock.json
 playwright-report*
 test-results
 artifacts
+docs/production-readiness.html
+docs/publication-readiness.html
 
 # Preserve the versioned reference byte-for-byte; checked by its own scripts.
 docs/design-system/agent-kit/

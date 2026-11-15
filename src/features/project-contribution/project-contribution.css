@@ -1,0 +1,273 @@
+.contribution-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px 72px;
+  color: #181818;
+}
+.contribution-intro {
+  padding: 38px 0 28px;
+  max-width: 850px;
+}
+.contribution-eyebrow {
+  font-size: 13px;
+  font-weight: 600;
+}
+.contribution-intro h1 {
+  font-family: var(--font-display);
+  font-size: 64px;
+  line-height: 1.04;
+  letter-spacing: -2px;
+  font-weight: 400;
+  margin: 18px 0 22px;
+}
+.contribution-intro > p {
+  font-size: 19px;
+  line-height: 1.6;
+  max-width: 680px;
+}
+.contribution-local {
+  border-top: 1px solid #d8d5d1;
+  padding-top: 20px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #5e5a5c;
+}
+.contribution-toolbar,
+.contribution-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.contribution-toolbar {
+  margin-top: 24px;
+}
+.contribution-toolbar > span {
+  flex: 1;
+  font-size: 13px;
+}
+.contribution-status {
+  min-height: 28px;
+  padding: 12px 0;
+  font-size: 14px;
+}
+.contribution-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 28px;
+  align-items: start;
+}
+.contribution-sheet {
+  border: 1px solid #181818;
+  background: #fff;
+  border-radius: 24px;
+  padding: 32px;
+  min-width: 0;
+}
+.contribution-group {
+  min-width: 0;
+  padding: 0 0 32px;
+  margin: 0 0 32px;
+  border: 0;
+  border-bottom: 1px solid #d8d5d1;
+}
+.contribution-group legend {
+  font: 400 30px/1.2 var(--font-display);
+  letter-spacing: -0.7px;
+  margin-bottom: 12px;
+  width: 100%;
+}
+.contribution-group > p {
+  color: #5e5a5c;
+  font-size: 14px;
+  line-height: 1.65;
+  margin-bottom: 24px;
+}
+.contribution-field {
+  margin-top: 24px;
+}
+.contribution-field label {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.contribution-field label span {
+  font-weight: 400;
+  color: #5e5a5c;
+}
+.contribution-field > p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #5e5a5c;
+  margin: 7px 0 10px;
+}
+.contribution-field input,
+.contribution-field textarea {
+  font:
+    400 15px/1.6 Arial,
+    sans-serif;
+  border-radius: 18px;
+  border: 1px solid #181818;
+  padding: 12px 14px;
+  width: 100%;
+  min-width: 0;
+  letter-spacing: normal;
+}
+.contribution-field textarea {
+  min-height: 125px;
+  resize: vertical;
+}
+.contribution-page [data-slot="button"] {
+  white-space: normal;
+  height: auto;
+  border-radius: 18px;
+  font:
+    600 14px/1.5 Arial,
+    sans-serif;
+  letter-spacing: normal;
+  text-align: center;
+}
+.contribution-page :is(input, textarea, button, a):focus-visible {
+  outline: 3px solid #181818;
+  outline-offset: 4px;
+}
+.contribution-field .contribution-error {
+  color: var(--gui-error);
+  font-weight: 600;
+}
+.contribution-guide {
+  position: sticky;
+  top: 24px;
+  padding: 28px 24px;
+  border: 1px solid #181818;
+  border-radius: 24px;
+  background: #ffe0f7;
+}
+.contribution-guide h2 {
+  font: 400 30px/1.15 var(--font-display);
+  letter-spacing: -0.7px;
+  margin-bottom: 22px;
+}
+.contribution-guide ol {
+  list-style: decimal;
+  padding-left: 20px;
+}
+.contribution-guide li {
+  margin: 0 0 22px;
+  padding-left: 3px;
+}
+.contribution-guide p {
+  font-size: 14px;
+  line-height: 1.65;
+  margin: 8px 0 22px;
+}
+.contribution-guide .contribution-caption {
+  font-size: 12px;
+  margin: 22px 0 0;
+}
+.contribution-confirm {
+  padding-top: 12px;
+}
+.contribution-confirm button {
+  margin: 0 0 12px;
+}
+.contribution-actions > span {
+  font-size: 13px;
+  color: #5e5a5c;
+}
+.contribution-preview {
+  max-width: 880px;
+  margin: 0 auto;
+}
+.contribution-preview-label {
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+.contribution-preview h2 {
+  font: 400 42px/1.12 var(--font-display);
+  letter-spacing: -1px;
+  margin-bottom: 16px;
+}
+.contribution-preview h3 {
+  font: 400 30px/1.2 var(--font-display);
+  margin-bottom: 24px;
+}
+.contribution-disclaimer {
+  background: #f4f4f0;
+  border-radius: 10px;
+  padding: 16px;
+  margin-top: 24px;
+  font-size: 13px;
+}
+.contribution-reading {
+  padding: 32px 0;
+  border-bottom: 1px solid #d8d5d1;
+}
+.contribution-reading dl > div {
+  margin: 24px 0;
+}
+.contribution-reading dt {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.contribution-reading dd {
+  font-size: 15px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.contribution-preview > a {
+  display: inline-block;
+  margin: 20px 0;
+  text-decoration: underline;
+  overflow-wrap: anywhere;
+}
+.contribution-preview .contribution-actions {
+  margin-top: 28px;
+}
+@media (max-width: 850px) {
+  .contribution-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .contribution-guide {
+    position: static;
+  }
+  .contribution-intro h1 {
+    font-size: 52px;
+  }
+}
+@media (max-width: 600px) {
+  .contribution-page {
+    padding: 24px 16px 48px;
+  }
+  .contribution-intro {
+    padding-top: 28px;
+  }
+  .contribution-intro h1 {
+    font-size: 43px;
+    line-height: 1.06;
+    letter-spacing: -1.5px;
+  }
+  .contribution-intro > p {
+    font-size: 17px;
+  }
+  .contribution-sheet {
+    padding: 24px 18px;
+  }
+  .contribution-group legend,
+  .contribution-preview h3 {
+    font-size: 26px;
+  }
+  .contribution-toolbar {
+    gap: 12px;
+  }
+  .contribution-toolbar > span {
+    order: 3;
+    flex-basis: 100%;
+  }
+  .contribution-preview h2 {
+    font-size: 34px;
+  }
+}

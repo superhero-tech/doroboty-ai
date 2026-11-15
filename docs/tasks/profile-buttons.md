@@ -1,0 +1,13 @@
+# Apply the approved button treatment to the contribution forms
+
+User request, 2026-11-11: recheck the agreed button design and apply it to the newly created forms. Canonical visual reference: Super Brain 7-Skills/doroboty-ui/assets/buttons-courier-bold.png; accompanying approved rules require ink #191C25, white Courier New Bold 700, chamfered 8px corners and the up-right arrow.
+
+The previous correction left white outlined actions and omitted arrows on several form controls. Correct all boxed actions within profile/edit/preview and the contribution workshop, including example, draft, save and profile navigation/CV actions. Preserve quiet text links, shell icon controls, labels, data and behavior. Use decorative SVG arrow on the existing clipped background layer; native action content/focus stays unclipped. Remove the workshop's old rightward arrow to avoid duplicate/different arrows.
+
+Verify actual default/outline/link-based actions, hover color, typography, ink background layer and arrow, desktop/mobile screenshots, and the profile/workshop workflow tests. Do not change the approved shared skill or unrelated portal routes.
+
+Additional user steering: candidate name and professional headline must be cobalt; “Opis kandydata” must use Courier New Bold on ink. Added explicit heading selectors and converted the former static label to an accessible disclosure button synchronized with the existing full-description summary. No data edits or new submission flow.
+
+Executed checks: build/TypeScript passed, first 14 profile/workshop browser checks passed after the boxed-button correction. After the additional heading/disclosure change, all seven profile journeys passed again at 1280/850/390/320. Computed-color/font checks cover default, outline and anchor-based actions, white-on-ink after hover, decorative arrow, candidate heading colors and disclosure open/close. Reopened/reloaded the real profile in the in-app browser; visually inspected blue identity/role and clicked the dark “Opis kandydata” control. Old gate browser provisioning limitation remains unchanged. New evidence: artifacts/profile-buttons-v3; durable project copies are under ../prototypes/profile-buttons-v3/.
+
+Final separate review found the active desktop sidebar label had insufficient visibility because a higher-specificity decorative-surface rule overrode its blue fill. Corrected its selected surface, added a blue-fill/white-text regression, rebuilt and reran all seven profile journeys successfully. Final profile/workshop button styling remains scoped. New screenshot copies were refreshed after that final run.

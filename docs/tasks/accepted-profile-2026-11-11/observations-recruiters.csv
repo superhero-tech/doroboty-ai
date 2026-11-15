@@ -1,0 +1,1 @@
+participant_id,profile_id,layout,order,started,completed,correct_facts,total_facts,wrong_ownership_count,ownership_questions_count,skill_questions_count,other_questions_count,elapsed_seconds,correct_without_ownership_questions,confidence_1_to_5,moderator_help,dropout_reason,notes

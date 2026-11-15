@@ -1,0 +1,146 @@
+/* Current approved font/button decisions applied to the preserved landing. */
+.hero-search,
+.search-bar,
+.proof-card,
+.filter,
+.specialty {
+  position: relative;
+  isolation: isolate;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+.hero-search::before,
+.hero-search::after,
+.search-bar::before,
+.search-bar::after,
+.proof-card::before,
+.proof-card::after,
+.filter::before,
+.filter::after,
+.specialty::before,
+.specialty::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: #191c25;
+  clip-path: polygon(
+    8px 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0 calc(100% - 8px),
+    0 8px
+  );
+}
+.hero-search::after,
+.search-bar::after,
+.proof-card::after,
+.filter::after,
+.specialty::after {
+  inset: 1px;
+  z-index: -1;
+  background: #fff;
+}
+.filter.active,
+.specialty.active {
+  background: transparent;
+}
+.filter.active::after,
+.specialty.active::after {
+  background: #2449ed;
+}
+#proof-card h3 {
+  color: #2449ed;
+}
+#proof-card .proof-category,
+#proof-card .job-tags span {
+  color: #191c25;
+  font-family: Arial, sans-serif;
+}
+:root {
+  --display: "Courier New", monospace;
+  --body: Arial, sans-serif;
+}
+.mono,
+.eyebrow {
+  font-family: Arial, sans-serif;
+}
+h1,
+h2,
+h3,
+.job-title,
+.salary strong,
+.proof-salary strong {
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+}
+.job-title,
+.salary strong,
+.proof-salary strong {
+  color: #2449ed;
+}
+.button,
+.post-link,
+.magic-button-proxy,
+[data-category],
+[data-specialty] {
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  border-radius: 0;
+}
+.button,
+.post-link {
+  position: relative;
+  isolation: isolate;
+  background: transparent;
+  color: #fff;
+  border: 0;
+}
+.button::before,
+.post-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #191c25;
+  clip-path: polygon(
+    8px 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0 calc(100% - 8px),
+    0 8px
+  );
+}
+.site-header {
+  height: auto;
+  min-height: 88px;
+}
+.header-inner {
+  min-height: 88px;
+  flex-wrap: wrap;
+  padding-block: 16px;
+}
+.site-header nav {
+  flex-wrap: wrap;
+}
+@media (max-width: 760px) {
+  .header-inner {
+    gap: 12px;
+  }
+  .site-header nav {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    order: 3;
+    font-size: 13px;
+  }
+}

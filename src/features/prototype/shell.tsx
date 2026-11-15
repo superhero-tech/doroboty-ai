@@ -19,11 +19,15 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { currentPerson } from "./model";
 import { usePrototype } from "./store";
 import { cn } from "@/lib/utils";
+import profileRobot from "../project-contribution/assets/robot.svg";
+import "../project-contribution/doroboty-profile.css";
 const navigation = [
   { to: "/oferty", label: "Oferty" },
   { to: "/metodologia", label: "Metodologia" },
+  { to: "/opis-projektu", label: "Opisz projekt" },
   { to: "/auth/sign-in?audience=employer&next=/app/oferty", label: "Dla firm" },
 ];
+const publication = import.meta.env.MODE === "publication";
 
 export function Notice({ children }: { children: ReactNode }) {
   return (
@@ -70,6 +74,13 @@ export function Shell() {
   const { state, issue, error, clearError } = usePrototype();
   const person = currentPerson(state);
   const { pathname } = useLocation();
+  const cobaltProfile =
+    publication || pathname.startsWith("/app/profil") || pathname === "/opis-projektu";
+  const brandMark = cobaltProfile ? (
+    <img src={profileRobot} className="dr-profile-brand-mark" alt="" aria-hidden="true" />
+  ) : (
+    <BrandMark />
+  );
   const workspace = pathname.startsWith("/app") && person;
   const [menuAt, setMenuAt] = useState<string | null>(null);
   const main = useRef<HTMLElement>(null);
@@ -87,7 +98,9 @@ export function Shell() {
       ? employerNav
       : person?.role === "operator"
         ? [["/app/case", "Materiały case study", FileText] as const]
-        : candidateNav;
+        : publication
+          ? candidateNav.filter(([to]) => to === "/app/profil")
+          : candidateNav;
   const content = (
     <>
       <>
@@ -111,7 +124,9 @@ export function Shell() {
     </>
   );
   return (
-    <div className="min-h-dvh bg-background text-foreground">
+    <div
+      className={`min-h-dvh bg-background text-foreground${cobaltProfile ? " dr-profile-scope" : ""}`}
+    >
       <a
         href="#main"
         className="skip-link"
@@ -124,11 +139,11 @@ export function Shell() {
       </a>
       {workspace ? (
         <div className="app-frame">
-          <div className="mobile-header">
-            <Link to="/" className="brand">
-              <BrandMark />
+          <nav className="mobile-header" aria-label="Nawigacja mobilna">
+            <a href={publication ? "../" : "#/"} className="brand">
+              {brandMark}
               DoRoboty.ai
-            </Link>
+            </a>
             <Button
               aria-label={menuAt === pathname ? "Zamknij menu" : "Otwórz menu"}
               aria-expanded={menuAt === pathname}
@@ -139,17 +154,17 @@ export function Shell() {
             >
               {menuAt === pathname ? <X /> : <Menu />}
             </Button>
-          </div>
+          </nav>
           <aside
             className={`sidebar ${menuAt === pathname ? "sidebar-open" : ""}`}
             onKeyDown={(e) => {
               if (e.key === "Escape") setMenuAt(null);
             }}
           >
-            <Link className="brand" to="/">
-              <BrandMark />
+            <a className="brand" href={publication ? "../" : "#/"}>
+              {brandMark}
               DoRoboty.ai
-            </Link>
+            </a>
             <div className="workspace-label">
               <span className="workspace-avatar">{person.name[0]}</span>
               <div>
@@ -158,6 +173,19 @@ export function Shell() {
               </div>
             </div>
             <nav id="workspace-nav" aria-label="Panel użytkownika">
+              {publication && (
+                <>
+                  <Link className="nav-link" to="/app/profil/podglad">
+                    Podgląd dla rekrutera
+                  </Link>
+                  <Link className="nav-link" to="/opis-projektu">
+                    Formatka projektu
+                  </Link>
+                  <a className="nav-link" href="../portal/wyniki.html?saved=1">
+                    Zapisane oferty
+                  </a>
+                </>
+              )}
               {nav.map(([to, label, Icon]) => (
                 <NavLink
                   end={to === "/app"}
@@ -178,16 +206,16 @@ export function Shell() {
                 <Settings className="size-4" />
                 Ustawienia
               </NavLink>
-              <Link className="nav-link" to="/oferty">
+              <a className="nav-link" href={publication ? "../portal/wyniki.html" : "#/oferty"}>
                 Wszystkie oferty
-              </Link>
+              </a>
               <Link className="nav-link" to="/auth/sign-in">
                 Zmień osobę
               </Link>
             </nav>
           </aside>
           <div className="workspace">
-            <div className="topbar">
+            <header className="topbar" aria-label="Konto użytkownika">
               <span>
                 {person.role === "candidate"
                   ? "Strefa kandydata"
@@ -196,7 +224,7 @@ export function Shell() {
                     : "Case study"}
               </span>
               <Link to="/auth/sign-in">{person.name}</Link>
-            </div>
+            </header>
             <main id="main" ref={main} tabIndex={-1} className="main-content outline-none">
               {content}
             </main>
@@ -211,14 +239,14 @@ export function Shell() {
                 to="/"
                 aria-label="DoRoboty.ai — strona główna"
               >
-                <BrandMark />
+                {brandMark}
                 <span>DoRoboty.ai</span>
               </Link>
               <nav aria-label="Główna nawigacja" className="flex items-center gap-2 sm:gap-5">
                 {navigation.map((item) => (
                   <Link
                     key={item.to}
-                    className="hidden text-sm font-medium text-muted-foreground transition-colors hover:text-foreground md:inline"
+                    className={`hidden text-sm font-medium text-muted-foreground transition-colors hover:text-foreground ${item.to === "/opis-projektu" ? "xl:inline" : "md:inline"}`}
                     to={item.to}
                   >
                     {item.label}
@@ -297,6 +325,7 @@ export function Shell() {
               >
                 <Link to="/oferty">Oferty</Link>
                 <Link to="/metodologia">Metodologia</Link>
+                <Link to="/opis-projektu">Opisz projekt</Link>
                 <Link to="/polityka-prywatnosci">Prywatność</Link>
                 <Link className="inline-flex items-center gap-1" to="/auth/sign-in">
                   Strefa case <ArrowUpRight className="size-4" />

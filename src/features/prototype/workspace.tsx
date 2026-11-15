@@ -1,3 +1,4 @@
+import { ProfileProjectSection } from "../project-contribution/profile-project";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router";
 import { CheckCircle2, FileText } from "lucide-react";
@@ -17,11 +18,19 @@ import { MatchScore } from "./match-score";
 import { RecruitingApplication } from "./recruiting-application";
 import { CandidateApplication } from "./candidate-application";
 
-export function Field({ label, children }: { label: string; children: ReactNode }) {
+export function Field({
+  label,
+  children,
+  chamfer = false,
+}: {
+  label: string;
+  children: ReactNode;
+  chamfer?: boolean;
+}) {
   return (
     <label className="field">
       <span>{label}</span>
-      {children}
+      {chamfer ? <span className="dr-input-frame">{children}</span> : children}
     </label>
   );
 }
@@ -160,7 +169,7 @@ export function ProfilePage({ preview = false }: { preview?: boolean }) {
       setMessage("Profil został zapisany.");
   }
   return (
-    <>
+    <div className="profile-page">
       <PageTitle
         action={
           <Link
@@ -171,32 +180,33 @@ export function ProfilePage({ preview = false }: { preview?: boolean }) {
           </Link>
         }
       >
-        {preview ? person.name : "Twój profil"}
+        {preview ? <span className="profile-candidate-name">{person.name}</span> : "Twój profil"}
       </PageTitle>
       {preview ? (
         <div className="prototype-panel space-y-4">
-          <h2>{person.headline}</h2>
+          <h2 className="profile-candidate-role">{person.headline}</h2>
           <p>{person.location}</p>
           <p>{person.bio}</p>
         </div>
       ) : (
         <form onSubmit={save} className="prototype-panel prototype-form">
-          <Field label="Imię i nazwisko">
+          <Field chamfer label="Imię i nazwisko">
             <Input name="name" required maxLength={200} defaultValue={person.name} />
           </Field>
-          <Field label="Nagłówek zawodowy">
+          <Field chamfer label="Nagłówek zawodowy">
             <Input name="headline" required maxLength={200} defaultValue={person.headline} />
           </Field>
-          <Field label="Lokalizacja">
+          <Field chamfer label="Lokalizacja">
             <Input name="location" required maxLength={200} defaultValue={person.location} />
           </Field>
-          <Field label="O mnie">
+          <Field chamfer label="O mnie">
             <Textarea name="bio" maxLength={12000} defaultValue={person.bio} />
           </Field>
           <Button type="submit">Zapisz profil</Button>
           {message && <p role="status">{message}</p>}
         </form>
       )}
+      <ProfileProjectSection key={person.id} preview={preview} />
       <section className="prototype-panel mt-6">
         <h2 className="mb-4 flex items-center gap-2">
           <FileText className="size-5" />
@@ -204,7 +214,7 @@ export function ProfilePage({ preview = false }: { preview?: boolean }) {
         </h2>
         <CvAttachment candidateId={person.id} fallbackText={person.cv} />
       </section>
-    </>
+    </div>
   );
 }
 export function SavedPage() {

@@ -6,6 +6,9 @@ export default tseslint.config(
   {
     ignores: [
       "dist/**",
+      "publish/**",
+      "publication/landing/**",
+      "publication/portal/**",
       "node_modules/**",
       "playwright-report*/**",
       "test-results/**",

@@ -1,0 +1,465 @@
+/* User-confirmed DoRoboty.ai system, 2026-11-08; scoped correction 2026-11-11.
+   Source: Super Brain design-system/components-v1 and 7-Skills/doroboty-ui.
+   Polygon layers reproduce dr-cut; interactive content/focus is never clipped. */
+.dr-profile-scope :is(.profile-project, .contribution-page) [data-slot="button"] {
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0;
+  border-radius: 0;
+}
+.dr-profile-scope
+  .profile-project
+  :is(.profile-project-caption, .profile-project-preview-note, .profile-project-section-heading p) {
+  color: #191c25;
+}
+.dr-profile-scope {
+  --dr-blue: #2449ed;
+  --dr-ink: #191c25;
+  --dr-paper: #f5f5f0;
+  --dr-white: #fff;
+  --dr-blue-soft: #e9edff;
+  --dr-line: #d9dbe3;
+  --dr-heading: "Courier New", monospace;
+  --dr-body: Arial, sans-serif;
+  --font-display: var(--dr-heading);
+  --font-body: var(--dr-body);
+  --font-interface: var(--dr-body);
+  --gui-color-1: var(--dr-ink);
+  --gui-color-1-transparent: var(--dr-blue-soft);
+  --gui-focus: var(--dr-blue);
+  --gui-text: var(--dr-ink);
+  --gui-link: var(--dr-blue);
+  --gui-control: var(--dr-white);
+  --gui-edge: var(--dr-ink);
+  --gui-error: var(--dr-ink);
+  --gui-error-transparent: var(--dr-paper);
+  --gui-radius-s: 0px;
+  --gui-radius-xs: 0px;
+  --background: var(--dr-paper);
+  --foreground: var(--dr-ink);
+  --muted-foreground: var(--dr-ink);
+  --sidebar: var(--dr-white);
+  background: var(--dr-paper);
+  color: var(--dr-ink);
+  font: 400 14px/1.65 var(--dr-body);
+}
+.dr-profile-scope :is(.profile-page, .contribution-page) :is(h1, h2, h3, h4, h5, h6, legend) {
+  font-family: var(--dr-heading);
+  font-weight: 700;
+  font-synthesis: none;
+  color: var(--dr-ink);
+  letter-spacing: -0.025em;
+}
+.dr-profile-scope .profile-page {
+  max-width: 880px;
+}
+.dr-profile-scope .profile-page h1 {
+  font-size: 36px;
+  line-height: 1.2;
+}
+.dr-profile-scope .profile-page h2 {
+  font-size: 26px;
+  line-height: 1.25;
+}
+.dr-profile-scope .profile-page h3 {
+  font-size: 20px;
+  line-height: 1.35;
+}
+.dr-profile-scope .profile-project-card-header h3 {
+  color: var(--dr-blue);
+  font-size: 20px;
+}
+.dr-profile-scope .profile-project-full h4 {
+  font-size: 19px;
+  line-height: 1.3;
+}
+.dr-profile-scope .profile-page > .prototype-panel > h2 {
+  font-size: 20px;
+}
+.dr-profile-scope .profile-page .profile-candidate-name,
+.dr-profile-scope .profile-page > .prototype-panel > h2.profile-candidate-role {
+  color: var(--dr-blue);
+}
+.dr-profile-scope
+  :is(.contribution-group legend, .contribution-guide h2, .contribution-preview h3) {
+  font-size: 22px;
+  line-height: 1.3;
+}
+.dr-profile-scope .contribution-intro h1 {
+  font-size: 42px;
+  line-height: 1.15;
+}
+.dr-profile-scope .contribution-preview h2 {
+  font-size: 26px;
+  color: var(--dr-blue);
+  line-height: 1.3;
+}
+.dr-profile-scope
+  :is(
+    .profile-project-meta,
+    .profile-project-section-heading p,
+    .profile-project-caption,
+    .profile-project-preview-note,
+    .profile-project-empty p,
+    .contribution-local,
+    .contribution-field > p,
+    .contribution-field label span,
+    .contribution-group > p,
+    .contribution-actions > span
+  ) {
+  color: var(--dr-ink);
+}
+.dr-profile-scope
+  :is(
+    .profile-project-facts dd,
+    .profile-project-full dd,
+    .profile-project-empty p,
+    .contribution-reading dd
+  ) {
+  font: 400 14px/1.7 var(--dr-body);
+}
+.dr-profile-scope
+  :is(
+    .profile-project-eyebrow,
+    .profile-project-meta,
+    .profile-project-label,
+    .profile-project-facts dt,
+    .profile-project-boundaries p
+  ) {
+  font-family: var(--dr-body);
+  color: var(--dr-ink);
+}
+.dr-profile-scope .profile-project-facts > div:first-child dt {
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  margin-top: 0;
+}
+.dr-profile-scope
+  :is(
+    .profile-project-card,
+    .profile-project-empty,
+    .contribution-sheet,
+    .contribution-guide,
+    .prototype-panel,
+    .dr-input-frame,
+    [data-slot="button"],
+    .profile-page a[class*="inline-flex"],
+    .nav-link,
+    .workspace-avatar,
+    .profile-project-label,
+    .contribution-disclaimer,
+    .skip-link
+  ) {
+  --dr-cut-size: 12px;
+  --dr-outline: 1px;
+  --dr-surface: var(--dr-white);
+  position: relative;
+  isolation: isolate;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.dr-profile-scope
+  :is(
+    .profile-project-card,
+    .profile-project-empty,
+    .contribution-sheet,
+    .contribution-guide,
+    .prototype-panel,
+    .dr-input-frame,
+    [data-slot="button"],
+    .profile-page a[class*="inline-flex"],
+    .nav-link,
+    .workspace-avatar,
+    .profile-project-label,
+    .contribution-disclaimer,
+    .skip-link
+  )::before,
+.dr-profile-scope
+  :is(
+    .profile-project-card,
+    .profile-project-empty,
+    .contribution-sheet,
+    .contribution-guide,
+    .prototype-panel,
+    .dr-input-frame,
+    [data-slot="button"],
+    .profile-page a[class*="inline-flex"],
+    .nav-link,
+    .workspace-avatar,
+    .profile-project-label,
+    .contribution-disclaimer,
+    .skip-link
+  )::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  clip-path: polygon(
+    var(--corner) 0,
+    calc(100% - var(--corner)) 0,
+    100% var(--corner),
+    100% calc(100% - var(--corner)),
+    calc(100% - var(--corner)) 100%,
+    var(--corner) 100%,
+    0 calc(100% - var(--corner)),
+    0 var(--corner)
+  );
+}
+.dr-profile-scope
+  :is(
+    .profile-project-card,
+    .profile-project-empty,
+    .contribution-sheet,
+    .contribution-guide,
+    .prototype-panel,
+    .dr-input-frame,
+    [data-slot="button"],
+    .profile-page a[class*="inline-flex"],
+    .nav-link,
+    .workspace-avatar,
+    .profile-project-label,
+    .contribution-disclaimer,
+    .skip-link
+  )::before {
+  --corner: var(--dr-cut-size);
+  inset: 0;
+  z-index: -2;
+  background: var(--dr-ink);
+}
+.dr-profile-scope
+  :is(
+    .profile-project-card,
+    .profile-project-empty,
+    .contribution-sheet,
+    .contribution-guide,
+    .prototype-panel,
+    .dr-input-frame,
+    [data-slot="button"],
+    .profile-page a[class*="inline-flex"],
+    .nav-link,
+    .workspace-avatar,
+    .profile-project-label,
+    .contribution-disclaimer,
+    .skip-link
+  )::after {
+  --corner: calc(var(--dr-cut-size) - 0.6 * var(--dr-outline));
+  inset: var(--dr-outline);
+  z-index: -1;
+  background: var(--dr-surface);
+}
+.dr-profile-scope
+  :is(.profile-project-card, .profile-project-empty, .contribution-sheet, .prototype-panel) {
+  --dr-cut-size: 12px;
+  padding: 24px;
+}
+.dr-profile-scope .contribution-guide {
+  --dr-surface: var(--dr-blue-soft);
+  --dr-cut-size: 18px;
+}
+.dr-profile-scope :is(.dr-input-frame) {
+  --dr-cut-size: 8px;
+  display: block;
+  min-width: 0;
+}
+.dr-profile-scope .dr-input-frame :is(input, textarea) {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--dr-ink);
+  font: 400 14px/1.65 var(--dr-body);
+  padding: 12px 14px;
+  width: 100%;
+}
+.dr-profile-scope .dr-input-frame:has([aria-invalid="true"]) {
+  --dr-outline: 2px;
+  --dr-surface: var(--dr-paper);
+}
+.dr-profile-scope :is([data-slot="button"], .profile-page a[class*="inline-flex"]) {
+  --dr-cut-size: 8px;
+  --dr-surface: var(--dr-ink);
+  --control-hover-bg: transparent;
+  --control-hover-text: var(--dr-white);
+  border-radius: 0;
+  background: transparent !important;
+  box-shadow: none;
+  color: var(--dr-white);
+  font: 700 14px/1.4 var(--dr-heading);
+  letter-spacing: 0;
+  min-height: 44px;
+  white-space: normal;
+}
+.dr-profile-scope
+  :is([data-variant="outline"], [data-variant="ghost"], .profile-page a[class*="inline-flex"]) {
+  --dr-surface: var(--dr-white);
+  --control-hover-text: var(--dr-ink);
+  color: var(--dr-ink);
+}
+.dr-profile-scope :is([data-slot="button"], .profile-page a[class*="inline-flex"]):hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.dr-profile-scope [data-slot="button"]:disabled {
+  --dr-surface: var(--dr-paper);
+  color: var(--dr-ink);
+  opacity: 0.55;
+}
+.dr-profile-scope [data-variant="link"] {
+  color: var(--dr-ink);
+  text-decoration: underline;
+}
+.dr-profile-scope [data-variant="link"]::before,
+.dr-profile-scope [data-variant="link"]::after {
+  display: none;
+}
+.dr-profile-scope .profile-project-label {
+  --dr-cut-size: 5px;
+  padding: 5px 10px;
+}
+.dr-profile-scope .profile-project-empty-icon {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+}
+.dr-profile-scope .profile-project-empty-icon img {
+  display: block;
+  max-width: 64px;
+  height: auto;
+}
+.dr-profile-scope :is(.profile-project-details summary, .profile-project-full dt) {
+  font-family: var(--dr-body);
+  color: var(--dr-ink);
+}
+.dr-profile-scope
+  :is(
+    .profile-project-facts,
+    .profile-project-details,
+    .contribution-group,
+    .profile-project-editor-intro,
+    .contribution-reading,
+    .contribution-local
+  ) {
+  border-color: var(--dr-line);
+}
+.dr-profile-scope :is(.sidebar, .topbar, .mobile-header) {
+  background: var(--dr-white);
+  color: var(--dr-ink);
+}
+.dr-profile-scope .nav-link {
+  --dr-cut-size: 7px;
+  --dr-outline: 0px;
+  --dr-surface: var(--dr-white);
+  color: var(--dr-ink);
+  font-family: var(--dr-heading);
+  font-weight: 700;
+}
+.dr-profile-scope .nav-link:hover {
+  --dr-surface: var(--dr-blue-soft);
+}
+.dr-profile-scope .nav-active {
+  --dr-surface: var(--dr-blue);
+  color: var(--dr-white);
+}
+.dr-profile-scope .nav-active:hover {
+  --dr-surface: var(--dr-blue);
+  color: var(--dr-white);
+}
+.dr-profile-scope .sidebar .nav-link.nav-active,
+.dr-profile-scope .sidebar .nav-link.nav-active:hover {
+  --dr-surface: var(--dr-blue);
+  color: var(--dr-white);
+}
+.dr-profile-scope .workspace-avatar {
+  --dr-cut-size: 5px;
+  --dr-surface: var(--dr-blue-soft);
+  color: var(--dr-ink);
+}
+.dr-profile-scope .brand {
+  font:
+    700 26px/1 Arial,
+    sans-serif;
+  letter-spacing: -1.4px;
+  color: var(--dr-ink);
+}
+.dr-profile-brand-mark {
+  display: block;
+  width: 28px;
+  height: 34px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.dr-profile-scope :is(.workspace-label div > span, .workspace-label strong, .topbar) {
+  color: var(--dr-ink);
+  font-family: var(--dr-body);
+}
+.dr-profile-scope .profile-page .page-heading {
+  padding-bottom: 20px;
+}
+.dr-profile-scope .contribution-disclaimer {
+  --dr-surface: var(--dr-paper);
+  --dr-cut-size: 8px;
+}
+.dr-profile-scope .skip-link {
+  position: fixed;
+  --dr-surface: var(--dr-ink);
+  color: var(--dr-white);
+}
+.dr-profile-scope :is(input, textarea, button, a, summary):focus-visible {
+  outline: 3px solid var(--dr-blue);
+  outline-offset: 4px;
+}
+/* Approved form actions: the same ink/white Courier Bold treatment as the
+   saved buttons-courier-bold reference, including the decorative ↗.
+   Secondary work actions retain their wording rather than an invented white variant. */
+.dr-profile-scope
+  :is(.profile-page, .contribution-page)
+  :is([data-slot="button"]:not([data-variant="link"]), a[class*="inline-flex"]) {
+  --dr-cut-size: 8px;
+  --dr-outline: 0px;
+  --dr-surface: var(--dr-ink);
+  --control-hover-text: var(--dr-white);
+  color: var(--dr-white);
+  font: 700 14px/1.4 var(--dr-heading);
+  letter-spacing: 0;
+  min-height: 48px;
+  padding: 12px 44px 12px 20px;
+  text-align: center;
+}
+.dr-profile-scope
+  :is(.profile-page, .contribution-page)
+  :is([data-slot="button"]:not([data-variant="link"]), a[class*="inline-flex"])::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'%3E%3Cpath d='M3 11L11 3M4 3h7v7' fill='none' stroke='white' stroke-width='1.7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 14px 14px;
+  background-position: right 16px center;
+}
+.dr-profile-scope :is(.profile-page, .contribution-page) a[class*="inline-flex"] > svg:last-child {
+  display: none;
+}
+.dr-profile-scope :is(.profile-page, .contribution-page) [data-slot="button"]:disabled {
+  --dr-surface: var(--dr-ink);
+  color: var(--dr-white);
+}
+@media (max-width: 600px) {
+  .dr-profile-scope .profile-page h1 {
+    font-size: 28px;
+  }
+  .dr-profile-scope .profile-page h2 {
+    font-size: 22px;
+  }
+  .dr-profile-scope .profile-project-card-header h3 {
+    font-size: 20px;
+  }
+  .dr-profile-scope .contribution-intro h1 {
+    font-size: 32px;
+  }
+  .dr-profile-scope
+    :is(.profile-project-card, .profile-project-empty, .contribution-sheet, .prototype-panel) {
+    --dr-cut-size: 10px;
+    padding: 20px;
+  }
+}

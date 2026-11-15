@@ -23,7 +23,17 @@ Candidate submitted detail now also uses the shared ApplicationRecord compositio
 
 ## Open company-page findings
 
-The Northstar Health audit (`docs/tasks/northstar-company-design-audit.md`) was read-only. The following findings are **open**, not fixed by the later confetti work or this documentation update:
+### Aktualizacja 2026-11-15
+
+NH-01–NH-05 poprawiono w lokalnej kopii podczas przeglądu gotowości:
+poprawne grupy dt/dd i link poza dl, istniejący biały `prototype-panel`,
+obrys i standardowy rozmiar identyfikacji, zapis ofert dla aktywnego kandydata
+oraz informacja o danych demonstracyjnych. Nowy test `tests/e2e/readiness.spec.ts`
+sprawdza rzeczywistą stronę Northstar Health z Axe, zapis klawiaturą, odświeżenie
+i widok mobilny. Wynik tego sprawdzenia: bez naruszeń Axe; zapis utrzymany po
+odświeżeniu. Poniższa tabela zachowuje historyczny stan audytu z 2 listopada.
+
+The Northstar Health audit (`docs/tasks/northstar-company-design-audit.md`) was read-only. The following findings were **open at that audit**, not fixed by the later confetti work. See the dated closure above:
 
 | ID    | Remaining issue                                                                                                 |
 | ----- | --------------------------------------------------------------------------------------------------------------- |
