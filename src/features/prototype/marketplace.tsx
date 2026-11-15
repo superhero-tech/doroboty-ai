@@ -509,11 +509,18 @@ export function CompanyPage() {
   const company = state.companies.find((x) => x.slug === slug);
   if (!company) return <NotFound />;
   const jobs = publishedJobs(state).filter((x) => x.companyId === company.id);
+  const person = currentPerson(state);
+  const savedIds =
+    person?.role === "candidate"
+      ? new Set(state.saved.filter((x) => x.candidateId === person.id).map((x) => x.jobId))
+      : undefined;
   return (
     <article className="mx-auto max-w-[1360px] px-5 py-14 lg:px-8 lg:py-20">
       <div className="grid gap-8 pb-12 shadow-[var(--gui-divider-bottom-shadow)] lg:grid-cols-[1fr_320px]">
         <div>
-          <CompanyLogo company={company} size="large" />
+          <div className="inline-flex rounded-lg border border-foreground">
+            <CompanyLogo company={company} />
+          </div>
           <h1 className="mt-3 text-4xl font-semibold tracking-[var(--gui-tracking-s)] sm:text-5xl">
             {company.name}
           </h1>
@@ -522,21 +529,21 @@ export function CompanyPage() {
             {company.description}
           </p>
         </div>
-        <dl className="h-fit rounded-xl bg-muted/35 p-6 text-sm">
-          <div className="flex gap-2">
-            <MapPin className="size-5" />
+        <div className="prototype-panel h-fit text-sm">
+          <dl>
             <div>
-              <dt className="font-medium">Lokalizacja</dt>
-              <dd className="mt-1 text-muted-foreground">{company.location}</dd>
+              <dt className="flex items-center gap-2 font-medium">
+                <MapPin className="size-5" aria-hidden="true" /> Lokalizacja
+              </dt>
+              <dd className="mt-1 pl-7 text-muted-foreground">{company.location}</dd>
             </div>
-          </div>
-          <div className="mt-5 flex gap-2">
-            <Users className="size-5" />
-            <div>
-              <dt className="font-medium">Wielkość</dt>
-              <dd className="mt-1 text-muted-foreground">{company.sizeLabel}</dd>
+            <div className="mt-5">
+              <dt className="flex items-center gap-2 font-medium">
+                <Users className="size-5" aria-hidden="true" /> Wielkość
+              </dt>
+              <dd className="mt-1 pl-7 text-muted-foreground">{company.sizeLabel}</dd>
             </div>
-          </div>
+          </dl>
           {/^https?:\/\//i.test(company.websiteUrl) && (
             <a
               className="mt-6 inline-flex items-center gap-2 font-medium text-[var(--gui-link)] hover:underline"
@@ -547,20 +554,23 @@ export function CompanyPage() {
               Strona firmy <ArrowUpRight className="size-4" />
             </a>
           )}
-        </dl>
+        </div>
       </div>
       <section className="py-12">
         <h2 className="text-2xl font-semibold">Otwarte role</h2>
         {jobs.length > 0 ? (
           <div className="mt-7 pp-job-list">
             {jobs.map((job) => (
-              <JobCard key={job.id} job={job} />
+              <JobCard key={job.id} job={job} saved={savedIds?.has(job.id)} />
             ))}
           </div>
         ) : (
           <p className="mt-5 text-lg">Ta firma nie ma teraz aktywnych ofert.</p>
         )}
       </section>
+      <p className="text-sm text-muted-foreground">
+        Firma i oferty są przykładowymi danymi prototypu. Nie prowadzą rzeczywistej rekrutacji.
+      </p>
     </article>
   );
 }

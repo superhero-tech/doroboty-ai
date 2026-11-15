@@ -1,5 +1,17 @@
 # Current Product Behavior Register
 
+## Unified publication entry — 2026-11-15
+
+PUB-01 (implemented): `npm run build:publication` assembles the accepted static
+landing at `/`, approved portal at `/portal/` and existing profile/project forms
+at `/profil/` in **publish/**. It adds navigation between these parts, shares the
+portal catalogue/saved offers with landing cards, and initializes a fresh browser
+with fictional Anna and an example project. Existing saved scenarios are retained.
+Profile projects still do not attach to submitted applications; local prototype
+boundaries below remain. See `docs/tasks/unified-publication.md`,
+`scripts/package-publication.mjs` and `tests/publication/unified.spec.ts`.
+The ordinary teaching build remains separate and is not the public landing.
+
 This register describes the frontend-only prototype as implemented in this worktree. Source coverage is not proof of executed checks or deployment; actual results belong in docs/tasks/frontend-only.md.
 
 All application routes use the hash prefix. All personas share one local scenario. Role checks organize the simulation and do not provide security. Original backend behavior remains in Git history.

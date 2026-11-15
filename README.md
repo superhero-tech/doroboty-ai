@@ -1,5 +1,15 @@
 # DoRoboty.ai — AIPH3 prototype
 
+## Unified site for Agata — 2026-11-15
+
+Build the accepted landing + portal + profile with `npm run build:publication`.
+Upload **publish/** to Netlify, not dist/. Preview with
+`npm run preview:publication` at http://127.0.0.1:3015/.
+See [the publication guide](publication/README.md) and
+[integration scope](docs/tasks/unified-publication.md).
+The ordinary build below remains the teaching application. The previous
+readiness report assessed that application, not the unified publication.
+
 ## User-confirmed profile design override — 2026-11-11
 
 For `/app/profil`, `/app/profil/podglad` and `/opis-projektu`, the user explicitly requires the approved Super Brain DoRoboty.ai system: **Courier New Bold + Arial, cobalt #2449ED, ink #191C25 and 45-degree chamfered corners**. Use [the correction guide](docs/design-system/DOROBOTY-PROFILE.md) and [approved rules](docs/design-system/doroboty-approved/design-rules.md). This scope overrides every conflicting Poster People instruction below. Do not reselect the pink/Geist/r24 theme for these routes. Preserve data, Base UI behaviour and the old immutable kit; unrelated marketplace routes retain their existing implementation until requested otherwise.
@@ -41,5 +51,12 @@ npm run preview
 ```
 
 The static output is dist/. Browser checks require an already provisioned Playwright Chromium; starting the app never installs it. See [participant guide](docs/PARTICIPANT_GUIDE.md), [architecture](docs/architecture.md), [current features](FEATURES.md) and [case protocol](docs/case/CASE_PROTOCOL.md).
+
+For checks using an existing Google Chrome instead, set `PLAYWRIGHT_CHANNEL=chrome`
+before `npm run check` (PowerShell: `$env:PLAYWRIGHT_CHANNEL='chrome'`). This does
+not install a browser. CI keeps its provisioned Playwright Chromium.
+
+Local moderated sessions: see [release and recovery instructions](docs/LOCAL-RELEASE.md)
+and the offline [readiness report](docs/production-readiness.html).
 
 To distribute a baseline participant package, run npm run package:participant -- /absolute/output/directory. This excludes Git history and instructor source material. Never distribute this repository’s history as a stage-safe packet.

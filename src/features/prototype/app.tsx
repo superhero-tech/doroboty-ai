@@ -22,7 +22,16 @@ function AppRoutes() {
   return (
     <Routes>
       <Route element={<Shell />}>
-        <Route index element={<HomePage />} />
+        <Route
+          index
+          element={
+            import.meta.env.MODE === "publication" ? (
+              <Navigate to="/app/profil" replace />
+            ) : (
+              <HomePage />
+            )
+          }
+        />
         <Route path="oferty" element={<JobsPage />} />
         <Route path="oferty/:slug" element={<JobPage />} />
         <Route path="firmy/:slug" element={<CompanyPage />} />
@@ -42,7 +51,11 @@ function AppRoutes() {
           path="app"
           element={
             <RequireRole>
-              <WorkspaceHome />
+              {import.meta.env.MODE === "publication" ? (
+                <Navigate to="/app/profil" replace />
+              ) : (
+                <WorkspaceHome />
+              )}
             </RequireRole>
           }
         />

@@ -27,6 +27,7 @@ const navigation = [
   { to: "/opis-projektu", label: "Opisz projekt" },
   { to: "/auth/sign-in?audience=employer&next=/app/oferty", label: "Dla firm" },
 ];
+const publication = import.meta.env.MODE === "publication";
 
 export function Notice({ children }: { children: ReactNode }) {
   return (
@@ -73,7 +74,8 @@ export function Shell() {
   const { state, issue, error, clearError } = usePrototype();
   const person = currentPerson(state);
   const { pathname } = useLocation();
-  const cobaltProfile = pathname.startsWith("/app/profil") || pathname === "/opis-projektu";
+  const cobaltProfile =
+    publication || pathname.startsWith("/app/profil") || pathname === "/opis-projektu";
   const brandMark = cobaltProfile ? (
     <img src={profileRobot} className="dr-profile-brand-mark" alt="" aria-hidden="true" />
   ) : (
@@ -96,7 +98,9 @@ export function Shell() {
       ? employerNav
       : person?.role === "operator"
         ? [["/app/case", "Materiały case study", FileText] as const]
-        : candidateNav;
+        : publication
+          ? candidateNav.filter(([to]) => to === "/app/profil")
+          : candidateNav;
   const content = (
     <>
       <>
@@ -136,10 +140,10 @@ export function Shell() {
       {workspace ? (
         <div className="app-frame">
           <nav className="mobile-header" aria-label="Nawigacja mobilna">
-            <Link to="/" className="brand">
+            <a href={publication ? "../" : "#/"} className="brand">
               {brandMark}
               DoRoboty.ai
-            </Link>
+            </a>
             <Button
               aria-label={menuAt === pathname ? "Zamknij menu" : "Otwórz menu"}
               aria-expanded={menuAt === pathname}
@@ -157,10 +161,10 @@ export function Shell() {
               if (e.key === "Escape") setMenuAt(null);
             }}
           >
-            <Link className="brand" to="/">
+            <a className="brand" href={publication ? "../" : "#/"}>
               {brandMark}
               DoRoboty.ai
-            </Link>
+            </a>
             <div className="workspace-label">
               <span className="workspace-avatar">{person.name[0]}</span>
               <div>
@@ -169,6 +173,19 @@ export function Shell() {
               </div>
             </div>
             <nav id="workspace-nav" aria-label="Panel użytkownika">
+              {publication && (
+                <>
+                  <Link className="nav-link" to="/app/profil/podglad">
+                    Podgląd dla rekrutera
+                  </Link>
+                  <Link className="nav-link" to="/opis-projektu">
+                    Formatka projektu
+                  </Link>
+                  <a className="nav-link" href="../portal/wyniki.html?saved=1">
+                    Zapisane oferty
+                  </a>
+                </>
+              )}
               {nav.map(([to, label, Icon]) => (
                 <NavLink
                   end={to === "/app"}
@@ -189,9 +206,9 @@ export function Shell() {
                 <Settings className="size-4" />
                 Ustawienia
               </NavLink>
-              <Link className="nav-link" to="/oferty">
+              <a className="nav-link" href={publication ? "../portal/wyniki.html" : "#/oferty"}>
                 Wszystkie oferty
-              </Link>
+              </a>
               <Link className="nav-link" to="/auth/sign-in">
                 Zmień osobę
               </Link>

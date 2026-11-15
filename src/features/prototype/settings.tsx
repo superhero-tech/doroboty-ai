@@ -99,6 +99,10 @@ export function SettingsPage() {
           Wybór osoby zastępuje logowanie. Propozycje AI, Match Score i podsumowania odtwarzają
           przygotowany scenariusz; nie oceniają kompetencji. Używaj przykładowych danych i CV.
         </p>
+        <p>
+          Problem podczas testu zgłoś osobie prowadzącej spotkanie. Podaj ekran, wykonaną czynność i
+          widoczny komunikat. Nie przesyłaj prawdziwych danych kandydatów ani CV.
+        </p>
       </section>
       <ConfirmDialog
         open={pending !== null}

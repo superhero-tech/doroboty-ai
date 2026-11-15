@@ -28,7 +28,9 @@ for (const [name, filename] of [
   }) => {
     const external: string[] = [];
     page.on("request", (request) => {
-      if (!request.url().startsWith("http://127.0.0.1:3106")) external.push(request.url());
+      const url = new URL(request.url());
+      if (["http:", "https:"].includes(url.protocol) && url.origin !== "http://127.0.0.1:3106")
+        external.push(request.url());
     });
     await choose(page, name);
     await page.goto("/#/app/profil");

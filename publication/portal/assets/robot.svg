@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="robot-svg" width="300" height="360" viewBox="0 0 300 360" fill="none" role="img" aria-labelledby="robot-art-title">
+  <title id="robot-art-title">Robocik retro wykonujący sztuczkę z przyciskiem i symbolem dolara</title>
+  <defs>
+    <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><path d="M0 0v7" stroke="#191c25" stroke-width="1" opacity=".24"/></pattern>
+  </defs>
+  <ellipse cx="151" cy="347" rx="82" ry="8" fill="#191c25" opacity=".18"/>
+  <g stroke="#191c25" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Antenna and the stepped shell of an old CRT monitor. -->
+    <path d="M146 66V44h16V29" stroke="#f5f5f0" stroke-width="7"/>
+    <circle cx="162" cy="21" r="10" fill="#f5f5f0"/>
+    <rect x="57" y="95" width="18" height="49" rx="5" fill="#e9edff"/>
+    <rect x="227" y="95" width="18" height="49" rx="5" fill="#e9edff"/>
+    <path d="M78 71h144l15 15v78l-15 17H78l-15-17V86z" fill="#191c25"/>
+    <path d="M74 65h144l15 15v78l-15 17H74l-15-17V80z" fill="#f5f5f0"/>
+    <path d="M81 82h129l8 8v55l-8 10H81l-8-10V90z" fill="#2449ed"/>
+    <path d="M85 92h72" stroke="#e9edff" stroke-width="2" opacity=".45"/>
+    <path d="M84 98h30" stroke="#e9edff" stroke-width="2" opacity=".45"/>
+    <!-- Square phosphor eyes and a friendly pixel smile. -->
+    <path d="M103 107h16v19h-16zM169 107h16v19h-16z" fill="#f5f5f0" stroke="none"/>
+    <path d="M133 132v6h25v-6" stroke="#f5f5f0" stroke-width="4" stroke-linecap="square"/>
+    <circle cx="73" cy="164" r="2" fill="#191c25" stroke="none"/><circle cx="219" cy="164" r="2" fill="#191c25" stroke="none"/>
+    <path d="M104 166h12m6 0h12m6 0h12" stroke-width="2"/>
+    <!-- Accordion joints and the raised three-finger hand. -->
+    <path d="M126 177v22h38v-22" fill="#e9edff"/>
+    <path d="M127 185h36m-36 7h36" stroke-width="2"/>
+    <g id="robot-original-arm">
+    <path d="m210 215 39-26 8-41" stroke="#191c25" stroke-width="22"/>
+    <path d="m210 215 39-26 8-41" stroke="#f5f5f0" stroke-width="14"/>
+    <circle cx="248" cy="189" r="10" fill="#e9edff"/>
+    <path d="m251 148-16-14v-20m20 27 2-38m7 39 16-16v-16" stroke="#191c25" stroke-width="10"/>
+    <path d="m251 148-16-14v-20m20 27 2-38m7 39 16-16v-16" stroke="#f5f5f0" stroke-width="5"/>
+    </g>
+    <path d="M91 218 67 244l4 33" stroke="#191c25" stroke-width="22"/>
+    <path d="M91 218 67 244l4 33" stroke="#f5f5f0" stroke-width="14"/>
+    <circle cx="67" cy="244" r="9" fill="#e9edff"/>
+    <path d="M62 281v15m17-16 4 15m-13-17 3 20" stroke="#f5f5f0" stroke-width="5"/>
+    <!-- Tin body, instrument panel and large mechanical feet. -->
+    <path d="M102 195h88l17 20v68l-15 12h-92l-14-12v-68z" fill="#191c25"/>
+    <path d="M98 191h88l17 20v68l-15 12H96l-14-12v-68z" fill="#f5f5f0"/>
+    <path d="M183 195v91h9l7-9v-65z" fill="url(#hatch)" stroke="none"/>
+    <rect x="98" y="210" width="72" height="49" rx="3" fill="#2449ed"/>
+    <path d="m111 245 8-23h6l8 23m-18-8h15m12-15h13m-6 0v23m-7 0h13" stroke="#f5f5f0" stroke-width="3"/>
+    <circle cx="111" cy="275" r="4" fill="#2449ed"/><circle cx="128" cy="275" r="4" fill="#191c25"/>
+    <path d="M148 272h23m-23 6h23" stroke-width="2"/>
+    <path d="M105 293v27h26v-27m24 0v27h26v-27" fill="#e9edff"/>
+    <path d="M106 303h24m26 0h24m-74 8h24m26 0h24" stroke-width="2"/>
+    <path d="M102 318h31v20H88v-8zm51 0h31l16 12v8h-47z" fill="#f5f5f0"/>
+    <path d="M88 335h45m20 0h47" stroke-width="3"/>
+  </g>
+</svg>
+

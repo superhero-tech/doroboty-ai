@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { initialState, transition, type Action, type State } from "./model";
-import { parseState, readState, saveState, type StoragePort } from "./storage";
+import { parseState, readState, saveState, STORAGE_KEY, type StoragePort } from "./storage";
 function browserStorage(): StoragePort | null {
   try {
     return window.localStorage;
@@ -15,23 +15,38 @@ function useStore() {
   const [error, setError] = useState("");
   const [blocked, setBlocked] = useState(loaded.blocked);
   const latest = useRef(state);
+  const persisted = useRef(loaded.raw);
   function commit(next: State, replace = false) {
+    const storage = browserStorage();
+    if (!blocked && !replace && storage) {
+      try {
+        if (storage.getItem(STORAGE_KEY) !== persisted.current) {
+          setIssue(
+            "Scenariusz zmienił się w innej karcie. Nie nadpisano danych. Przed odświeżeniem skopiuj niezapisany tekst, a następnie odśwież stronę i ponów zmianę.",
+          );
+          return false;
+        }
+      } catch {
+        // A storage failure is handled below; the in-memory result remains exportable.
+      }
+    }
     latest.current = next;
     setState(next);
     setError("");
-    if (blocked && !replace) return;
+    if (blocked && !replace) return true;
     try {
-      saveState(browserStorage(), next);
+      saveState(storage, next);
+      persisted.current = storage!.getItem(STORAGE_KEY);
       setIssue("");
       if (replace) setBlocked(false);
     } catch (e) {
       setIssue((e as Error).message);
     }
+    return true;
   }
   function run(action: Action) {
     try {
-      commit(transition(latest.current, action));
-      return true;
+      return commit(transition(latest.current, action));
     } catch (e) {
       setError(
         e instanceof Error && e.name !== "ZodError"

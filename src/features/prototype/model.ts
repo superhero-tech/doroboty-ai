@@ -3,6 +3,7 @@ import marketplace from "./data/marketplace.json" with { type: "json" };
 import people from "./data/people.json" with { type: "json" };
 import type { JobWithCompany } from "@/features/jobs/types";
 import {
+  exampleDraft,
   profileProjectDraftSchema,
   profileProjectSchema,
   type ProfileProjectDraft,
@@ -236,6 +237,11 @@ export function initialState(): State {
   });
   const bob = state.people.find((x) => x.id === "candidate-marek")!;
   const job = state.jobs[0];
+  if (import.meta.env?.MODE === "publication") {
+    const anna = state.people.find((person) => person.id === "candidate-anna")!;
+    anna.project = profileProjectSchema.parse(exampleDraft);
+    state.activePersonId = anna.id;
+  }
   state.applications.push({
     id: "application-example",
     candidateId: bob.id,

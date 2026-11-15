@@ -11,7 +11,15 @@ export default defineConfig({
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  projects: [
+    {
+      name: "chromium",
+      use: {
+        ...devices["Desktop Chrome"],
+        ...(process.env.PLAYWRIGHT_CHANNEL === "chrome" ? { channel: "chrome" } : {}),
+      },
+    },
+  ],
   webServer: {
     command: "npm run preview -- --port 3106",
     url: "http://127.0.0.1:3106",
