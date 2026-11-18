@@ -11,6 +11,8 @@ export default tseslint.config(
       "test-results/**",
       "artifacts/**",
       "docs/design-system/agent-kit/**",
+      ".claude/skills/**",
+      ".agents/skills/**",
     ],
   },
   js.configs.recommended,

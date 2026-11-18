@@ -1,0 +1,39 @@
+name: Sync Superhero skills
+
+# Weekly check for new versions of superhero-tech/superhero-skills.
+# Changes arrive as a pull request; nothing is merged automatically.
+on:
+  schedule:
+    - cron: "17 6 * * 1" # Mondays 06:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-superhero-skills
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Copy latest skills
+        run: ./scripts/sync-superhero-skills.sh
+      - name: Open or update pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: chore/sync-superhero-skills-update
+          delete-branch: true
+          commit-message: "chore: sync skills from superhero-tech/superhero-skills"
+          title: "Sync skills from superhero-tech/superhero-skills"
+          body: |
+            Automatic weekly sync of `.claude/skills` and `.agents/skills` from
+            https://github.com/superhero-tech/superhero-skills (see `docs/superhero-skills.json`
+            for the upstream commit). Review the diff before merging; only skills listed in
+            the manifest are replaced or removed.

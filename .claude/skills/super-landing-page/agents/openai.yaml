@@ -1,0 +1,4 @@
+interface:
+  display_name: "Super Landing Page"
+  short_description: "From a guided brief to a distinctive, polished landing page"
+  default_prompt: "Use $super-landing-page: guide me through the complete choices in chat, independently develop ambitious composition and motion for my chosen direction, then build and visually verify the page."

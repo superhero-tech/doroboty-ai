@@ -1,0 +1,3 @@
+interface:
+  display_name: "Symulator wywiadów"
+  short_description: "Ćwicz wywiady z fikcyjną personą i otrzymaj ocenę"

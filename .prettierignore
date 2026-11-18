@@ -7,3 +7,8 @@ artifacts
 
 # Preserve the versioned reference byte-for-byte; checked by its own scripts.
 docs/design-system/agent-kit/
+
+# Vendored upstream skills, replaced by scripts/sync-superhero-skills.sh.
+.claude/skills/
+.agents/skills/
+docs/superhero-skills.json

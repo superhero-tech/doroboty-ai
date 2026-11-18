@@ -1,0 +1,163 @@
+{
+  "schema_version": 2,
+  "language": "en",
+  "product": null,
+  "cycle": null,
+  "working_question": null,
+  "current_stage": "goal",
+  "sources": [],
+  "analysis_runs": [],
+  "nodes": [],
+  "edges": [],
+  "selected_opportunity_id": null,
+  "selected_idea_ids": [],
+  "selected_experiment_ids": [],
+  "recommended_next_experiment_ids": [],
+  "pending_reviews": [],
+  "next_action": null,
+  "history": [],
+  "tree": {
+    "revision": 1,
+    "html_path": "tree/tree.html",
+    "mermaid_path": "tree/tree.mmd",
+    "external_target": null
+  },
+  "intake": {
+    "product_confirmed": false,
+    "outcome_response": null,
+    "source_refs": []
+  },
+  "product_context": {
+    "description": null,
+    "audience": null,
+    "source_refs": [],
+    "review_status": "pending",
+    "artifact_path": "context/product.md",
+    "canvas": null
+  },
+  "human_gates": {
+    "mode": "interactive",
+    "delegations": [],
+    "stages": {
+      "goal": {
+        "status": "awaiting_input",
+        "input": {
+          "response": null,
+          "source_refs": []
+        },
+        "draft": {
+          "revision": null,
+          "artifact_path": null
+        },
+        "review": {
+          "decision": null,
+          "response": null,
+          "source_refs": [],
+          "reviewed_revision": null
+        }
+      },
+      "signals": {
+        "status": "not_started",
+        "input": {
+          "response": null,
+          "source_refs": []
+        },
+        "draft": {
+          "revision": null,
+          "artifact_path": null
+        },
+        "review": {
+          "decision": null,
+          "response": null,
+          "source_refs": [],
+          "reviewed_revision": null
+        }
+      },
+      "opportunities": {
+        "status": "not_started",
+        "input": {
+          "response": null,
+          "source_refs": []
+        },
+        "draft": {
+          "revision": null,
+          "artifact_path": null
+        },
+        "review": {
+          "decision": null,
+          "response": null,
+          "source_refs": [],
+          "reviewed_revision": null
+        }
+      },
+      "ideas": {
+        "status": "not_started",
+        "input": {
+          "response": null,
+          "source_refs": []
+        },
+        "draft": {
+          "revision": null,
+          "artifact_path": null
+        },
+        "review": {
+          "decision": null,
+          "response": null,
+          "source_refs": [],
+          "reviewed_revision": null
+        }
+      },
+      "experiments": {
+        "status": "not_started",
+        "input": {
+          "response": null,
+          "source_refs": []
+        },
+        "draft": {
+          "revision": null,
+          "artifact_path": null
+        },
+        "review": {
+          "decision": null,
+          "response": null,
+          "source_refs": [],
+          "reviewed_revision": null
+        }
+      },
+      "results": {
+        "status": "not_started",
+        "input": {
+          "response": null,
+          "source_refs": []
+        },
+        "draft": {
+          "revision": null,
+          "artifact_path": null
+        },
+        "review": {
+          "decision": null,
+          "response": null,
+          "source_refs": [],
+          "reviewed_revision": null
+        }
+      },
+      "decision": {
+        "status": "not_started",
+        "input": {
+          "response": null,
+          "source_refs": []
+        },
+        "draft": {
+          "revision": null,
+          "artifact_path": null
+        },
+        "review": {
+          "decision": null,
+          "response": null,
+          "source_refs": [],
+          "reviewed_revision": null
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "source": "https://github.com/superhero-tech/superhero-skills",
+  "path": "plugins/product-discovery/skills",
+  "ref": "main",
+  "commit": "b5e04748e130077dc6e0ea39f9cedb9e3518da0d",
+  "license": "MIT (see .claude/skills/SUPERHERO-SKILLS-LICENSE)",
+  "targets": [
+    ".claude/skills",
+    ".agents/skills"
+  ],
+  "skills": [
+    "production-readiness",
+    "build-figma-library",
+    "document-design-system-components",
+    "extract-design-md",
+    "poster-people-ui",
+    "super-landing-page",
+    "visual-direction-research",
+    "ab-test-design",
+    "affinity-mapping",
+    "code-event-storming",
+    "customer-research",
+    "data-analysis",
+    "desk-research",
+    "experiment-design",
+    "interview-plan",
+    "interview-simulator",
+    "pres-prioritization",
+    "supersentence",
+    "supersprint"
+  ]
+}
