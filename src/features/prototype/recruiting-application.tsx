@@ -2,7 +2,8 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ApplicationRecord } from "./application-record";
-import { nextStages, stageLabels, type Application } from "./model";
+import { ASSESSED_FROM, nextStages, stageLabels, type Application } from "./model";
+import { AssessmentSummary, PostInterviewAssessment } from "./post-interview-assessment";
 import { usePrototype } from "./store";
 
 export function RecruitingApplication({ application }: { application: Application }) {
@@ -13,6 +14,9 @@ export function RecruitingApplication({ application }: { application: Applicatio
   const pendingFocus = useRef(false);
   const company = state.companies.find((item) => item.id === application.companyId);
   const availableStages = nextStages[application.stage];
+  const assessment = state.assessments.find((item) => item.applicationId === application.id);
+  const needsAssessment = application.stage === ASSESSED_FROM;
+  const decisionBlocked = needsAssessment && !assessment;
 
   useLayoutEffect(() => {
     if (pendingFocus.current) {
@@ -33,11 +37,18 @@ export function RecruitingApplication({ application }: { application: Applicatio
           availableStages.length > 0 ? (
             <>
               <p className="record-caption">Notatka zapisze się w historii po zmianie etapu.</p>
+              {decisionBlocked && (
+                <p className="record-caption assessment-gate" id="assessment-gate">
+                  Najpierw zapisz ocenę po rozmowie — decyzja wymaga oceny każdego kryterium.
+                </p>
+              )}
               <div className="record-actions">
                 {availableStages.map((stage) => (
                   <Button
                     key={stage}
                     variant={stage === "rejected" ? "outline" : "default"}
+                    disabled={decisionBlocked}
+                    aria-describedby={decisionBlocked ? "assessment-gate" : undefined}
                     onClick={() => {
                       if (run({ type: "stage", applicationId: application.id, stage, note })) {
                         setNote("");
@@ -58,6 +69,11 @@ export function RecruitingApplication({ application }: { application: Applicatio
           )
         }
       >
+        {needsAssessment ? (
+          <PostInterviewAssessment application={application} saved={assessment} />
+        ) : assessment ? (
+          <AssessmentSummary assessment={assessment} />
+        ) : null}
         {availableStages.length > 0 ? (
           <>
             <h3>

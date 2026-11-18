@@ -2,6 +2,7 @@ import { z } from "zod";
 import marketplace from "./data/marketplace.json" with { type: "json" };
 import people from "./data/people.json" with { type: "json" };
 import type { JobWithCompany } from "@/features/jobs/types";
+import { ratings } from "./assessment";
 
 const id = z
   .string()
@@ -123,6 +124,25 @@ const applicationSchema = z.object({
     .min(1)
     .max(30),
 });
+export const assessmentInputSchema = z.object({
+  notes: text,
+  criteria: z
+    .array(
+      z.object({
+        label: shortText,
+        evidence: z.string().trim().min(1, "Uzupełnij dowód z notatek.").max(2000),
+        rating: z.enum(ratings),
+      }),
+    )
+    .min(1)
+    .max(10),
+  note: text,
+  durationSeconds: z.number().int().min(0).max(86400).optional(),
+});
+const assessmentSchema = assessmentInputSchema.extend({
+  applicationId: id,
+  at: z.iso.datetime(),
+});
 const draftSchema = z.object({
   candidateId: id,
   jobId: id,
@@ -140,6 +160,7 @@ export const stateSchema = z
     applications: z.array(applicationSchema).max(2000),
     saved: z.array(z.object({ candidateId: id, jobId: id })).max(5000),
     drafts: z.array(draftSchema).max(1000),
+    assessments: z.array(assessmentSchema).max(2000).default([]),
   })
   .superRefine((s, ctx) => {
     const problem = (message: string) => ctx.addIssue({ code: "custom", message });
@@ -184,6 +205,13 @@ export const stateSchema = z
         if (after.at < before.at) problem("Invalid event order");
       }
     }
+    const applicationIds = new Set(s.applications.map((x) => x.id));
+    const assessed = new Set<string>();
+    for (const a of s.assessments) {
+      if (!applicationIds.has(a.applicationId) || assessed.has(a.applicationId))
+        problem("Invalid assessment reference");
+      assessed.add(a.applicationId);
+    }
     for (const list of [s.saved, s.drafts]) {
       const pairs = new Set<string>();
       for (const item of list) {
@@ -197,6 +225,10 @@ export const stateSchema = z
 export type State = z.infer<typeof stateSchema>;
 export type Person = State["people"][number];
 export type Application = State["applications"][number];
+export type Assessment = State["assessments"][number];
+export type AssessmentInput = z.input<typeof assessmentInputSchema>;
+/** Leaving this stage (continue or reject) requires a saved post-interview assessment. */
+export const ASSESSED_FROM: Stage = "first_conversation_held";
 export type Action =
   | { type: "select_person"; id: string | null }
   | { type: "profile"; value: z.infer<typeof profileSchema> }
@@ -212,6 +244,7 @@ export type Action =
     }
   | { type: "stage"; applicationId: string; stage: Stage; note: string }
   | { type: "withdraw"; applicationId: string }
+  | { type: "assess"; applicationId: string; value: AssessmentInput }
   | { type: "publish"; job: z.infer<typeof jobSchema> }
   | { type: "company"; name: string; description: string };
 
@@ -224,6 +257,7 @@ export function initialState(): State {
     applications: [],
     saved: [],
     drafts: [],
+    assessments: [],
   });
   const bob = state.people.find((x) => x.id === "candidate-marek")!;
   const job = state.jobs[0];
@@ -332,9 +366,24 @@ export function transition(
       const p = employer();
       if (application.companyId !== p.companyId || !nextStages[application.stage].includes(stage))
         fail("Ta zmiana etapu nie jest dostępna.");
+      if (
+        application.stage === ASSESSED_FROM &&
+        !s.assessments.some((x) => x.applicationId === application.id)
+      )
+        fail("Zapisz ocenę po rozmowie, zanim podejmiesz decyzję.");
     }
     application.stage = stage;
     application.events.push({ stage, at: now, note: action.type === "stage" ? action.note : "" });
+  } else if (action.type === "assess") {
+    const p = employer();
+    const application = s.applications.find((x) => x.id === action.applicationId);
+    if (!application || application.companyId !== p.companyId)
+      return fail("Nie znaleziono aplikacji.");
+    if (application.stage !== ASSESSED_FROM)
+      fail("Ocenę zapisuje się po pierwszej rozmowie, przed decyzją.");
+    const value = assessmentInputSchema.parse(action.value);
+    s.assessments = s.assessments.filter((x) => x.applicationId !== application.id);
+    s.assessments.push({ ...value, applicationId: application.id, at: now });
   } else if (action.type === "publish") {
     const p = employer();
     const job = jobSchema.parse(action.job);

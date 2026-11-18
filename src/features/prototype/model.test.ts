@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { initialState, transition, stateSchema, type State } from "./model";
+import { organizeNotes, rubricFor } from "./assessment";
 const time = "2026-11-03T10:00:00.000Z";
 function as(state: State, id: string) {
   return transition(state, { type: "select_person", id });
@@ -20,6 +21,109 @@ function submitted() {
     "application-anna",
   );
 }
+function assess(state: State, applicationId = "application-anna") {
+  const job = state.applications.find((x) => x.id === applicationId)!.jobId;
+  return transition(
+    state,
+    {
+      type: "assess",
+      applicationId,
+      value: {
+        notes: rubricFor(job).exampleNotes,
+        note: "",
+        durationSeconds: 95,
+        criteria: rubricFor(job).criteria.map((c) => ({
+          label: c.label,
+          evidence: "Konkretny przykład z rozmowy.",
+          rating: "meets" as const,
+        })),
+      },
+    },
+    time,
+  );
+}
+function atConversation() {
+  let s = as(submitted(), "employer-brightlabs");
+  for (const stage of ["reviewed", "interview_invited", "first_conversation_held"] as const)
+    s = transition(s, { type: "stage", applicationId: "application-anna", stage, note: "" }, time);
+  return s;
+}
+describe("post-interview assessment (I1)", () => {
+  it("blocks both decisions after the first conversation until an assessment is saved", () => {
+    const s = atConversation();
+    for (const stage of ["continued", "rejected"] as const)
+      expect(() =>
+        transition(s, { type: "stage", applicationId: "application-anna", stage, note: "" }, time),
+      ).toThrow("Zapisz ocenę");
+    const assessed = assess(s);
+    expect(assessed.assessments).toHaveLength(1);
+    expect(assessed.assessments[0]).toMatchObject({ applicationId: "application-anna", at: time });
+    const rejected = transition(
+      assessed,
+      { type: "stage", applicationId: "application-anna", stage: "rejected", note: "" },
+      time,
+    );
+    expect(rejected.applications.at(-1)?.stage).toBe("rejected");
+  });
+  it("still allows rejection before the conversation without an assessment", () => {
+    const s = as(submitted(), "employer-brightlabs");
+    const rejected = transition(
+      s,
+      { type: "stage", applicationId: "application-anna", stage: "rejected", note: "" },
+      time,
+    );
+    expect(rejected.applications.at(-1)?.stage).toBe("rejected");
+  });
+  it("requires evidence and a rating for every criterion and replaces an earlier assessment", () => {
+    const s = atConversation();
+    const job = s.applications.at(-1)!.jobId;
+    expect(() =>
+      transition(s, {
+        type: "assess",
+        applicationId: "application-anna",
+        value: {
+          notes: "",
+          note: "",
+          criteria: [{ label: rubricFor(job).criteria[0].label, evidence: " ", rating: "meets" }],
+        },
+      }),
+    ).toThrow();
+    const twice = assess(assess(s));
+    expect(twice.assessments).toHaveLength(1);
+  });
+  it("lets only the owning employer assess, and only at the conversation stage", () => {
+    const s = atConversation();
+    expect(() => assess(as(s, "employer-northstar"))).toThrow("Nie znaleziono");
+    expect(() => assess(as(s, "candidate-anna"))).toThrow("pracodawcy");
+    expect(() => assess(as(submitted(), "employer-brightlabs"))).toThrow("po pierwszej rozmowie");
+  });
+  it("imports older saves without assessments and rejects dangling references", () => {
+    const legacy = structuredClone(initialState()) as Partial<State>;
+    delete legacy.assessments;
+    expect(stateSchema.parse(legacy).assessments).toEqual([]);
+    const broken = structuredClone(assess(atConversation()));
+    broken.assessments[0].applicationId = "missing";
+    expect(() => stateSchema.parse(broken)).toThrow();
+  });
+  it("organizes example notes into every criterion without producing ratings", () => {
+    const rubric = rubricFor("20000000-0000-4000-8000-000000000001");
+    const result = organizeNotes(rubric.exampleNotes, rubric.criteria);
+    expect(result.evidence.every(Boolean)).toBe(true);
+    expect(result.unmatched).toEqual(["Dopytywała o skład zespołu i budżet na narzędzia."]);
+    const labelled = organizeNotes("Mierzenie efektu: NPS wzrósł", rubric.criteria);
+    expect(labelled.evidence[2]).toBe("NPS wzrósł");
+    for (const id of [
+      "20000000-0000-4000-8000-000000000002",
+      "20000000-0000-4000-8000-000000000004",
+      "20000000-0000-4000-8000-000000000005",
+      "unknown-job",
+    ]) {
+      const r = rubricFor(id);
+      const organized = organizeNotes(r.exampleNotes, r.criteria);
+      expect(organized.evidence.every(Boolean), id).toBe(true);
+    }
+  });
+});
 describe("coherent browser scenario", () => {
   it("requires approval and prevents duplicate applications", () => {
     const s = as(initialState(), "candidate-anna");
@@ -61,13 +165,14 @@ describe("coherent browser scenario", () => {
         time,
       ),
     ).toThrow();
-    for (const stage of [
-      "reviewed",
-      "interview_invited",
-      "first_conversation_held",
-      "continued",
-      "hired",
-    ] as const)
+    for (const stage of ["reviewed", "interview_invited", "first_conversation_held"] as const)
+      s = transition(
+        s,
+        { type: "stage", applicationId: "application-anna", stage, note: "Employer note" },
+        time,
+      );
+    s = assess(s);
+    for (const stage of ["continued", "hired"] as const)
       s = transition(
         s,
         { type: "stage", applicationId: "application-anna", stage, note: "Employer note" },

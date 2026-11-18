@@ -7,6 +7,22 @@ async function choose(page: Page, name: string) {
   await page.goto("/#/auth/sign-in");
   await page.getByRole("button", { name: `Wejdź jako ${name}`, exact: true }).click();
 }
+async function rate(page: Page, values: string[]) {
+  const triggers = page.getByRole("combobox", { name: /^Twoja ocena — / });
+  for (const [index, value] of values.entries()) {
+    await triggers.nth(index).click();
+    await page.getByRole("option", { name: value, exact: true }).click();
+  }
+}
+async function assessAfterConversation(page: Page) {
+  await page.getByRole("button", { name: "Wstaw przykładowe notatki", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Uporządkuj notatki (symulacja AI)", exact: true })
+    .click();
+  await rate(page, ["Spełnia", "Spełnia", "Spełnia"]);
+  await page.getByRole("button", { name: "Zapisz ocenę", exact: true }).click();
+  await expect(page.getByText("Ocena zapisana", { exact: false })).toBeVisible();
+}
 async function application(page: Page) {
   await choose(page, "Anna Kowalska");
   await page.goto("/#/aplikuj/ai-product-manager");
@@ -145,8 +161,10 @@ test("published job → saved offer/draft → submitted application → employer
     .getByLabel("Notatka rekrutacyjna (widoczna pracodawcy)")
     .fill("Notatka pracodawcy — tylko panel firmy.");
   await page.getByRole("button", { name: "W przeglądzie", exact: true }).click();
-  for (const label of ["Zaproszenie na rozmowę", "Pierwsza rozmowa odbyta", "Kolejny etap"])
+  for (const label of ["Zaproszenie na rozmowę", "Pierwsza rozmowa odbyta"])
     await page.getByRole("button", { name: label, exact: true }).click();
+  await assessAfterConversation(page);
+  await page.getByRole("button", { name: "Kolejny etap", exact: true }).click();
   await page.reload();
   await expect(page.getByRole("button", { name: "Zatrudnienie", exact: true })).toBeVisible();
   await choose(page, "Anna Kowalska");
@@ -158,6 +176,109 @@ test("published job → saved offer/draft → submitted application → employer
   await page.screenshot({ path: "artifacts/candidate-desktop.png", fullPage: true });
   expect(external).toEqual([]);
   expect(errors).toEqual([]);
+});
+
+test("employer assesses practical skills after the first conversation before deciding (I1)", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await application(page);
+  await expect(page.getByText("Aplikacja została wysłana.", { exact: false })).toBeVisible();
+  await choose(page, "Karolina Wiśniewska");
+  await page.goto("/#/app/kandydaci");
+  await page.getByRole("link", { name: "Anna Kowalska", exact: true }).click();
+  for (const label of ["W przeglądzie", "Zaproszenie na rozmowę", "Pierwsza rozmowa odbyta"])
+    await page.getByRole("button", { name: label, exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Ocena po rozmowie" })).toBeVisible();
+  const proceed = page.getByRole("button", { name: "Kolejny etap", exact: true });
+  const reject = page.getByRole("button", { name: "Proces zakończony", exact: true });
+  await expect(proceed).toBeDisabled();
+  await expect(reject).toBeDisabled();
+  await expect(page.getByText("Najpierw zapisz ocenę po rozmowie", { exact: false })).toBeVisible();
+  await page.getByRole("button", { name: "Zapisz ocenę", exact: true }).click();
+  await expect(page.getByRole("alert")).toContainText("Praca z AI w produkcie: brakuje dowodu");
+  await expect(page.getByRole("alert")).toBeFocused();
+  await page.getByRole("button", { name: "Wstaw przykładowe notatki", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Uporządkuj notatki (symulacja AI)", exact: true })
+    .click();
+  await expect(
+    page.getByText("przypisała notatki do 3 z 3 kryteriów", { exact: false }),
+  ).toBeVisible();
+  await expect(page.locator(".assessment-unmatched")).toContainText("Dopytywała o skład zespołu");
+  const evidence = page.getByLabel("Dowód z notatek");
+  await expect(evidence).toHaveCount(3);
+  await expect(evidence.nth(0)).toHaveValue(/asystenta AI/);
+  await expect(evidence.nth(1)).toHaveValue(/12 wywiadów/);
+  await expect(evidence.nth(2)).toHaveValue(/30%/);
+  await rate(page, ["Spełnia", "Przewyższa", "Częściowo spełnia"]);
+  await expect(page.getByRole("alert")).toHaveCount(0);
+  const axe = await new AxeBuilder({ page })
+    .include(".assessment")
+    .withTags(["wcag2a", "wcag2aa"])
+    .analyze();
+  expect(axe.violations).toEqual([]);
+  await page.screenshot({ path: "artifacts/i1-assessment-form-desktop.png", fullPage: true });
+  await page.locator(".recruiting-record").screenshot({ path: "artifacts/i1-circle-form.png" });
+  await page.getByRole("button", { name: "Zapisz ocenę", exact: true }).click();
+  await expect(page.getByText("Ocena zapisana", { exact: false })).toBeVisible();
+  await expect(proceed).toBeEnabled();
+  await page.reload();
+  await expect(
+    page.getByRole("combobox", { name: "Twoja ocena — Badania z użytkownikami" }),
+  ).toContainText("Przewyższa");
+  const saved = await page.evaluate(
+    (key) => JSON.parse(localStorage.getItem(key)!).assessments,
+    STORAGE_KEY,
+  );
+  expect(saved).toHaveLength(1);
+  expect(saved[0].criteria.map((c: { rating: string }) => c.rating)).toEqual([
+    "meets",
+    "exceeds",
+    "partial",
+  ]);
+  expect(typeof saved[0].durationSeconds).toBe("number");
+  await proceed.click();
+  await expect(page.locator(".record-stage")).toHaveText("Kolejny etap");
+  const summary = page.locator(".assessment-summary");
+  await expect(summary).toContainText("Przewyższa");
+  await expect(summary).toContainText("12 wywiadów");
+  await page.screenshot({ path: "artifacts/i1-assessment-summary-desktop.png", fullPage: true });
+  await page.locator(".recruiting-record").screenshot({ path: "artifacts/i1-circle-summary.png" });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(summary).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: "artifacts/i1-assessment-summary-mobile.png", fullPage: true });
+  const url = page.url();
+  await choose(page, "Anna Kowalska");
+  await page.goto("/#/app/aplikacje");
+  await page.getByRole("link", { name: "AI Product Manager", exact: true }).click();
+  await expect(page.locator(".record-stage")).toHaveText("Kolejny etap");
+  await expect(page.getByText("Ocena po rozmowie")).toHaveCount(0);
+  await expect(page.getByText("12 wywiadów", { exact: false })).toHaveCount(0);
+  await choose(page, "Tomasz Zieliński");
+  await page.goto(url);
+  await expect(page.getByRole("heading", { name: "Nie znaleziono strony" })).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+test("assessment form fits a narrow screen at the conversation stage", async ({ page }) => {
+  await application(page);
+  await choose(page, "Karolina Wiśniewska");
+  await page.goto("/#/app/kandydaci");
+  await page.getByRole("link", { name: "Anna Kowalska", exact: true }).click();
+  for (const label of ["W przeglądzie", "Zaproszenie na rozmowę", "Pierwsza rozmowa odbyta"])
+    await page.getByRole("button", { name: label, exact: true }).click();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole("button", { name: "Wstaw przykładowe notatki", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Uporządkuj notatki (symulacja AI)", exact: true })
+    .click();
+  await expect(page.getByLabel("Dowód z notatek").first()).toHaveValue(/asystenta AI/);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: "artifacts/i1-assessment-form-mobile.png", fullPage: true });
 });
 
 test("another company cannot see or change a candidate application", async ({ page }) => {
