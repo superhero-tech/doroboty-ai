@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07111d">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Utwórz demonstracyjną ofertę pracy w panelu rekrutera DoRobory.AI.">
+  <title>Utwórz ofertę — Panel rekrutera — DoRobory.AI</title>
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="ai-interview.css">
+</head>
+<body class="recruiter-screen" data-recruiter-page="create">
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a class="brand" href="start.html" aria-label="DoRobory.AI — strona główna"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(-38 12 12)" stroke="currentColor" stroke-width="1.4"/><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(38 12 12)" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg></span><span>DoRobory<em>.AI</em></span></a>
+      <nav class="masthead-tabs" aria-label="Główna nawigacja">
+        <a href="start.html">Start</a>
+        <a href="role.html">Oferty pracy</a>
+        <a href="dopasowanie.html">Dopasowanie</a>
+        <a href="o-portalu.html">O portalu</a>
+        <a href="faq.html">FAQ</a>
+      </nav>
+      <a class="masthead-login" data-login-link data-login-next="rekruter-utworz.html" href="zaloguj.html?next=rekruter-utworz.html"><span data-login-label>Zaloguj się</span><span class="login-chevron" aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <main class="recruiter-main">
+    <p class="recruiter-eyebrow">Panel rekrutera · publikowanie</p>
+    <h1 class="recruiter-title">Utwórz ofertę pracy.</h1>
+    <p class="recruiter-lede">Dodaj fikcyjne ogłoszenie, które od razu pojawi się w katalogu ofert dla kandydatów.</p>
+    <aside class="recruiter-notice"><strong>Wersja testowa:</strong> wybór rekrutera jest symulacją, nie zabezpieczeniem. Oferty zapisują się wyłącznie w tej przeglądarce. Używaj fikcyjnych danych.</aside>
+    <section class="recruiter-gate" data-recruiter-access aria-labelledby="recruiter-gate-title" hidden>
+      <h2 id="recruiter-gate-title">Zaloguj się na konto rekrutera.</h2>
+      <p>Wybierz konto rekrutera na stronie logowania, aby tworzyć oferty.</p>
+      <a class="primary-cta" href="zaloguj.html?next=rekruter-utworz.html">Zaloguj się jako rekruter <span class="arrow" aria-hidden="true">↗</span></a>
+    </section>
+    <div data-recruiter-workspace hidden>
+      <section class="recruiter-work-section" aria-labelledby="recruiter-job-form-title">
+        <div class="recruiter-section-heading"><div><p class="recruiter-eyebrow">Nowa publikacja</p><h2 id="recruiter-job-form-title">Szczegóły oferty.</h2></div><p>Po zapisaniu ogłoszenie będzie widoczne w katalogu kandydatów.</p></div>
+        <form class="recruiter-job-form" data-recruiter-job-form>
+          <label class="recruiter-field recruiter-field--wide"><span>Nazwa stanowiska</span><input name="title" type="text" maxlength="120" required autocomplete="organization-title" placeholder="np. AI Product Designer"></label>
+          <label class="recruiter-field"><span>Firma</span><input name="company" type="text" maxlength="80" required value="DoRobory.AI"></label>
+          <label class="recruiter-field"><span>Obszar roli</span><select name="direction" required><option value="product">Produkt</option><option value="design_ux">Design i UX</option><option value="marketing_content">Marketing i content</option><option value="automation">Automatyzacja</option><option value="engineering_data">Inżynieria i data</option><option value="implementation">Wdrożenia</option></select></label>
+          <label class="recruiter-field"><span>Poziom</span><select name="seniority" required><option value="junior">Junior</option><option value="mid" selected>Mid</option><option value="senior">Senior</option><option value="expert">Expert</option></select></label>
+          <label class="recruiter-field"><span>Miasto</span><select name="city" required><option>Gdańsk</option><option>Kraków</option><option>Łódź</option><option selected>Poznań</option><option>Wrocław</option></select></label>
+          <label class="recruiter-field"><span>Tryb pracy</span><select name="mode" required><option value="remote">Zdalnie</option><option value="hybrid">Hybrydowo</option><option value="office">Stacjonarnie</option></select></label>
+          <label class="recruiter-field"><span>Rodzaj umowy</span><select name="contract" required><option value="UoP">Umowa o pracę</option><option value="B2B">B2B</option></select></label>
+          <label class="recruiter-field"><span>Wynagrodzenie od · zł</span><input name="salaryMin" type="number" min="0" max="1000000" step="500" inputmode="numeric" placeholder="Opcjonalnie"></label>
+          <label class="recruiter-field"><span>Wynagrodzenie do · zł</span><input name="salaryMax" type="number" min="0" max="1000000" step="500" inputmode="numeric" placeholder="Opcjonalnie"></label>
+          <label class="recruiter-field recruiter-field--wide"><span>Krótki opis oferty</span><textarea name="summary" rows="3" maxlength="360" required placeholder="Co będzie najważniejszym zadaniem na tym stanowisku?"></textarea></label>
+          <label class="recruiter-field recruiter-field--wide"><span>Zakres odpowiedzialności <small>opcjonalnie</small></span><textarea name="responsibility" rows="3" maxlength="600" placeholder="Za jakie zadania będzie odpowiadać osoba na tym stanowisku?"></textarea></label>
+          <p class="recruiter-form-error" data-recruiter-job-error role="alert"></p>
+          <div class="recruiter-form-actions"><button class="recruiter-process-button is-primary" type="submit">Opublikuj ofertę</button><p>Oferty są lokalne i demonstracyjne.</p></div>
+        </form>
+      </section>
+    </div>
+    <footer class="recruiter-footer"><a href="rekruter-oferty.html">Zobacz opublikowane oferty</a><span> · </span><a href="rekruter.html">Przejdź do aplikacji</a></footer>
+  </main>
+  <div class="application-toast" data-app-toast role="status" aria-live="polite"></div>
+  <script src="demo-jobs.js" defer></script>
+  <script src="site.js" defer></script>
+</body>
+</html>

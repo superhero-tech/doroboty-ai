@@ -202,6 +202,10 @@ export function Shell() {
             </main>
           </div>
         </div>
+      ) : pathname === "/" ? (
+        <main id="main" ref={main} tabIndex={-1} className="outline-none">
+          {content}
+        </main>
       ) : (
         <>
           <header className="bg-background/95 shadow-[var(--gui-divider-bottom-shadow)] backdrop-blur supports-[backdrop-filter]:bg-background/80">

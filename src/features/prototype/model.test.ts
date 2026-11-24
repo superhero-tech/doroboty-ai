@@ -76,6 +76,31 @@ describe("coherent browser scenario", () => {
     expect(s.applications.at(-1)?.stage).toBe("hired");
     expect(s.applications.at(-1)?.events).toHaveLength(6);
   });
+  it("allows rejection at every active recruiting stage", () => {
+    const paths = [
+      [],
+      ["reviewed"],
+      ["reviewed", "interview_invited"],
+      ["reviewed", "interview_invited", "first_conversation_held"],
+      ["reviewed", "interview_invited", "first_conversation_held", "continued"],
+    ] as const;
+    for (const path of paths) {
+      let state = submitted();
+      for (const stage of path) {
+        state = transition(
+          as(state, "employer-brightlabs"),
+          { type: "stage", applicationId: "application-anna", stage, note: "" },
+          time,
+        );
+      }
+      const rejected = transition(
+        as(state, "employer-brightlabs"),
+        { type: "stage", applicationId: "application-anna", stage: "rejected", note: "" },
+        time,
+      );
+      expect(rejected.applications.at(-1)?.stage).toBe("rejected");
+    }
+  });
   it("rejects another employer’s stage writes and another candidate’s withdrawal", () => {
     expect(() =>
       transition(

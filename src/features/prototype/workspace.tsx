@@ -10,7 +10,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { JobCard } from "@/features/jobs/job-card";
 import { ApplicationOfferPreview } from "@/features/jobs/application-offer-preview";
 import { usePrototype } from "./store";
-import { currentPerson, publishedJobs, stageLabels, MIN_APPLICATION_ANSWER_LENGTH } from "./model";
+import {
+  candidateNextStepLabels,
+  currentPerson,
+  publishedJobs,
+  stageLabels,
+  MIN_APPLICATION_ANSWER_LENGTH,
+} from "./model";
 import { PageTitle, Empty, NotFound, Notice } from "./shell";
 import { CvAttachment } from "./cv-attachment";
 import { MatchScore } from "./match-score";
@@ -31,39 +37,56 @@ export function PersonPicker() {
   const [params] = useSearchParams();
   const next = params.get("next");
   const audience = params.get("audience");
+  const recruiter =
+    state.people.find((person) => person.id === "employer-brightlabs") ??
+    state.people.find((person) => person.role === "employer");
   const people =
-    audience === "candidate" || audience === "employer"
-      ? state.people.filter((person) => person.role === audience)
-      : state.people;
+    audience === "candidate"
+      ? state.people.filter((person) => person.role === "candidate")
+      : audience === "employer"
+        ? recruiter
+          ? [recruiter]
+          : []
+        : state.people;
   const safeNext = next && /^\/(?!\/)/.test(next) && !next.startsWith("/auth") ? next : null;
   return (
     <section className="prototype-section max-w-4xl">
-      <h1>Wybierz osobę</h1>
+      <h1>{audience === "employer" ? "Zaloguj się do panelu rekrutera" : "Wybierz osobę"}</h1>
       <p className="mt-4 mb-8 text-muted-foreground">
-        Wybierz profil, z którego chcesz korzystać w prototypie. Hasło nie jest potrzebne.
+        {audience === "employer"
+          ? "W tej wersji jest jedno konto rekrutera. Wybór nie wymaga hasła i działa tylko jako demonstracja."
+          : "Wybierz profil, z którego chcesz korzystać w prototypie. Hasło nie jest potrzebne."}
       </p>
       <div className="grid gap-5 sm:grid-cols-2">
-        {people.map((person) => (
-          <article key={person.id} className="prototype-panel">
-            <h2 className="text-xl">{person.name}</h2>
-            <p className="my-4 text-muted-foreground">{person.headline}</p>
-            <Button
-              variant="outline"
-              onClick={() => {
-                run({ type: "select_person", id: person.id });
-                navigate(
-                  person.role === "candidate"
-                    ? (safeNext ?? "/app")
-                    : person.role === "employer"
-                      ? "/app/oferty"
-                      : "/app/case",
-                );
-              }}
-            >
-              Wejdź jako {person.name}
-            </Button>
-          </article>
-        ))}
+        {people.map((person) => {
+          const recruiterAccount = person.id === recruiter?.id && person.role === "employer";
+          return (
+            <article key={person.id} className="prototype-panel">
+              {recruiterAccount && (
+                <p className="mb-3 inline-flex rounded-full border border-[var(--gui-edge)] bg-[var(--gui-color-1)] px-3 py-1 text-sm font-semibold">
+                  Konto rekrutera
+                </p>
+              )}
+              <h2 className="text-xl">{person.name}</h2>
+              <p className="my-4 text-muted-foreground">{person.headline}</p>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  run({ type: "select_person", id: person.id });
+                  navigate(
+                    person.role === "candidate"
+                      ? (safeNext ?? "/app")
+                      : person.role === "employer"
+                        ? "/app/oferty"
+                        : "/app/case",
+                  );
+                }}
+              >
+                {recruiterAccount ? "Wejdź do panelu rekrutera" : `Wejdź jako ${person.name}`}
+              </Button>
+            </article>
+          );
+        })}
       </div>
     </section>
   );
@@ -450,7 +473,24 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
                       ? a.jobTitle
                       : state.companies.find((x) => x.id === a.companyId)?.name}
                   </p>
-                  <p>{stageLabels[a.stage]}</p>
+                  <p
+                    className={`application-list-stage${a.stage === "hired" ? " is-positive" : a.stage === "rejected" ? " is-negative" : ""}`}
+                    data-outcome={
+                      a.stage === "hired"
+                        ? "positive"
+                        : a.stage === "rejected"
+                          ? "negative"
+                          : "pending"
+                    }
+                  >
+                    {(a.stage === "hired" || a.stage === "rejected") && (
+                      <span aria-hidden="true">{a.stage === "hired" ? "✓" : "×"}</span>
+                    )}
+                    {stageLabels[a.stage]}
+                  </p>
+                  {!employer && (
+                    <p className="application-next-step">{candidateNextStepLabels[a.stage]}</p>
+                  )}
                 </div>
                 <MatchScore score={a.score} />
               </div>

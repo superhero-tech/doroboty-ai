@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07111d">
+  <meta name="description" content="DoRobory.AI — job board dla osób, które chcą pracować z AI. Poznaj techniczne i nietechniczne ścieżki kariery.">
+  <title>DoRobory.AI — znajdź swój kierunek pracy z AI</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <canvas class="data-rain" aria-hidden="true"></canvas>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a class="brand" href="start.html" aria-label="DoRobory.AI — strona główna">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(-38 12 12)" stroke="currentColor" stroke-width="1.4"/><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(38 12 12)" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg></span>
+        <span>DoRobory<em>.AI</em></span>
+      </a>
+      <nav class="masthead-tabs" aria-label="Główna nawigacja">
+        <a href="start.html" aria-current="page">Start</a>
+        <a href="role.html">Oferty pracy</a>
+        <a href="dopasowanie.html">Dopasowanie</a>
+        <a href="o-portalu.html">O portalu</a>
+        <a href="faq.html">FAQ</a><a href="konto.html" data-profile-nav hidden>Mój profil</a>
+      </nav>
+      <a class="masthead-login" data-login-link data-login-next="konto.html" href="zaloguj.html?next=konto.html"><span data-login-label>Zaloguj się</span><span class="login-chevron" aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <div class="eyebrow">Dla kandydatów · praca z AI</div>
+        <h1 id="hero-title">Wybierz kierunek <span>swojej kariery.</span></h1>
+        <p class="hero-lede"><strong>AI to więcej niż kod.</strong> DoRobory.AI pokazuje ścieżki dla osób, które chcą łączyć swoje kompetencje z pracą przy produktach i transformacjach AI.</p>
+        <div class="hero-action">
+          <a class="primary-cta" href="role.html">Zobacz oferty pracy <span class="arrow" aria-hidden="true">↘</span></a>
+          <p class="cta-note">To wersja testowa z ofertami i aplikacjami demonstracyjnymi. Wybierz profil przez „Zaloguj się” na górnym pasku.</p>
+        </div>
+        <div class="hero-proofline" aria-label="Różne kierunki pracy z AI">
+          <span><b>Nie tylko kod</b>role techniczne i nietechniczne</span>
+          <span><b>Wiele kompetencji</b>jeden rynek pracy z AI</span>
+        </div>
+      </div>
+
+      <div class="career-field" role="group" aria-label="Drzewo kierunków kariery związanych z AI">
+        <div class="career-tree">
+          <div class="career-tree-heading"><span class="tree-kicker">Mapa kierunków</span><h2>Różne ścieżki.<br><span>Wspólny rozwój z AI.</span></h2></div>
+          <div class="tree-graphic">
+            <div class="tree-art">
+              <img class="tree-visual" src="assets/ai-career-tree-transparent.png" alt="Świetliste drzewo z błękitnymi, rozgałęzionymi ścieżkami obwodów i punktami światła">
+              <a class="tree-hotspot tree-hotspot--product" href="role.html?category=product" aria-label="Zobacz oferty pracy w obszarze Produkt"><span class="tree-hotspot-dot" aria-hidden="true"></span><span class="tree-hotspot-label">Produkt</span></a>
+              <a class="tree-hotspot tree-hotspot--design" href="role.html?category=design_ux" aria-label="Zobacz oferty pracy w obszarze Design i UX"><span class="tree-hotspot-dot" aria-hidden="true"></span><span class="tree-hotspot-label">Design i UX</span></a>
+              <a class="tree-hotspot tree-hotspot--marketing" href="role.html?category=marketing_content" aria-label="Zobacz oferty pracy w obszarze Marketing i content"><span class="tree-hotspot-dot" aria-hidden="true"></span><span class="tree-hotspot-label">Marketing i content</span></a>
+              <a class="tree-hotspot tree-hotspot--automation" href="role.html?category=automation" aria-label="Zobacz oferty pracy w obszarze Automatyzacja"><span class="tree-hotspot-dot" aria-hidden="true"></span><span class="tree-hotspot-label">Automatyzacja</span></a>
+              <a class="tree-hotspot tree-hotspot--engineering" href="role.html?category=engineering_data" aria-label="Zobacz oferty pracy w obszarze Inżynieria i data"><span class="tree-hotspot-dot" aria-hidden="true"></span><span class="tree-hotspot-label">Inżynieria i data</span></a>
+              <a class="tree-hotspot tree-hotspot--implementation" href="role.html?category=implementation" aria-label="Zobacz oferty pracy w obszarze Wdrożenia"><span class="tree-hotspot-dot" aria-hidden="true"></span><span class="tree-hotspot-label">Wdrożenia</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="intro-band wrap" id="o-portalu" aria-label="O portalu">
+      <div class="intro-rule" aria-hidden="true"></div>
+      <div class="intro-copy">
+        <div class="eyebrow">Twoje kompetencje mają tu miejsce</div>
+        <p>DoRobory.AI to job board dla osób, które chcą pracować z AI. <strong>Nie musisz być programistą.</strong> Produktowcy, designerzy, marketerzy, specjaliści od automatyzacji i inżynierowie mogą rozwijać produkty oraz firmy korzystające z AI.</p>
+      </div>
+    </section>
+
+    <section class="roles-section" id="przykladowe-role" aria-labelledby="roles-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div><div class="eyebrow">Wybrane oferty</div><h2 id="roles-title">Różne role.<br>Wspólny kierunek.</h2></div>
+          <p>Sześć ofert odpowiada sześciu świecącym punktom na drzewie. Każdy kierunek ma własny symbol, a kliknięcie prowadzi do pełnego ogłoszenia.</p>
+        </div>
+        <div class="demo-notice"><b>Oferty testowe</b><span>Ogłoszenia są fikcyjne i służą prezentacji portalu. Zobacz pełny zakres oraz warunki w katalogu ofert.</span></div>
+        <div class="featured-offer-grid" data-featured-jobs role="list" aria-label="Wybrane oferty pracy">
+          <article class="offer-card featured-offer-card is-revealed" role="listitem">
+            <div class="featured-offer-top"><span class="offer-category direction-label direction-label--product"><svg class="direction-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 20 7.5 12 12 4 7.5 12 3Z M4 7.5v9L12 21l8-4.5v-9M12 12v9M4 7.5l8 4.5 8-4.5"/></svg><span>Produkt</span></span><span class="experience-level experience-level--product" role="img" aria-label="Poziom Junior, 1 z 4"><span class="experience-level-name" aria-hidden="true">Junior</span><span class="experience-level-stairs" aria-hidden="true"><i class="experience-level-step is-filled"></i><i class="experience-level-step"></i><i class="experience-level-step"></i><i class="experience-level-step"></i></span></span></div>
+            <h3 class="offer-title">AI Product Manager — katalog produktów</h3>
+            <p class="featured-offer-company">Obieg Labs 1823</p>
+            <p class="offer-meta">Ułożysz plan rozwoju funkcji AI w katalogu produktów, łącząc potrzeby użytkowników i możliwości zespołu.</p>
+            <ul class="featured-offer-meta"><li>Łódź</li><li>Stacjonarnie</li><li>B2B</li></ul>
+            <div class="featured-offer-footer"><div class="featured-offer-salary"><span class="featured-offer-salary-label">Wynagrodzenie</span><strong class="featured-offer-salary-value">10 500–14 500 zł</strong></div><a class="featured-offer-link" href="role.html?offer=pub-004592">Szczegóły oferty →</a></div>
+          </article>
+          <article class="offer-card featured-offer-card is-revealed" role="listitem">
+            <div class="featured-offer-top"><span class="offer-category direction-label direction-label--design_ux"><svg class="direction-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m4 4 6.2 15 2.1-6.1 6.1-2.1L4 4Z M13 13l5 5"/><circle cx="18" cy="18" r="2"/></svg><span>Design i UX</span></span><span class="experience-level experience-level--design_ux" role="img" aria-label="Poziom Mid, 2 z 4"><span class="experience-level-name" aria-hidden="true">Mid</span><span class="experience-level-stairs" aria-hidden="true"><i class="experience-level-step is-filled"></i><i class="experience-level-step is-filled"></i><i class="experience-level-step"></i><i class="experience-level-step"></i></span></span></div>
+            <h3 class="offer-title">AI Product Designer — obsługa zgłoszeń</h3>
+            <p class="featured-offer-company">Moduł Usługi 1760</p>
+            <p class="offer-meta">Przeprojektujesz ścieżkę obsługi zgłoszeń wspieraną przez AI i sprawdzisz ją z użytkownikami.</p>
+            <ul class="featured-offer-meta"><li>Kraków</li><li>Praca zdalna</li><li>B2B</li></ul>
+            <div class="featured-offer-footer"><div class="featured-offer-salary"><span class="featured-offer-salary-label">Wynagrodzenie</span><strong class="featured-offer-salary-value">13 500–17 500 zł</strong></div><a class="featured-offer-link" href="role.html?offer=pub-004633">Szczegóły oferty →</a></div>
+          </article>
+          <article class="offer-card featured-offer-card is-revealed" role="listitem">
+            <div class="featured-offer-top"><span class="offer-category direction-label direction-label--marketing_content"><svg class="direction-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l9 4V6l-9 4H4Z M8 14l2 5h3l-2-4.1M20 9a4 4 0 0 1 0 6"/></svg><span>Marketing i content</span></span><span class="experience-level experience-level--marketing_content" role="img" aria-label="Poziom Mid, 2 z 4"><span class="experience-level-name" aria-hidden="true">Mid</span><span class="experience-level-stairs" aria-hidden="true"><i class="experience-level-step is-filled"></i><i class="experience-level-step is-filled"></i><i class="experience-level-step"></i><i class="experience-level-step"></i></span></span></div>
+            <h3 class="offer-title">AI Content Strategist — kontrola dokumentacji</h3>
+            <p class="featured-offer-company">Wektor Operacje 1750</p>
+            <p class="offer-meta">Ułożysz strategię treści dla bazy wiedzy wspieranej przez AI i plan aktualizacji materiałów.</p>
+            <ul class="featured-offer-meta"><li>Kraków</li><li>Praca zdalna</li><li>B2B</li></ul>
+            <div class="featured-offer-footer"><div class="featured-offer-salary"><span class="featured-offer-salary-label">Wynagrodzenie</span><strong class="featured-offer-salary-value">13 500–17 500 zł</strong></div><a class="featured-offer-link" href="role.html?offer=pub-004715">Szczegóły oferty →</a></div>
+          </article>
+          <article class="offer-card featured-offer-card is-revealed" role="listitem">
+            <div class="featured-offer-top"><span class="offer-category direction-label direction-label--automation"><svg class="direction-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10l-2.5-2.5M17 17H7l2.5 2.5M17 7a7 7 0 0 1 2 5M7 17a7 7 0 0 1-2-5M14.5 4.5 17 7l-2.5 2.5M9.5 14.5 7 17l2.5 2.5"/></svg><span>Automatyzacja</span></span><span class="experience-level experience-level--automation" role="img" aria-label="Poziom Junior, 1 z 4"><span class="experience-level-name" aria-hidden="true">Junior</span><span class="experience-level-stairs" aria-hidden="true"><i class="experience-level-step is-filled"></i><i class="experience-level-step"></i><i class="experience-level-step"></i><i class="experience-level-step"></i></span></span></div>
+            <h3 class="offer-title">AI Automation Specialist — planowanie dostaw</h3>
+            <p class="featured-offer-company">Przystań Studio 1765</p>
+            <p class="offer-meta">Zautomatyzujesz przekazywanie zadań w planowaniu dostaw i przetestujesz obsługę wyjątków.</p>
+            <ul class="featured-offer-meta"><li>Kraków</li><li>Stacjonarnie</li><li>B2B</li></ul>
+            <div class="featured-offer-footer"><div class="featured-offer-salary"><span class="featured-offer-salary-label">Wynagrodzenie</span><strong class="featured-offer-salary-value">10 500–14 500 zł</strong></div><a class="featured-offer-link" href="role.html?offer=pub-004781">Szczegóły oferty →</a></div>
+          </article>
+          <article class="offer-card featured-offer-card is-revealed" role="listitem">
+            <div class="featured-offer-top"><span class="offer-category direction-label direction-label--engineering_data"><svg class="direction-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 10h4v4h-4zM9 3v4m6-4v4M9 17v4m6-4v4M3 9h4m-4 6h4m10-6h4m-4 6h4"/></svg><span>Inżynieria i data</span></span><span class="experience-level experience-level--engineering_data" role="img" aria-label="Poziom Expert, 4 z 4"><span class="experience-level-name" aria-hidden="true">Expert</span><span class="experience-level-stairs" aria-hidden="true"><i class="experience-level-step is-filled"></i><i class="experience-level-step is-filled"></i><i class="experience-level-step is-filled"></i><i class="experience-level-step is-filled"></i></span></span></div>
+            <h3 class="offer-title">AI Engineer — dokumenty operacyjne</h3>
+            <p class="featured-offer-company">Atlas Digital 1792</p>
+            <p class="offer-meta">Przygotujesz komponent wyszukiwania dokumentów wraz z zestawem testów ewaluacyjnych.</p>
+            <ul class="featured-offer-meta"><li>Gdańsk</li><li>Stacjonarnie</li><li>Umowa o pracę</li></ul>
+            <div class="featured-offer-footer"><div class="featured-offer-salary"><span class="featured-offer-salary-label">Wynagrodzenie</span><strong class="featured-offer-salary-value">22 000–26 000 zł</strong></div><a class="featured-offer-link" href="role.html?offer=pub-004569">Szczegóły oferty →</a></div>
+          </article>
+          <article class="offer-card featured-offer-card is-revealed" role="listitem">
+            <div class="featured-offer-top"><span class="offer-category direction-label direction-label--implementation"><svg class="direction-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="m8.5 12 2.3 2.3 4.8-5M12 3.5v2M20.5 12h-2M12 20.5v-2M3.5 12h2"/></svg><span>Wdrożenia</span></span><span class="experience-level experience-level--implementation" role="img" aria-label="Poziom Mid, 2 z 4"><span class="experience-level-name" aria-hidden="true">Mid</span><span class="experience-level-stairs" aria-hidden="true"><i class="experience-level-step is-filled"></i><i class="experience-level-step is-filled"></i><i class="experience-level-step"></i><i class="experience-level-step"></i></span></span></div>
+            <h3 class="offer-title">AI Implementation Specialist — planowanie dostaw</h3>
+            <p class="featured-offer-company">Wektor Usługi 1833</p>
+            <p class="offer-meta">Z lokalnym zespołem zmienisz krok procesu i sprawdzisz, czy rozwiązanie jest używane.</p>
+            <ul class="featured-offer-meta"><li>Wrocław</li><li>Stacjonarnie</li><li>B2B</li></ul>
+            <div class="featured-offer-footer"><div class="featured-offer-salary"><span class="featured-offer-salary-label">Wynagrodzenie</span><strong class="featured-offer-salary-value">15 000–19 000 zł</strong></div><a class="featured-offer-link" href="role.html?offer=pub-004734">Szczegóły oferty →</a></div>
+          </article>
+        </div>
+        <p class="roles-end">Szukasz innej roli? <a class="text-link" href="role.html">Zobacz wszystkie oferty →</a></p>
+      </div>
+    </section>
+
+    <section class="match-section wrap" id="dopasowanie" aria-labelledby="match-title">
+      <div class="match-layout">
+        <div class="match-copy">
+          <div class="eyebrow">Dopasowanie po obu stronach</div>
+          <h2 id="match-title">Twoje kompetencje spotykają się z kierunkiem firmy.</h2>
+          <p>Odpowiedz na pytania o swoim doświadczeniu i pracy z AI. Porównamy odpowiedzi z ofertami i pokażemy 10 najwyżej dopasowanych.</p>
+          <p class="match-caveat">Wynik jest demonstracyjny — pokazuje, jak może działać dopasowanie w portalu.</p>
+          <a class="primary-cta match-start-cta" href="dopasowanie.html">Rozwiąż test dopasowania <span class="arrow" aria-hidden="true">↗</span></a>
+        </div>
+        <div class="match-diagram" role="img" aria-label="Schemat: kompetencje kandydata spotykają się z kierunkiem firmy w autorskim match score">
+          <div class="match-path" aria-hidden="true"></div>
+          <div class="match-side"><small>Po stronie kandydata</small><b>Kompetencje<br>i doświadczenie</b></div>
+          <div class="match-core"><span>Match<br>score</span></div>
+          <div class="match-side"><small>Po stronie firmy</small><b>Transformacja<br>AI</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="process-section" id="proces" aria-labelledby="process-title">
+      <div class="wrap">
+        <div class="process-heading">
+          <div><div class="eyebrow">Docelowa ścieżka kandydata</div><h2 id="process-title">Od profilu<br>do rozmowy.</h2></div>
+          <p>W portalu kandydat pokazuje swoje kompetencje, poznaje dopasowane możliwości i aplikuje na wybrane role.</p>
+        </div>
+        <div class="process-steps">
+          <article class="process-step"><span class="step-dot">01</span><h3>Opisz swój profil</h3><p>Wybierz doświadczenie, interesujący Cię kierunek i preferowany tryb pracy.</p></article>
+          <article class="process-step"><span class="step-dot">02</span><h3>Sprawdź dopasowanie</h3><p>Uzupełnij krótki test techniczny i zobacz 10 najlepiej dopasowanych ofert.</p></article>
+          <article class="process-step"><span class="step-dot">03</span><h3>Aplikuj na role</h3><p>Wybierz ofertę, która odpowiada kierunkowi, w którym chcesz się rozwijać.</p></article>
+        </div>
+        <p class="process-disclaimer">Oferty na tej stronie są testowe. Aplikacje zapisują się lokalnie w przeglądarce i nie trafiają do pracodawców.</p>
+      </div>
+    </section>
+
+    <section class="closing wrap" aria-labelledby="join-title">
+      <div class="closing-line" aria-hidden="true"></div>
+      <div class="closing-copy closing-prompt">
+        <div class="closing-message"><strong id="join-title">Sprawdź oferty pracy.</strong><p>Wybierz ofertę i aplikuj z poziomu strony. Profil wybierzesz po kliknięciu „Zaloguj się” na górnym pasku.</p></div>
+        <a class="primary-cta" href="role.html">Zobacz oferty pracy <span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-row">
+      <div class="footer-brand"><span class="footer-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(-38 12 12)" stroke="currentColor" stroke-width="1.4"/><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(38 12 12)" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg></span><span>DoRobory<em>.AI</em></span></div>
+      <span>Oferty i aplikacje testowe · fikcyjny case</span>
+      <span>© 2026 DoRobory.AI</span>
+    </div>
+  </footer>
+  <div class="application-toast" data-app-toast role="status" aria-live="polite"></div>
+  <script src="demo-jobs.js" defer></script>
+  <script src="site.js" defer></script>
+</body>
+</html>

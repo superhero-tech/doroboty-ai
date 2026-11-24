@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07111d">
+  <meta name="description" content="Sprawdź dane wybranego demonstracyjnego profilu kandydata DoRobory.AI.">
+  <title>Moje dane — DoRobory.AI</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body data-candidate-page="data">
+  <canvas class="data-rain" aria-hidden="true"></canvas>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a class="brand" href="start.html" aria-label="DoRobory.AI — strona główna"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(-38 12 12)" stroke="currentColor" stroke-width="1.4"/><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(38 12 12)" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg></span><span>DoRobory<em>.AI</em></span></a>
+      <nav class="masthead-tabs" aria-label="Główna nawigacja"><a href="start.html">Start</a><a href="role.html">Oferty pracy</a><a href="dopasowanie.html">Dopasowanie</a><a href="o-portalu.html">O portalu</a><a href="faq.html">FAQ</a><a href="konto.html" data-profile-nav hidden>Mój profil</a></nav>
+      <div class="candidate-menu-host" data-candidate-menu-host hidden></div>
+      <a class="masthead-login" data-login-link data-login-next="dane.html" href="zaloguj.html?next=dane.html"><span data-login-label>Zaloguj się</span><span class="login-chevron" aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <main>
+    <section class="page-hero wrap" aria-labelledby="page-title"><div class="eyebrow">Panel kandydata · profil</div><h1 id="page-title">Twoje dane.<br><span>Twój kierunek.</span></h1><p>Podgląd danych i kompetencji wybranego profilu testowego.</p></section>
+    <section class="page-section page-section--tint account-page-section" aria-label="Dane kandydata">
+      <div class="wrap account-layout">
+        <div class="account-overview account-view" data-account-overview data-account-view="data" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+  <footer><div class="wrap footer-row"><a class="footer-brand" href="start.html"><span class="footer-mark" aria-hidden="true">◉</span><span>DoRobory<em>.AI</em></span></a><span>Profil testowy · dane fikcyjne · zapis lokalny</span><span>© 2026 DoRobory.AI</span></div></footer>
+  <div class="application-toast" data-app-toast role="status" aria-live="polite"></div>
+  <script src="site.js" defer></script>
+</body>
+</html>

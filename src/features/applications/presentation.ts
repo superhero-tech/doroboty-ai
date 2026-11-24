@@ -3,20 +3,20 @@ export const applicationStatusLabels = {
   in_review: "W przeglądzie",
   interview: "Etap rozmowy",
   continued: "Kolejny etap",
-  rejected: "Proces zakończony",
+  rejected: "Aplikacja odrzucona",
   withdrawn: "Wycofana",
-  hired: "Zatrudniona/y",
+  hired: "Decyzja pozytywna",
 } as const;
 
 export const applicationStageLabels = {
   submitted: "Aplikacja wysłana",
-  reviewed: "Aplikacja przejrzana",
+  reviewed: "Zgłoszenie zweryfikowane",
   interview_invited: "Zaproszenie na rozmowę",
-  first_conversation_held: "Pierwsza rozmowa odbyta",
+  first_conversation_held: "Rozmowa przeprowadzona",
   continued: "Przejście do kolejnego etapu",
-  rejected: "Proces zakończony",
+  rejected: "Aplikacja odrzucona",
   withdrawn: "Aplikacja wycofana",
-  hired: "Zatrudnienie",
+  hired: "Decyzja pozytywna",
 } as const;
 
 export type ApplicationStatus = keyof typeof applicationStatusLabels;
@@ -30,9 +30,9 @@ export const applicationStatusDescriptions: Record<string, string> = {
   in_review: "Pracodawca przegląda Twoje zgłoszenie.",
   interview: "Proces jest na etapie rozmowy. Szczegóły zaproszenia otrzymasz od pracodawcy.",
   continued: "Pracodawca chce kontynuować proces i skontaktuje się w sprawie kolejnego kroku.",
-  rejected: "Pracodawca zakończył proces dla tej aplikacji.",
+  rejected: "Pracodawca odrzucił tę aplikację.",
   withdrawn: "Aplikacja została przez Ciebie wycofana i nie bierze już udziału w procesie.",
-  hired: "Proces zakończył się zatrudnieniem.",
+  hired: "Proces zakończył się pozytywną decyzją.",
 };
 
 export function applicationStatusDescription(status: string) {

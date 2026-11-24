@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07111d">
+  <meta name="description" content="Poznaj DoRobory.AI — portal pracy dla kandydatów zainteresowanych rolami technicznymi i nietechnicznymi związanymi z AI.">
+  <title>O portalu pracy z AI — DoRobory.AI</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <canvas class="data-rain" aria-hidden="true"></canvas>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a class="brand" href="start.html" aria-label="DoRobory.AI — strona główna"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(-38 12 12)" stroke="currentColor" stroke-width="1.4"/><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(38 12 12)" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg></span><span>DoRobory<em>.AI</em></span></a>
+      <nav class="masthead-tabs" aria-label="Główna nawigacja">
+        <a href="start.html">Start</a>
+        <a href="role.html">Oferty pracy</a>
+        <a href="dopasowanie.html">Dopasowanie</a>
+        <a href="o-portalu.html" aria-current="page">O portalu</a>
+        <a href="faq.html">FAQ</a><a href="konto.html" data-profile-nav hidden>Mój profil</a>
+      </nav>
+      <a class="masthead-login" data-login-link data-login-next="konto.html" href="zaloguj.html?next=konto.html"><span data-login-label>Zaloguj się</span><span class="login-chevron" aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <main>
+    <section class="page-hero wrap" aria-labelledby="page-title">
+      <div class="eyebrow">O DoRobory.AI</div>
+      <h1 id="page-title">Kariera w AI to <span>więcej niż kod.</span></h1>
+      <p>DoRobory.AI to portal pracy dla osób, które chcą rozwijać się przy produktach i zmianach związanych ze sztuczną inteligencją. Pokazuje zarówno ścieżki techniczne, jak i role wykorzystujące kompetencje produktowe, kreatywne i operacyjne.</p>
+      <div class="page-cta-row"><a class="primary-cta" href="role.html">Zobacz oferty pracy <span class="arrow" aria-hidden="true">↗</span></a><p class="cta-note">Oferty testowe — zgłoszenia zapisują się lokalnie.</p></div>
+    </section>
+    <section class="page-section page-section--tint" aria-labelledby="audience-title">
+      <div class="wrap">
+        <div class="eyebrow">Dla kogo</div>
+        <h2 id="audience-title">Różne doświadczenia.<br>Wspólny obszar rozwoju.</h2>
+        <p class="page-lede">Praca z AI może pasować do osób, które budują produkty, projektują doświadczenia, usprawniają procesy albo rozwijają technologię.</p>
+        <div class="info-grid">
+          <article class="info-card"><small>Produkt i doświadczenie</small><h3>Produktowcy i designerzy</h3><p>Przekładają potrzeby ludzi na funkcje, interfejsy i produkty korzystające z AI.</p></article>
+          <article class="info-card"><small>Proces i komunikacja</small><h3>Marketerzy i operatorzy</h3><p>Wykorzystują narzędzia AI w treściach, kampaniach, automatyzacji i codziennej pracy zespołów.</p></article>
+          <article class="info-card"><small>Technologia i wdrożenia</small><h3>Inżynierowie i osoby wdrażające AI</h3><p>Tworzą systemy, pracują z danymi albo wspierają organizacje w adopcji nowych narzędzi.</p></article>
+        </div>
+      </div>
+    </section>
+    <section class="page-section wrap" aria-labelledby="principles-title">
+      <div class="eyebrow">Jak prezentujemy role</div>
+      <h2 id="principles-title">Czytelnie i bez obietnic<br>na wyrost.</h2>
+      <p class="page-lede">Oferty testowe pochodzą z fikcyjnego case’u. W zakładce Dopasowanie możesz wypełnić krótki test i zobaczyć demonstracyjny match score dla 10 ofert. Możesz też wysłać zgłoszenie demonstracyjne; nie trafia ono do pracodawcy.</p>
+      <div class="page-cta-row"><a class="text-link" href="faq.html">Przeczytaj odpowiedzi na częste pytania →</a></div>
+    </section>
+
+    <section class="closing wrap" aria-labelledby="join-title">
+      <div class="closing-line" aria-hidden="true"></div>
+      <div class="closing-copy closing-prompt">
+        <div class="closing-message"><strong id="join-title">Sprawdź oferty pracy.</strong><p>Wybierz ofertę i aplikuj z poziomu strony. Profil wybierzesz po kliknięciu „Zaloguj się” na górnym pasku.</p></div>
+        <a class="primary-cta" href="role.html">Zobacz oferty pracy <span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap footer-row">
+      <a class="footer-brand" href="start.html"><span class="footer-mark"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(-38 12 12)" stroke="currentColor" stroke-width="1.4"/><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(38 12 12)" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg></span><span>DoRobory<em>.AI</em></span></a>
+      <span>Oferty i aplikacje testowe · fikcyjny case</span>
+      <span>© 2026 DoRobory.AI</span>
+    </div>
+  </footer>
+  <div class="application-toast" data-app-toast role="status" aria-live="polite"></div>
+  <script src="site.js" defer></script>
+</body>
+</html>

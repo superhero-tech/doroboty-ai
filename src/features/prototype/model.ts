@@ -86,13 +86,31 @@ export const stages = [
 export type Stage = (typeof stages)[number];
 export const stageLabels: Record<Stage, string> = {
   submitted: "Aplikacja wysłana",
-  reviewed: "W przeglądzie",
+  reviewed: "Zgłoszenie zweryfikowane",
   interview_invited: "Zaproszenie na rozmowę",
-  first_conversation_held: "Pierwsza rozmowa odbyta",
+  first_conversation_held: "Rozmowa przeprowadzona",
   continued: "Kolejny etap",
-  rejected: "Proces zakończony",
-  withdrawn: "Wycofana",
-  hired: "Zatrudnienie",
+  rejected: "Aplikacja odrzucona",
+  withdrawn: "Aplikacja wycofana",
+  hired: "Decyzja pozytywna",
+};
+export const recruiterStageActionLabels: Partial<Record<Stage, string>> = {
+  reviewed: "Oznacz zgłoszenie jako zweryfikowane",
+  interview_invited: "Zaproszenie na rozmowę",
+  first_conversation_held: "Oznacz rozmowę jako przeprowadzoną",
+  continued: "Przejdź do kolejnego etapu",
+  rejected: "Odrzuć aplikację",
+  hired: "Decyzja pozytywna",
+};
+export const candidateNextStepLabels: Record<Stage, string> = {
+  submitted: "Następny krok: weryfikacja zgłoszenia.",
+  reviewed: "Następny krok: zaproszenie na rozmowę.",
+  interview_invited: "Następny krok: rozmowa rekrutacyjna.",
+  first_conversation_held: "Następny krok: decyzja rekrutera.",
+  continued: "Następny krok: decyzja rekrutera.",
+  rejected: "Aplikacja została odrzucona.",
+  withdrawn: "Aplikacja została wycofana.",
+  hired: "Proces zakończył się pozytywną decyzją.",
 };
 export const nextStages: Record<Stage, Stage[]> = {
   submitted: ["reviewed", "rejected"],

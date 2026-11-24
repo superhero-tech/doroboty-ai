@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07111d">
+  <meta name="description" content="Przeglądaj testowe oferty pracy związane z AI i aplikuj jako jeden z profili kandydata DoRobory.AI.">
+  <title>Oferty pracy związane z AI — DoRobory.AI</title>
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="ai-interview.css">
+</head>
+<body data-candidate-page="offers">
+  <canvas class="data-rain" aria-hidden="true"></canvas>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a class="brand" href="start.html" aria-label="DoRobory.AI — strona główna"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(-38 12 12)" stroke="currentColor" stroke-width="1.4"/><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(38 12 12)" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg></span><span>DoRobory<em>.AI</em></span></a>
+      <nav class="masthead-tabs" aria-label="Główna nawigacja">
+        <a href="start.html">Start</a><a href="role.html" aria-current="page">Oferty pracy</a><a href="dopasowanie.html">Dopasowanie</a><a href="o-portalu.html">O portalu</a><a href="faq.html">FAQ</a><a href="konto.html" data-profile-nav hidden>Mój profil</a>
+      </nav>
+      <div class="candidate-menu-host" data-candidate-menu-host hidden></div>
+      <a class="masthead-login" data-login-link data-login-next="role.html" href="zaloguj.html?next=role.html"><span data-login-label>Zaloguj się</span><span class="login-chevron" aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <main>
+    <section class="page-hero wrap" aria-labelledby="page-title">
+      <div class="eyebrow">Job board · oferty testowe</div>
+      <h1 id="page-title">Znajdź rolę dla siebie.<br><span>Aplikuj na stronie.</span></h1>
+      <p>Przeglądaj role techniczne i nietechniczne, filtruj po warunkach i wybierz ofertę. Aplikowanie działa demonstracyjnie po zalogowaniu do jednego z trzech profili kandydata.</p>
+    </section>
+    <section class="page-section page-section--tint jobs-page" aria-labelledby="jobs-title">
+      <div class="wrap">
+        <div class="section-head jobs-heading"><div><div class="eyebrow">Katalog ofert</div><h2 id="jobs-title">Oferty pracy z AI.</h2></div><p>20 przykładowych ogłoszeń i nowe oferty opublikowane przez konto rekrutera. Wybór filtrów i zgłoszenia działają lokalnie w tej przeglądarce.</p></div>
+        <div class="job-layout">
+          <section class="job-results" aria-label="Lista ofert pracy">
+            <div class="job-results-top"><div><b data-results-count>20 ofert</b><span> · sortowanie od najnowszych</span></div><a class="text-link" href="faq.html">Jak działa wersja testowa? →</a></div>
+            <div class="job-list" data-job-list aria-live="polite"></div>
+            <p class="job-empty" data-job-empty hidden>Nie znaleziono ofert. Zmień kryteria lub wyczyść filtry.</p>
+            <aside class="research-note"><strong>Wersja demonstracyjna:</strong> wszystkie ogłoszenia są oznaczone jako testowe i oparte na fikcyjnych danych projektu. Aplikacje zapisują się lokalnie; nie trafiają do pracodawców.</aside>
+          </section>
+          <aside class="job-sidebar" aria-label="Filtry ofert">
+            <form class="filter-panel" data-job-filter-form>
+              <div class="filter-heading"><div><span class="eyebrow">Wyszukaj i filtruj</span><h2>Filtry ofert</h2></div><button type="reset" class="filter-reset" data-filter-reset>Wyczyść</button></div>
+              <label class="filter-field"><span>Słowo kluczowe</span><input type="search" name="q" placeholder="Stanowisko, firma, obszar" data-filter="query"></label>
+              <label class="filter-field"><span>Obszar roli</span><select name="category" data-filter="category"><option value="">Wszystkie</option><option value="product">Produkt</option><option value="design_ux">Design i UX</option><option value="marketing_content">Marketing i content</option><option value="automation">Automatyzacja</option><option value="engineering_data">Inżynieria i data</option><option value="implementation">Wdrożenia</option></select></label>
+              <label class="filter-field"><span>Lokalizacja</span><select name="city" data-filter="city"><option value="">Wszystkie miasta</option><option>Gdańsk</option><option>Kraków</option><option>Łódź</option><option>Poznań</option><option>Wrocław</option></select></label>
+              <label class="filter-field"><span>Poziom doświadczenia</span><select name="seniority" data-filter="seniority"><option value="">Każdy poziom</option><option value="junior">Junior</option><option value="mid">Mid</option><option value="senior">Senior</option><option value="expert">Expert</option></select></label>
+              <label class="filter-field"><span>Tryb pracy</span><select name="mode" data-filter="mode"><option value="">Dowolny</option><option value="remote">Zdalnie</option><option value="hybrid">Hybrydowo</option><option value="office">Stacjonarnie</option></select></label>
+              <label class="filter-field"><span>Rodzaj umowy</span><select name="contract" data-filter="contract"><option value="">Dowolna</option><option value="UoP">Umowa o pracę</option><option value="B2B">B2B</option></select></label>
+              <label class="filter-check"><input type="checkbox" data-filter="salary"><span>Tylko oferty z widełkami</span></label>
+              <div class="filter-results-note"><span data-filter-count>20</span> ofert spełnia kryteria</div>
+            </form>
+          </aside>
+        </div>
+      </div>
+    </section>
+    <section class="closing wrap" aria-labelledby="jobs-cta-title"><div class="closing-line" aria-hidden="true"></div><div class="closing-copy closing-prompt"><div class="closing-message"><strong id="jobs-cta-title">Wybierz ofertę i rozpocznij.</strong><p>Po kliknięciu „Aplikuj” wybierz jeden z trzech profili kandydata.</p></div><a class="primary-cta" href="zaloguj.html?next=role.html">Zaloguj się i aplikuj <span class="arrow" aria-hidden="true">↗</span></a></div></section>
+  </main>
+  <footer><div class="wrap footer-row"><a class="footer-brand" href="start.html"><span class="footer-mark" aria-hidden="true">◉</span><span>DoRobory<em>.AI</em></span></a><span>Oferty i aplikacje testowe · dane demonstracyjne</span><span>© 2026 DoRobory.AI</span></div></footer>
+  <dialog class="application-dialog" data-application-dialog aria-labelledby="application-flow-title">
+    <button type="button" class="application-dialog-close" data-close-application aria-label="Zamknij proces aplikowania">×</button>
+    <div class="application-flow-content" data-application-flow></div>
+  </dialog>
+  <div class="application-toast" data-app-toast role="status" aria-live="polite"></div>
+  <script src="demo-jobs.js" defer></script>
+  <script src="site.js" defer></script>
+</body>
+</html>

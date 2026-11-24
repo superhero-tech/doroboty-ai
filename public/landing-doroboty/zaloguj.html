@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07111d">
+  <meta name="description" content="Wybierz testowy profil kandydata lub konto rekrutera DoRobory.AI.">
+  <title>Zaloguj się — DoRobory.AI</title>
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="ai-interview.css">
+</head>
+<body>
+  <canvas class="data-rain" aria-hidden="true"></canvas>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a class="brand" href="start.html" aria-label="DoRobory.AI — strona główna"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(-38 12 12)" stroke="currentColor" stroke-width="1.4"/><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(38 12 12)" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg></span><span>DoRobory<em>.AI</em></span></a>
+      <nav class="masthead-tabs" aria-label="Główna nawigacja"><a href="start.html">Start</a><a href="role.html">Oferty pracy</a><a href="dopasowanie.html">Dopasowanie</a><a href="o-portalu.html">O portalu</a><a href="faq.html">FAQ</a><a href="konto.html" data-profile-nav hidden>Mój profil</a></nav>
+      <a class="masthead-login" data-login-link data-login-next="konto.html" href="#profile-options"><span data-login-label>Zaloguj się</span><span class="login-chevron" aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <main>
+    <section class="page-hero wrap login-page-hero" aria-labelledby="page-title">
+      <div class="eyebrow">Konta demonstracyjne · wersja testowa</div>
+      <h1 id="page-title">Zaloguj się <span>do swojego profilu.</span></h1>
+      <p>Wybierz profil kandydata albo jedyne konto rekrutera. Logowanie jest symulacją i działa tylko w tej przeglądarce.</p>
+    </section>
+    <section class="page-section page-section--tint login-choice-section" id="profile-options" aria-labelledby="profiles-title">
+      <div class="wrap">
+        <div class="section-head"><div><div class="eyebrow">Wybór konta</div><h2 id="profiles-title">Kto korzysta z portalu?</h2></div><p>Profile kandydatów i konto rekrutera są demonstracyjne. Wybór zapisuje sesję wyłącznie w tej przeglądarce.</p></div>
+        <div class="login-profile-grid" data-login-profile-list></div>
+        <p class="login-page-note" data-login-status>Wybierz profil, aby kontynuować.</p>
+      </div>
+    </section>
+  </main>
+  <footer><div class="wrap footer-row"><a class="footer-brand" href="start.html"><span class="footer-mark" aria-hidden="true">◉</span><span>DoRobory<em>.AI</em></span></a><span>Konta demonstracyjne · bez hasła i backendu</span><span>© 2026 DoRobory.AI</span></div></footer>
+  <div class="application-toast" data-app-toast role="status" aria-live="polite"></div>
+  <script src="site.js" defer></script>
+</body>
+</html>

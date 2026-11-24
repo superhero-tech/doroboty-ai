@@ -2,6 +2,7 @@ import type { ReactNode, Ref } from "react";
 import { BackLink } from "@/components/back-link";
 import { ProcessTimeline } from "@/components/process-timeline";
 import { RecordSheet } from "@/components/record-sheet";
+import { candidateNextStepLabels } from "./model";
 import { CvAttachment } from "./cv-attachment";
 import { MatchScore } from "./match-score";
 import { stageLabels, type Application, type Stage } from "./model";
@@ -11,6 +12,90 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
   dateStyle: "medium",
   timeStyle: "short",
 });
+
+function CandidateProcess({ stage, history }: { stage: Stage; history: RecordEvent[] }) {
+  const hasVerified = history.some((event) =>
+    ["reviewed", "interview_invited", "first_conversation_held", "continued", "hired"].includes(
+      event.stage,
+    ),
+  );
+  const hasInterview = history.some((event) =>
+    ["first_conversation_held", "continued", "hired"].includes(event.stage),
+  );
+  const decision = stage === "hired" || stage === "rejected";
+  const withdrawn = stage === "withdrawn";
+  const nextIndex = decision || withdrawn ? -1 : !hasVerified ? 1 : !hasInterview ? 2 : 3;
+  const steps = [
+    { label: "Aplikacja wysłana", state: "complete" },
+    {
+      label: "Zgłoszenie zweryfikowane",
+      state: hasVerified ? "complete" : nextIndex === 1 ? "current" : "pending",
+    },
+    {
+      label: "Rozmowa przeprowadzona",
+      state: hasInterview ? "complete" : nextIndex === 2 ? "current" : "pending",
+    },
+    {
+      label:
+        stage === "hired"
+          ? "Decyzja pozytywna"
+          : stage === "rejected"
+            ? "Aplikacja odrzucona"
+            : stage === "withdrawn"
+              ? "Aplikacja wycofana"
+              : "Decyzja rekrutera",
+      state:
+        stage === "hired"
+          ? "positive"
+          : stage === "rejected"
+            ? "negative"
+            : stage === "withdrawn"
+              ? "withdrawn"
+              : nextIndex === 3
+                ? "current"
+                : "pending",
+    },
+  ];
+
+  return (
+    <section className="candidate-process" aria-labelledby="candidate-process-heading">
+      <h2 id="candidate-process-heading">Postęp rekrutacji</h2>
+      <ol className="candidate-process-steps" aria-label="Etapy aplikacji">
+        {steps.map((step, index) => (
+          <li
+            key={step.label}
+            className="candidate-process-step"
+            data-state={step.state}
+            aria-current={
+              step.state === "current" || ["positive", "negative", "withdrawn"].includes(step.state)
+                ? "step"
+                : undefined
+            }
+          >
+            <span className="candidate-process-marker" aria-hidden="true">
+              {step.state === "complete" || step.state === "positive"
+                ? "✓"
+                : step.state === "negative"
+                  ? "×"
+                  : step.state === "withdrawn"
+                    ? "−"
+                    : index + 1}
+            </span>
+            <span className="candidate-process-label">{step.label}</span>
+          </li>
+        ))}
+      </ol>
+      <p
+        className="candidate-process-next-step"
+        data-outcome={
+          stage === "hired" ? "positive" : stage === "rejected" ? "negative" : "pending"
+        }
+      >
+        {candidateNextStepLabels[stage]}
+      </p>
+    </section>
+  );
+}
 
 /** Role controllers authorize the record and project the history before rendering. */
 export function ApplicationRecord({
@@ -52,7 +137,16 @@ export function ApplicationRecord({
           <span>
             {context} · {companyName}
           </span>
-          <span className="record-stage" tabIndex={-1} ref={statusRef}>
+          <span
+            className={`record-stage${application.stage === "hired" ? " is-positive" : application.stage === "rejected" ? " is-negative" : ""}`}
+            tabIndex={-1}
+            ref={statusRef}
+          >
+            {(application.stage === "hired" || application.stage === "rejected") && (
+              <span className="record-stage-icon" aria-hidden="true">
+                {application.stage === "hired" ? "✓" : "×"}
+              </span>
+            )}
             {stageLabels[application.stage]}
           </span>
           <MatchScore score={application.score} />
@@ -64,6 +158,7 @@ export function ApplicationRecord({
           )}
         </div>
       </header>
+      {candidate && <CandidateProcess stage={application.stage} history={history} />}
       <div className="recruiting-layout">
         <RecordSheet
           label={candidate ? "Twoja wysłana aplikacja" : "Materiały kandydata"}

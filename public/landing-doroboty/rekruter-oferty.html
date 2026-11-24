@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07111d">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Przeglądaj opublikowane oferty w demonstracyjnym panelu rekrutera DoRobory.AI.">
+  <title>Opublikowane oferty — Panel rekrutera — DoRobory.AI</title>
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="ai-interview.css">
+</head>
+<body class="recruiter-screen" data-recruiter-page="offers">
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a class="brand" href="start.html" aria-label="DoRobory.AI — strona główna"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(-38 12 12)" stroke="currentColor" stroke-width="1.4"/><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(38 12 12)" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg></span><span>DoRobory<em>.AI</em></span></a>
+      <nav class="masthead-tabs" aria-label="Główna nawigacja">
+        <a href="start.html">Start</a>
+        <a href="role.html">Oferty pracy</a>
+        <a href="dopasowanie.html">Dopasowanie</a>
+        <a href="o-portalu.html">O portalu</a>
+        <a href="faq.html">FAQ</a>
+      </nav>
+      <a class="masthead-login" data-login-link data-login-next="rekruter-oferty.html" href="zaloguj.html?next=rekruter-oferty.html"><span data-login-label>Zaloguj się</span><span class="login-chevron" aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <main class="recruiter-main">
+    <p class="recruiter-eyebrow">Panel rekrutera · publikacje</p>
+    <h1 class="recruiter-title">Opublikowane oferty.</h1>
+    <p class="recruiter-lede">Zarządzaj podglądem fikcyjnych ogłoszeń i przejdź bezpośrednio do zgłoszeń dla wybranej oferty.</p>
+    <aside class="recruiter-notice"><strong>Wersja testowa:</strong> oferty są widoczne tylko w lokalnym scenariuszu tej przeglądarki i korzystają z danych demonstracyjnych.</aside>
+    <section class="recruiter-gate" data-recruiter-access aria-labelledby="recruiter-gate-title" hidden>
+      <h2 id="recruiter-gate-title">Zaloguj się na konto rekrutera.</h2>
+      <p>Wybierz konto rekrutera na stronie logowania, aby przeglądać opublikowane oferty.</p>
+      <a class="primary-cta" href="zaloguj.html?next=rekruter-oferty.html">Zaloguj się jako rekruter <span class="arrow" aria-hidden="true">↗</span></a>
+    </section>
+    <div data-recruiter-workspace hidden>
+      <section class="recruiter-work-section" aria-labelledby="recruiter-jobs-title">
+        <div class="recruiter-section-heading"><div><p class="recruiter-eyebrow">Katalog</p><h2 id="recruiter-jobs-title">Twoje publikacje.</h2></div><a class="recruiter-process-button is-primary recruiter-create-link" href="rekruter-utworz.html">Utwórz ofertę</a></div>
+        <div class="recruiter-list" data-recruiter-jobs aria-live="polite"></div>
+      </section>
+    </div>
+    <footer class="recruiter-footer"><a href="rekruter-utworz.html">Utwórz ofertę</a><span> · </span><a href="rekruter.html">Zobacz aplikacje</a></footer>
+  </main>
+  <div class="application-toast" data-app-toast role="status" aria-live="polite"></div>
+  <script src="demo-jobs.js" defer></script>
+  <script src="site.js" defer></script>
+</body>
+</html>

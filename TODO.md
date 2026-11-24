@@ -17,3 +17,4 @@ BRIEF.md describes the current scope. Historical milestones remain in Git histor
 ## Deliberate limitations
 
 - Human research, course release approval and publishing a participant URL remain separate activities; passing code checks does not establish these outcomes.
+- Optional candidate interview calls OpenAI only through local Vite development/preview middleware using synthetic profile data; uploaded CV PDFs are not read or sent. A static build does not include the AI API.

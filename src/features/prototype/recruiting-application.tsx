@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ApplicationRecord } from "./application-record";
-import { nextStages, stageLabels, type Application } from "./model";
+import { nextStages, recruiterStageActionLabels, stageLabels, type Application } from "./model";
 import { usePrototype } from "./store";
 
 export function RecruitingApplication({ application }: { application: Application }) {
@@ -46,7 +46,7 @@ export function RecruitingApplication({ application }: { application: Applicatio
                       }
                     }}
                   >
-                    {stageLabels[stage]}
+                    {recruiterStageActionLabels[stage] ?? stageLabels[stage]}
                   </Button>
                 ))}
               </div>

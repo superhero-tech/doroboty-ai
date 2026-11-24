@@ -5,7 +5,9 @@ import { STORAGE_KEY } from "../../src/features/prototype/storage";
 import { readFile } from "node:fs/promises";
 async function choose(page: Page, name: string) {
   await page.goto("/#/auth/sign-in");
-  await page.getByRole("button", { name: `Wejdź jako ${name}`, exact: true }).click();
+  const buttonName =
+    name === "Karolina Wiśniewska" ? "Wejdź do panelu rekrutera" : `Wejdź jako ${name}`;
+  await page.getByRole("button", { name: buttonName, exact: true }).click();
 }
 async function application(page: Page) {
   await choose(page, "Anna Kowalska");
@@ -18,6 +20,20 @@ async function application(page: Page) {
   await page.getByRole("checkbox").check();
   await page.getByRole("button", { name: "Wyślij aplikację", exact: true }).click();
 }
+
+test("employer sign-in offers one recruiter demo account", async ({ page }) => {
+  await page.goto("/#/auth/sign-in?audience=employer&next=/app/oferty");
+  await expect(
+    page.getByRole("heading", { name: "Zaloguj się do panelu rekrutera" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Karolina Wiśniewska", exact: true }),
+  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Tomasz Zieliński", exact: true })).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Wejdź do panelu rekrutera", exact: true }),
+  ).toBeVisible();
+});
 
 for (const [name, filename] of [
   ["Anna Kowalska", "anna-kowalska-cv-v1.pdf"],
@@ -144,14 +160,26 @@ test("published job → saved offer/draft → submitted application → employer
   await page
     .getByLabel("Notatka rekrutacyjna (widoczna pracodawcy)")
     .fill("Notatka pracodawcy — tylko panel firmy.");
-  await page.getByRole("button", { name: "W przeglądzie", exact: true }).click();
-  for (const label of ["Zaproszenie na rozmowę", "Pierwsza rozmowa odbyta", "Kolejny etap"])
+  await page
+    .getByRole("button", { name: "Oznacz zgłoszenie jako zweryfikowane", exact: true })
+    .click();
+  for (const label of [
+    "Zaproszenie na rozmowę",
+    "Oznacz rozmowę jako przeprowadzoną",
+    "Przejdź do kolejnego etapu",
+  ])
     await page.getByRole("button", { name: label, exact: true }).click();
   await page.reload();
-  await expect(page.getByRole("button", { name: "Zatrudnienie", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Decyzja pozytywna", exact: true }).click();
   await choose(page, "Anna Kowalska");
   await page.goto(candidateUrl);
-  await expect(page.locator(".record-stage")).toHaveText("Kolejny etap");
+  await expect(page.locator(".record-stage")).toContainText("Decyzja pozytywna");
+  await expect(page.locator('.candidate-process-step[data-state="positive"]')).toContainText(
+    "Decyzja pozytywna",
+  );
+  await expect(page.locator(".candidate-process-next-step")).toHaveText(
+    "Proces zakończył się pozytywną decyzją.",
+  );
   await expect(
     page.getByText("Notatka pracodawcy — tylko panel firmy.", { exact: true }),
   ).toHaveCount(0);
@@ -303,12 +331,29 @@ test("core screens have no serious accessibility violations", async ({ page }) =
   expect(results.violations).toEqual([]);
 });
 
-test("public home and filters reflow at 320px with no external requests", async ({ page }) => {
+test("reference account page and filters reflow at 320px with no external requests", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 1366, height: 900 });
-  await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Praca dla ludzi");
-  await page.screenshot({ path: "artifacts/home-desktop.png", fullPage: true });
+  await page.goto("/#/");
+  const accountFrame = page.frameLocator('iframe[title="Mój profil — DoRobory.AI"]');
+  await expect(accountFrame.getByRole("heading", { level: 1 })).toContainText("Twoje aplikacje.");
+  await expect(
+    accountFrame.getByRole("heading", { name: "Zaloguj się, aby otworzyć swój profil." }),
+  ).toBeVisible();
+  await page.screenshot({ path: "artifacts/account-desktop.png", fullPage: true });
   await page.setViewportSize({ width: 320, height: 740 });
+  await page.goto("/#/");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect(
+    await page.locator('iframe[title="Mój profil — DoRobory.AI"]').evaluate((frame) => {
+      const document = (frame as HTMLIFrameElement).contentDocument;
+      return document
+        ? document.documentElement.scrollWidth <= document.documentElement.clientWidth
+        : false;
+    }),
+  ).toBe(true);
+  await page.screenshot({ path: "artifacts/account-mobile.png", fullPage: true });
   await page.goto("/#/oferty");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: "artifacts/jobs-mobile.png", fullPage: true });
@@ -648,16 +693,19 @@ for (const width of [1280, 390])
     await expect(page.getByRole("textbox", { name: "Szukaj ofert", exact: true })).toHaveValue("");
   });
 
-test("homepage surfaces and marketplace action type roles match the shared reference", async ({
+test("reference account page and marketplace action type roles match their sources", async ({
   page,
 }) => {
   await page.goto("/#/");
-  const cards = page.locator("main article.prototype-panel");
-  await expect(cards).toHaveCount(3);
-  for (const card of await cards.all()) {
-    await expect(card).toHaveCSS("border-radius", "24px");
-    await expect(card).toHaveCSS("box-shadow", /rgb\(24, 24, 24\).*1px inset/);
-  }
+  await expect(page.locator('iframe[title="Mój profil — DoRobory.AI"]')).toHaveAttribute(
+    "src",
+    "/landing-doroboty/konto.html#aplikacje",
+  );
+  await expect(
+    page
+      .frameLocator('iframe[title="Mój profil — DoRobory.AI"]')
+      .locator("[data-account-overview]"),
+  ).toContainText("Zaloguj się, aby otworzyć swój profil.");
   for (const [width, searchSize, offerSize, payLine] of [
     [1280, "14px", "14px", "34.8px"],
     [1100, "14px", "13px", "31.9px"],
@@ -725,15 +773,18 @@ test("process sheet keeps notes across keyboard tabs and saves stage history wit
   await expect(note).toHaveValue(text);
   await expect(preview).toHaveCount(0);
   await expect(page.getByRole("link", { name: "Pobierz CV (PDF)", exact: true })).toHaveCount(0);
-  await page.getByRole("button", { name: "W przeglądzie", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Oznacz zgłoszenie jako zweryfikowane", exact: true })
+    .click();
   await expect(page.locator(".record-stage")).toBeFocused();
   await expect(note).toHaveValue("");
   await expect(page.locator(".process-timeline")).toContainText(text);
   await page.reload();
   await expect(page.locator(".process-timeline")).toContainText(text);
   await note.fill("Zakończenie przykładowego procesu.");
-  await page.getByRole("button", { name: "Proces zakończony", exact: true }).click();
+  await page.getByRole("button", { name: "Odrzuć aplikację", exact: true }).click();
   await expect(page.locator(".record-stage")).toBeFocused();
+  await expect(page.locator(".record-stage")).toContainText("Aplikacja odrzucona");
   await expect(note).toHaveCount(0);
   await expect(page.locator(".record-actions")).toHaveCount(0);
   await expect(page.locator(".process-timeline li")).toHaveCount(3);
@@ -741,6 +792,12 @@ test("process sheet keeps notes across keyboard tabs and saves stage history wit
   expect(accessibility.violations).toEqual([]);
   await choose(page, "Marek Nowak");
   await page.goto("/#/app/aplikacje/application-example");
+  await expect(page.locator('.candidate-process-step[data-state="negative"]')).toContainText(
+    "Aplikacja odrzucona",
+  );
+  await expect(page.locator(".candidate-process-next-step")).toHaveText(
+    "Aplikacja została odrzucona.",
+  );
   await expect(page.getByText(text, { exact: true })).toHaveCount(0);
 });
 

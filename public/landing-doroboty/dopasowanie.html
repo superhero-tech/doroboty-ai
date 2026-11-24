@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07111d">
+  <meta name="description" content="Wypełnij krótki test i zobacz 10 ofert pracy z AI najlepiej dopasowanych do Twojego doświadczenia i odpowiedzi.">
+  <title>Sprawdź dopasowanie do ofert — DoRobory.AI</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <canvas class="data-rain" aria-hidden="true"></canvas>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a class="brand" href="start.html" aria-label="DoRobory.AI — strona główna"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(-38 12 12)" stroke="currentColor" stroke-width="1.4"/><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(38 12 12)" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg></span><span>DoRobory<em>.AI</em></span></a>
+      <nav class="masthead-tabs" aria-label="Główna nawigacja">
+        <a href="start.html">Start</a>
+        <a href="role.html">Oferty pracy</a>
+        <a href="dopasowanie.html" aria-current="page">Dopasowanie</a>
+        <a href="o-portalu.html">O portalu</a>
+        <a href="faq.html">FAQ</a><a href="konto.html" data-profile-nav hidden>Mój profil</a>
+      </nav>
+      <a class="masthead-login" data-login-link data-login-next="konto.html" href="zaloguj.html?next=konto.html"><span data-login-label>Zaloguj się</span><span class="login-chevron" aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <main>
+    <section class="page-hero wrap" aria-labelledby="page-title">
+      <div class="eyebrow">Dopasowanie · krótki test</div>
+      <h1 id="page-title">Znajdź oferty, które pasują <span>do Ciebie.</span></h1>
+      <p>Opowiedz o swoim doświadczeniu, odpowiedz na kilka pytań o pracę z AI i zobacz 10 najlepiej dopasowanych ofert.</p>
+    </section>
+    <section class="match-flow-section wrap" aria-labelledby="match-flow-title" data-match-wizard>
+      <div class="match-flow-shell">
+        <div class="match-flow-heading">
+          <div><div class="eyebrow">Twoja ścieżka</div><h2 id="match-flow-title">Dwa krótkie kroki do ofert.</h2></div>
+          <ol class="match-flow-progress" aria-label="Postęp testu">
+            <li class="is-current" data-match-progress="profile"><span>01</span><b>Twój profil</b></li>
+            <li data-match-progress="technical"><span>02</span><b>Test techniczny</b></li>
+            <li data-match-progress="results"><span>03</span><b>Wyniki</b></li>
+          </ol>
+        </div>
+        <p class="match-flow-error" data-match-error role="alert" hidden>Uzupełnij odpowiedź na każde pytanie, aby przejść dalej.</p>
+
+        <section class="match-flow-step" data-match-step="profile" aria-labelledby="profile-step-title">
+          <div class="match-step-heading"><div class="eyebrow">Krok 1 z 2</div><h3 id="profile-step-title">Najpierw poznajmy Twój profil.</h3><p>Wybierz odpowiedź, która najlepiej opisuje Ciebie.</p></div>
+          <fieldset class="match-question">
+            <legend>Ile masz lat doświadczenia zawodowego?</legend>
+            <div class="match-answer-grid match-answer-grid--four">
+              <label class="match-answer"><input type="radio" name="experience" value="junior"><span class="match-answer-letter">A</span><span>Mniej niż rok</span></label>
+              <label class="match-answer"><input type="radio" name="experience" value="mid"><span class="match-answer-letter">B</span><span>1–3 lata</span></label>
+              <label class="match-answer"><input type="radio" name="experience" value="senior"><span class="match-answer-letter">C</span><span>4–7 lat</span></label>
+              <label class="match-answer"><input type="radio" name="experience" value="expert"><span class="match-answer-letter">D</span><span>8 lat lub więcej</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="match-question">
+            <legend>W którym obszarze chcesz pracować?</legend>
+            <div class="match-direction-grid">
+              <label class="match-direction-choice"><input type="radio" name="direction" value="product"><span class="match-direction-mark match-direction-mark--product">◇</span><span>Produkt</span></label>
+              <label class="match-direction-choice"><input type="radio" name="direction" value="design_ux"><span class="match-direction-mark match-direction-mark--design_ux">✳</span><span>Design i UX</span></label>
+              <label class="match-direction-choice"><input type="radio" name="direction" value="marketing_content"><span class="match-direction-mark match-direction-mark--marketing_content">◖</span><span>Marketing i content</span></label>
+              <label class="match-direction-choice"><input type="radio" name="direction" value="automation"><span class="match-direction-mark match-direction-mark--automation">↻</span><span>Automatyzacja</span></label>
+              <label class="match-direction-choice"><input type="radio" name="direction" value="engineering_data"><span class="match-direction-mark match-direction-mark--engineering_data">⌘</span><span>Inżynieria i data</span></label>
+              <label class="match-direction-choice"><input type="radio" name="direction" value="implementation"><span class="match-direction-mark match-direction-mark--implementation">✓</span><span>Wdrożenia</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="match-question">
+            <legend>Jaki tryb pracy najbardziej Ci odpowiada?</legend>
+            <div class="match-answer-grid match-answer-grid--four">
+              <label class="match-answer"><input type="radio" name="workMode" value="remote"><span class="match-answer-letter">A</span><span>Zdalny</span></label>
+              <label class="match-answer"><input type="radio" name="workMode" value="hybrid"><span class="match-answer-letter">B</span><span>Hybrydowy</span></label>
+              <label class="match-answer"><input type="radio" name="workMode" value="office"><span class="match-answer-letter">C</span><span>Stacjonarny</span></label>
+              <label class="match-answer"><input type="radio" name="workMode" value="any"><span class="match-answer-letter">D</span><span>Nie mam preferencji</span></label>
+            </div>
+          </fieldset>
+          <div class="match-flow-actions match-flow-actions--end"><button type="button" class="primary-cta" data-match-next>Przejdź do testu technicznego <span class="arrow" aria-hidden="true">↗</span></button></div>
+        </section>
+
+        <section class="match-flow-step" data-match-step="technical" aria-labelledby="technical-step-title" hidden>
+          <div class="match-step-heading"><div class="eyebrow">Krok 2 z 2 · test techniczny</div><h3 id="technical-step-title">6 pytań ABCD o pracę z AI.</h3><p>Wybierz najlepszą odpowiedź w każdej sytuacji. To test praktycznego podejścia, nie sprawdzian składni ani programowania.</p></div>
+          <fieldset class="match-question match-question--compact"><legend>1. Masz kilka pomysłów na funkcje AI i mały zespół. Od czego zaczynasz?</legend><div class="match-answer-list">
+            <label class="match-answer"><input type="radio" name="tech_product" value="A"><span class="match-answer-letter">A</span><span>Porównuję potrzeby użytkowników, wartość i koszt, a potem wybieram mały test.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_product" value="B"><span class="match-answer-letter">B</span><span>Wdrażam wszystkie pomysły równocześnie.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_product" value="C"><span class="match-answer-letter">C</span><span>Wybieram funkcję, o której najczęściej mówi się w mediach.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_product" value="D"><span class="match-answer-letter">D</span><span>Decyzję podejmuję bez sprawdzania, komu funkcja ma pomóc.</span></label>
+          </div></fieldset>
+          <fieldset class="match-question match-question--compact"><legend>2. Nowy asystent jest rzadko używany. Co robisz jako projektantka lub projektant?</legend><div class="match-answer-list">
+            <label class="match-answer"><input type="radio" name="tech_design" value="A"><span class="match-answer-letter">A</span><span>Dodaję więcej funkcji, zanim porozmawiam z użytkownikami.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_design" value="B"><span class="match-answer-letter">B</span><span>Zmniejszam przycisk, żeby interfejs wyglądał czyściej.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_design" value="C"><span class="match-answer-letter">C</span><span>Obserwuję użytkowników, tworzę prototyp i sprawdzam go w teście.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_design" value="D"><span class="match-answer-letter">D</span><span>Zakładam, że użytkownicy sami nauczą się nowego narzędzia.</span></label>
+          </div></fieldset>
+          <fieldset class="match-question match-question--compact"><legend>3. AI odpowiada na pytania z firmowej bazy wiedzy. Co poprawiasz najpierw?</legend><div class="match-answer-list">
+            <label class="match-answer"><input type="radio" name="tech_marketing" value="A"><span class="match-answer-letter">A</span><span>Publikuję surowe odpowiedzi modelu jako gotowe materiały.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_marketing" value="B"><span class="match-answer-letter">B</span><span>Porządkuję sprawdzone treści, wskazuję ich właścicieli i zasady aktualizacji.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_marketing" value="C"><span class="match-answer-letter">C</span><span>Zwiększam liczbę dokumentów bez sprawdzania ich jakości.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_marketing" value="D"><span class="match-answer-letter">D</span><span>Usuwam wszystkie starsze materiały bez konsultacji.</span></label>
+          </div></fieldset>
+          <fieldset class="match-question match-question--compact"><legend>4. Automatyzujesz proces, w którym czasem występują nietypowe przypadki. Jak go projektujesz?</legend><div class="match-answer-list">
+            <label class="match-answer"><input type="radio" name="tech_automation" value="A"><span class="match-answer-letter">A</span><span>Automatyzuję wszystko i usuwam możliwość ręcznej kontroli.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_automation" value="B"><span class="match-answer-letter">B</span><span>Pomijam wyjątki, bo zdarzają się rzadko.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_automation" value="C"><span class="match-answer-letter">C</span><span>Automatyzuję wyłącznie najprostszy przypadek i nie zapisuję błędów.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_automation" value="D"><span class="match-answer-letter">D</span><span>Automatyzuję typową ścieżkę, a wyjątki kieruję do człowieka i zapisuję.</span></label>
+          </div></fieldset>
+          <fieldset class="match-question match-question--compact"><legend>5. Jak sprawdzasz, czy wyszukiwarka AI dobrze znajduje odpowiedzi?</legend><div class="match-answer-list">
+            <label class="match-answer"><input type="radio" name="tech_engineering" value="A"><span class="match-answer-letter">A</span><span>Oceniam ją na tych samych danych, na których była budowana.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_engineering" value="B"><span class="match-answer-letter">B</span><span>Sprawdzam reprezentatywne przykłady, metryki i błędne wyniki.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_engineering" value="C"><span class="match-answer-letter">C</span><span>Wybieram model z największą liczbą parametrów.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_engineering" value="D"><span class="match-answer-letter">D</span><span>Zakładam, że poprawne odpowiedzi pojawią się bez ewaluacji.</span></label>
+          </div></fieldset>
+          <fieldset class="match-question match-question--compact"><legend>6. Zespół testuje nową funkcję AI w codziennej pracy. Co pomaga ocenić wdrożenie?</legend><div class="match-answer-list">
+            <label class="match-answer"><input type="radio" name="tech_implementation" value="A"><span class="match-answer-letter">A</span><span>Włączam funkcję wszystkim naraz i od razu wyłączam stary proces.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_implementation" value="B"><span class="match-answer-letter">B</span><span>Pozostawiam całe wdrożenie jednej osobie zainteresowanej AI.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_implementation" value="C"><span class="match-answer-letter">C</span><span>Robię pilotaż, szkolę użytkowników i mierzę użycie oraz wyjątki.</span></label>
+            <label class="match-answer"><input type="radio" name="tech_implementation" value="D"><span class="match-answer-letter">D</span><span>Sprawdzam wyłącznie szybkość odpowiedzi modelu.</span></label>
+          </div></fieldset>
+          <div class="match-flow-actions"><button type="button" class="secondary-cta" data-match-back>← Wróć do profilu</button><button type="button" class="primary-cta" data-match-show-results>Pokaż mój matchscore <span class="arrow" aria-hidden="true">↗</span></button></div>
+        </section>
+
+        <section class="match-flow-step match-results-step" data-match-step="results" aria-labelledby="results-step-title" hidden>
+          <div class="match-step-heading"><div class="eyebrow">Twój wynik · demonstracyjny matchscore</div><h3 id="results-step-title">Oferty dopasowane do Twojego profilu.</h3><p data-match-summary></p></div>
+          <p class="match-results-note">Wynik porównuje wybrany kierunek, doświadczenie, tryb pracy i odpowiedzi z testu z informacjami w każdej ofercie. To symulacja w wersji demonstracyjnej, nie ocena kompetencji.</p>
+          <ol class="match-results-list" data-match-results aria-label="Dziesięć najlepiej dopasowanych ofert"></ol>
+          <div class="match-flow-actions"><button type="button" class="secondary-cta" data-match-restart>Wypełnij test ponownie</button><a class="primary-cta" href="role.html">Zobacz wszystkie oferty <span class="arrow" aria-hidden="true">↗</span></a></div>
+        </section>
+      </div>
+    </section>
+    <aside class="research-note wrap"><strong>Wersja demonstracyjna:</strong> matchscore jest wyliczany lokalnie na podstawie odpowiedzi i fikcyjnych ofert. Nie zapisujemy odpowiedzi ani nie przekazujemy ich pracodawcom.</aside>
+  </main>
+  <footer>
+    <div class="wrap footer-row">
+      <a class="footer-brand" href="start.html"><span class="footer-mark"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(-38 12 12)" stroke="currentColor" stroke-width="1.4"/><ellipse cx="12" cy="12" rx="8.4" ry="3.8" transform="rotate(38 12 12)" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg></span><span>DoRobory<em>.AI</em></span></a>
+      <span>Oferty i aplikacje testowe · fikcyjny case</span>
+      <span>© 2026 DoRobory.AI</span>
+    </div>
+  </footer>
+  <div class="application-toast" data-app-toast role="status" aria-live="polite"></div>
+  <script src="demo-jobs.js" defer></script>
+  <script src="match-flow.js" defer></script>
+  <script src="site.js" defer></script>
+</body>
+</html>
